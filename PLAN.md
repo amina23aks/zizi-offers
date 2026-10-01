@@ -11,7 +11,7 @@ Status reflects work actually completed in `C:\ziziwebsite\zizi-offers`. User de
 | 5 | GitHub private repository and initial push when instructed | Explicitly authorized for Stage 1; pending available repo creation/push path | Pending |
 | 6 | Vercel linked deployment when instructed | Explicitly authorized for Stage 1; pending GitHub repo or available Vercel import path | Pending |
 | 7 | Prepare Firebase project/web app and Cloudinary when instructed | Deferred; do not integrate in Stage 1 | Pending |
-| 8 | Home, tests and one offer details page | Deferred until next stage | Pending |
+| 8 | Home, tests and one offer details page | Stage 3 built `/`, `/tests`, and `/offers/emotional-communication`; typecheck, lint, build, and browser interaction checks passed locally | Completed |
 | 9 | Remaining public pages | Deferred | Pending |
 | 10 | Admin frontend prototype | Deferred; prototype saves must be labeled non-durable before backend integration | Pending |
 | 11 | Auth, Firestore, signed media uploads | Deferred; no secrets committed | Pending |
@@ -35,3 +35,15 @@ Customer accounts, calendar, payments, private feedback, start dates, compass PD
 - `src/data/offers.ts` keeps offer/content data separate from React components and preserves unknown price/availability behavior.
 - Sessions/consultations were updated from the Stage 2 supplied price list. The previous legacy session paragraph is superseded.
 - Stage 2 remained local until the user later explicitly authorized push and Vercel deployment.
+
+## Stage 3 notes
+
+- Local feature branch: `stage-3-design`.
+- Completed first visual implementation only: homepage, tests page, and emotional communication offer details page.
+- Homepage uses RTL layout, light/dark theme toggle, approved hero text, desktop category spread animation, mobile category grid, approved about text, original artwork previews, and an honest booking-unavailable state.
+- Tests page follows the approved order: codes, etho, mindsets, spectra, triple test.
+- Codes include accessible reveal/back flip cards, original A/B/C/D images, and image zoom.
+- Etho includes carousel controls, search by names and aliases, and a grid using the 51 actual animal assets while preserving delivered filenames including `ذيب.jpg`.
+- Mindsets use text tabs only. Spectra uses the 12 registered geometric images. Triple displays the full `الميولات-السوكيه.jpg` image and a `متاح` badge without added explanatory text.
+- Emotional communication details use the registered original image, approved topics, group format, capacity 10, USD 100 per seat, and available status. No duration, start dates, remaining seats, or outcomes were invented.
+- No Firebase, Cloudinary, customer accounts, admin pages, payments, calendars, push, merge, or deployment were done in Stage 3.
