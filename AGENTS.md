@@ -12,7 +12,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Purpose and scope
 
-Build an Arabic RTL offers catalogue for Zizi. The primary visitor journey is discover an offer, understand its details, then follow the configured booking link. Current scope: public frontend and admin UI prototype. Customer accounts, booking calendar, payments, session follow-up and start dates are deferred.
+Build an Arabic RTL offers catalogue for Zizi. The primary visitor journey is discovering sections and reading approved offer information. Booking UI, booking links, customer accounts, booking calendar, payments, session follow-up and start dates are deferred until explicitly configured.
 
 Stage 1 is setup and planning integration only: inspect the existing app, merge planning files, prepare docs/assets folders, verify local setup, and stop before full website implementation.
 
@@ -51,6 +51,10 @@ Keep offers and assets separate from React components. IDs remain stable. Search
 Use semantic controls, visible focus, RTL logical spacing, accessible dialogs and reduced-motion alternatives. Test mobile and desktop, navigation, filters, carousel, flip cards, dialogs, dark mode and missing-data states. Use scripts present in `package.json` for lint/type checks/build; do not assume an obsolete Next.js lint command. Inspect the running UI with available browser tooling. Report any unavailable verification honestly.
 
 Avoid tests that merely mirror implementation; test meaningful behavior and permissions when relevant.
+
+Customer-facing pages must not show internal planning language such as "prototype", "stage", "original asset", "waiting for original", or booking-unavailable status panels. If no approved booking URL exists, omit booking controls from public pages.
+
+The current visual direction uses a centered one-line "عروض زيزي" homepage title, section bubbles, public category pages, compact inner navigation, original artwork with `object-contain`, and no hero portrait unless a confirmed Zizi avatar is supplied. Do not identify the group logo as Zizi's personal portrait.
 
 ## Admin and security
 
