@@ -1,33 +1,27 @@
-# PLAN.md
+# Zizi Offers - delivery plan
 
-## 1. التجهيز
+Status reflects work actually completed in `C:\ziziwebsite\zizi-offers`. User decisions override older planning notes.
 
-- إنشاء تطبيق Next.js داخل جذر `C:\ziziwebsite\zizi-offers` بدون مجلد متداخل.
-- تثبيت TypeScript وTailwind CSS وESLint وApp Router و`src` alias.
-- إضافة `motion` و`clsx` و`tailwind-merge` و`@phosphor-icons/react`.
-- تجهيز `docs/` و`public/assets/` وملفات التشغيل والبيئة.
+| Phase | Work | Completion evidence | Status |
+|---|---|---|---|
+| 1 | Inspect folder, Node/npm/Git, preserve existing files | Existing Next app found; Git clean before archive merge; Node/npm/Git checked | Completed |
+| 2 | Scaffold or repair Next.js setup in existing folder; install UI dependencies | Existing app uses Next.js App Router, TypeScript, Tailwind CSS, ESLint, `src/`, `@/*`; required UI dependencies installed | Completed |
+| 3 | Merge supplied AGENTS/DESIGN/reference; write actual README and env example | Archive extracted; `AGENTS.md`, `DESIGN.md`, `PLAN.md`, `START-HERE.md`, and `docs/zizi-website-reference.md` integrated; `.env.example` placeholders only | Completed |
+| 4 | Prepare asset directories and registry from actual delivered files | Section folders prepared; no originals supplied in the archive; registry records missing originals as pending without fake paths | Completed for setup; pending actual media |
+| 5 | GitHub private repository and initial push when instructed | Explicitly authorized for Stage 1; pending available repo creation/push path | Pending |
+| 6 | Vercel linked deployment when instructed | Explicitly authorized for Stage 1; pending GitHub repo or available Vercel import path | Pending |
+| 7 | Prepare Firebase project/web app and Cloudinary when instructed | Deferred; do not integrate in Stage 1 | Pending |
+| 8 | Home, tests and one offer details page | Deferred until next stage | Pending |
+| 9 | Remaining public pages | Deferred | Pending |
+| 10 | Admin frontend prototype | Deferred; prototype saves must be labeled non-durable before backend integration | Pending |
+| 11 | Auth, Firestore, signed media uploads | Deferred; no secrets committed | Pending |
+| 12 | Final content review and deployment when instructed | Deferred | Pending |
 
-## 2. التصميم
+Customer accounts, calendar, payments, private feedback, start dates, compass PDF, and AI-generated test results remain deferred.
 
-- اعتماد `DESIGN.md` كأساس لهوية زيزي: عربي RTL، أزرق وأخضر، بطاقات بسيطة، جوال أولا.
-- تخطيط الواجهة العامة للعروض قبل التنفيذ الكامل.
-- تخطيط لوحة إدارة منفصلة لتحرير البيانات محليا في البداية دون ادعاء حفظ دائم.
+## Stage 1 notes
 
-## 3. التنفيذ الأول
-
-- إنشاء خدمة بيانات محلية typed تحتوي العروض حسب ترتيب: الأكواد، الإيثو، العقليات، الأطياف، الثلاثي.
-- تمثيل السعر المجهول داخليا بقيمة `null` ويعرض كـ `00` مع توضيح "غير محدد".
-- تمثيل التوفر المجهول بدون شارة.
-- عرض الثلاثي بصورة `الميولات-السوكيه.jpg` وشارة "متاح" فقط.
-
-## 4. لوحة الإدارة
-
-- بناء لوحة إدارة لاحقا لإدارة البيانات المحلية في الذاكرة أو التخزين المؤقت حسب قرار المرحلة.
-- توضيح أن الحفظ ليس دائما إلى أن يتم ربط مصدر بيانات فعلي.
-- تجهيز حدود خدمة البيانات بحيث يمكن استبدال المصدر بـ Firestore لاحقا.
-
-## 5. ربط البيانات والنشر
-
-- بعد اعتماد المحتوى والأصول الأصلية، يربط Firebase/Firestore عند وجود مشروع وبيانات اعتماد.
-- بعد ربط GitHub، يستخدم Vercel للنشر وربط متغيرات البيئة.
-- لا تتم إضافة خدمات مدفوعة أو أسرار أو نشر خارجي دون تعليمات صريحة.
+- Existing starter page is acceptable for this stage.
+- The supplied reference is now the content source; do not invent missing prices, availability, descriptions, qualifications, or media.
+- Future implementation should begin with local typed data and a data service boundary that can later be replaced by Firestore.
+- Admin UI, when built, starts as a prototype unless and until durable storage and authorization are connected.

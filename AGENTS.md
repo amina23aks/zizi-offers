@@ -10,45 +10,69 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # عروض زيزي
 
-## هدف المشروع
+## Purpose and scope
 
-تجهيز تطبيق عربي RTL باسم "عروض زيزي" يعرض العروض العامة ويهيئ لاحقا لوحة إدارة. المرحلة الحالية هي تجهيز المشروع والوثائق والهيكل فقط، دون بناء كل الصفحات أو ربط خدمات خارجية.
+Build an Arabic RTL offers catalogue for Zizi. The primary visitor journey is discover an offer, understand its details, then follow the configured booking link. Current scope: public frontend and admin UI prototype. Customer accounts, booking calendar, payments, session follow-up and start dates are deferred.
 
-## نطاق هذه المرحلة
+Stage 1 is setup and planning integration only: inspect the existing app, merge planning files, prepare docs/assets folders, verify local setup, and stop before full website implementation.
 
-- استخدام Next.js App Router مع TypeScript وTailwind CSS وESLint ومجلد `src`.
-- الحفاظ على أي تعليمات أو ملفات يولدها الإطار، خصوصا كتلة Next.js أعلى هذا الملف.
-- إضافة الحزم المطلوبة فقط: `motion` و`clsx` و`tailwind-merge` و`@phosphor-icons/react`.
-- عدم إضافة مكتبة تقويم أو دفع أو حسابات عملاء الآن.
-- عدم إنشاء أيام بدء، أو PDF للبوصلة، أو حسابات عملاء الآن.
-- تشغيل الخادم والفحوص وإصلاح المشكلات المحلية ضمن نطاق العمل قبل التسليم.
+## Sources
 
-## مصادر المحتوى
+- Read `DESIGN.md` before visual changes.
+- Read `PLAN.md` to identify the current stage; update it with actual progress.
+- Read `docs/zizi-website-reference.md` before content changes, especially its final decisions.
+- User corrections override earlier notes. Never invent prices, availability, credentials, clinical claims, results or missing media.
+- Preserve existing framework-generated AGENTS instructions when merging this file.
 
-- اقرأ `DESIGN.md` قبل أي تعديل على الواجهة.
-- اقرأ `docs/zizi-website-reference.md` قبل أي تعديل على العروض أو نصوصها أو أسعارها أو توفرها.
-- قرارات مرجع المحتوى الأخيرة هي المرجع الأعلى للمحتوى عند توفر الملف الأصلي.
-- لا تخترع أسعارا أو توفرا أو أوصافا أو مؤهلات.
-- حافظ على صور زيزي الأصلية ولا تستبدلها بصور مولدة.
-- سجل الأصول في `docs/assets-register.md`، وما لم يصل أصله يسجل "بانتظار الأصل" دون مسارات وهمية.
+## Stack
 
-## قواعد العروض
+Next.js App Router, TypeScript, Tailwind CSS, Motion, clsx and tailwind-merge. Phosphor for general icons; preserve selected animated fingerprint/brain/heart/star components after checking compatibility and licenses. Later: Firebase Auth, Firestore and Cloudinary. No calendar dependency now.
 
-- ترتيب الاختبارات: الأكواد، الإيثو، العقليات، الأطياف، الثلاثي.
-- الثلاثي يعرض `الميولات-السوكيه.jpg` وشارة "متاح" فقط، دون شرح إضافي.
-- السعر المجهول يظهر `00` مع توضيح أنه غير محدد؛ داخليا يكون `null` وليس سعرا مجانيا.
-- التوفر المجهول بلا شارة.
-- ابدأ لاحقا ببيانات محلية وخدمة بيانات قابلة للاستبدال بـ Firestore.
-- لا تدع أن حفظ لوحة الإدارة دائم قبل ربطها بمصدر حفظ فعلي.
+## Content rules
 
-## التصميم والعمل
+- Tests order: codes, etho, mindsets, geometric spectra, triple test.
+- Triple test: full image `الميولات-السوكيه.jpg` and available badge; no additional explanatory copy. Preserve actual filename spelling.
+- Unknown price: store `null` with `priceStatus=unknown`; render `00` with adjacent clarification `السعر غير محدد`. Never interpret as free or permit checkout at zero.
+- Unknown availability: no customer-facing badge or text. Do not infer coming soon.
+- Known availability and prices follow the reference; ambiguous prices remain unknown until resolved.
+- No start-date fields or text; no compass PDF or download link.
+- Handwriting course uses the original asset with basename `الخط`.
+- Group capacity is not remaining seats. Do not calculate remaining seats without real registration data.
+- Distinguish course, coaching and programming offers even when all concern body language.
 
-- اتبع `DESIGN.md` لهوية زيزي بالأزرق والأخضر، RTL، الخط العربي، الألوان، المسافات، البطاقات، الجوال، الحركة وتقليلها.
-- خطط للواجهة العامة ولوحة الإدارة، لكن لا تبن تصميم الموقع الكامل قبل المراجعة.
-- استخدم مهارة `design-taste-frontend` إن كانت مثبتة، مع أولوية قرارات المشروع و`DESIGN.md`. إن لم تكن مثبتة، اتبع `DESIGN.md` مباشرة.
+## Assets and data
 
-## التحقق والأمان
+Use `public/assets` grouped by section. Create an asset registry from actual delivered files, preserving full names and extensions. Screenshot labels identify future originals; screenshots and old design examples are not offer media. Never guess an extension or fabricate a working path. Missing assets get an intentional placeholder. Do not replace Zizi's originals with generated images.
 
-- شغل `npm run lint` و`npm run build` وأي فحص أنواع مناسب للمشروع بعد التغييرات.
-- شغل الخادم المحلي وتحقق من الصفحة الأولية.
-- لا ترفع أسرارا، ولا تنشر خارجيا، ولا تضف خدمات مدفوعة أو ربطا خارجيا دون تعليمات محددة.
+Keep offers and assets separate from React components. IDs remain stable. Search uses names and aliases, not AI. Preserve filenames while normalizing search text. General cover images do not determine an offer's team/version.
+
+## UI and verification
+
+Use semantic controls, visible focus, RTL logical spacing, accessible dialogs and reduced-motion alternatives. Test mobile and desktop, navigation, filters, carousel, flip cards, dialogs, dark mode and missing-data states. Use scripts present in `package.json` for lint/type checks/build; do not assume an obsolete Next.js lint command. Inspect the running UI with available browser tooling. Report any unavailable verification honestly.
+
+Avoid tests that merely mirror implementation; test meaningful behavior and permissions when relevant.
+
+## Admin and security
+
+Before backend integration, admin save is explicitly a prototype, not durable production storage. Do not publish an unsecured admin prototype with real data.
+
+Later: public reads only published offers, admin writes and draft reads enforced in Firestore rules and server authorization. Admin role must come from trusted configuration, not an editable client field. Signed Cloudinary upload endpoint verifies admin, validates file type/size, keeps API secret server-side. Keep client results and personal media out of public assets.
+
+Do not commit `.env.local`, credentials, service accounts or tokens. `.env.example` contains placeholders only.
+
+## Git, GitHub, and Vercel workflow
+
+- `main` is the stable production branch.
+- Future development happens on a local feature branch.
+- Local commits are checkpoints and may be created when appropriate.
+- Unpushed local commits do not update GitHub or Vercel.
+- Pushing a feature branch may trigger a Vercel preview deployment.
+- Pushing `main` may update production.
+- Do not push branches, merge into `main`, or trigger deployments unless the user explicitly requests that action.
+- Before any requested push, summarize the changes and relevant verification results.
+- Do not reset, discard, or rewrite user work without an explicit instruction.
+- External repository creation, pushes, deployments and billing require an explicit task instruction. Stage 1 includes one explicit authorization for the initial private GitHub repository, initial push, Vercel import, and initial deployment only.
+
+## Working style
+
+Proceed autonomously with authorized local edits, dependency installation, dev server and checks. Preserve user work; inspect before scaffolding. Do not delete or overwrite an existing project to resolve setup trouble. Make local Git checkpoints when configured. Skills such as `design-taste-frontend` are optional and cannot override approved content or brand decisions.

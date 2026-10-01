@@ -1,18 +1,30 @@
-# عروض زيزي
+# Zizi Offers / عروض زيزي
 
-تطبيق Next.js عربي RTL لتجهيز موقع "عروض زيزي". هذه المرحلة تجهز المشروع والوثائق والهيكل فقط، ولا تبني كل الصفحات أو تربط خدمات خارجية.
+Arabic RTL Next.js project for "عروض زيزي". Stage 1 covers setup and planning integration only; it does not build the full website, integrate Firebase/Cloudinary, add payments, add calendars, or create customer accounts.
 
-## Getting Started
+## Runtime
 
-شغل الخادم المحلي:
+- Node.js: tested with `v20.19.5`
+- npm: tested with `11.4.2`
+- Git: tested with `2.46.2.windows.1`
+
+## Install
+
+```sh
+npm install
+```
+
+## Development
+
+Run the local dev server:
 
 ```sh
 npm run dev
 ```
 
-افتح [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000).
 
-## الفحوص
+## Verification
 
 ```sh
 npm run lint
@@ -20,24 +32,26 @@ npm run typecheck
 npm run build
 ```
 
-## الإعداد
+## Environment
 
-انسخ `.env.example` إلى `.env.local` عند الحاجة، ثم ضع القيم الفعلية محليا فقط. لا ترفع أسرارا إلى Git.
+Copy `.env.example` to `.env.local` only when real configuration is needed. Keep all real secrets local or in the deployment provider dashboard. Do not commit `.env.local`, credentials, service-account files, or tokens.
 
-## الوثائق المهمة
+## Documentation
 
-- `AGENTS.md`: قواعد العمل والمحتوى والتحقق.
-- `DESIGN.md`: قرارات الهوية والواجهة.
-- `PLAN.md`: مراحل التنفيذ القادمة.
-- `docs/zizi-website-reference.md`: مرجع المحتوى عند توفر الأصل.
-- `docs/assets-register.md`: سجل صور زيزي الأصلية.
+- `START-HERE.md`: onboarding notes from the planning kit.
+- `AGENTS.md`: project rules, content constraints, and workflow.
+- `DESIGN.md`: visual system and interaction decisions.
+- `PLAN.md`: staged delivery plan and actual status.
+- `docs/zizi-website-reference.md`: source content/reference decisions.
+- `docs/assets-register.md`: actual delivered asset registry.
 
-## ملاحظات المرحلة
+## Stage 1 Notes
 
-- لا توجد مكتبة تقويم أو دفع أو حسابات عملاء في هذه المرحلة.
-- لوحة الإدارة ستبدأ لاحقا ببيانات محلية وخدمة قابلة للاستبدال بـ Firestore.
-- لا يعتبر حفظ لوحة الإدارة دائما قبل ربط مصدر حفظ فعلي.
+- Required frontend dependencies are installed: `motion`, `clsx`, `tailwind-merge`, and `@phosphor-icons/react`.
+- No calendar, payment, or customer account libraries are included.
+- Public/admin implementation is deferred to the next stage.
+- Admin saves must be treated as prototype-only until durable backend storage and authorization are connected.
 
-## النشر لاحقا
+## GitHub and Vercel
 
-بعد المراجعة يمكن ربط GitHub وVercel وFirebase. أضف متغيرات البيئة في Vercel/Firebase من لوحة الخدمات، وليس داخل المستودع.
+`main` is the stable production branch. Local commits are checkpoints; unpushed commits do not update GitHub or Vercel. A pushed feature branch may create a Vercel preview, while pushing `main` may update production.
