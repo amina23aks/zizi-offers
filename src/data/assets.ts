@@ -37,60 +37,116 @@ export type ImageAsset = {
 
 export const imageAssets = [
   {
-    "id": "coaching:A",
+    "id": "coaching:التفريغي",
     "section": "coaching",
-    "fileName": "A.jpg",
-    "stem": "A",
+    "fileName": "التفريغي.jpg",
+    "stem": "التفريغي",
     "extension": ".jpg",
-    "width": 578,
-    "height": 1280,
-    "bytes": 81365,
-    "publicPath": "/assets/coaching/A.jpg",
-    "purpose": "ambiguous-duplicate",
-    "status": "ambiguous",
-    "notes": "Byte-for-byte duplicate of codes/A.jpg; keep unassigned until confirmed."
+    "width": 640,
+    "height": 640,
+    "bytes": 39800,
+    "publicPath": "/assets/coaching/التفريغي.jpg",
+    "purpose": "coaching-cover",
+    "status": "available",
+    "notes": null
   },
   {
-    "id": "coaching:B",
+    "id": "coaching:التواصل-العاطفي",
     "section": "coaching",
-    "fileName": "B.jpg",
-    "stem": "B",
+    "fileName": "التواصل-العاطفي.jpg",
+    "stem": "التواصل-العاطفي",
     "extension": ".jpg",
-    "width": 578,
-    "height": 1280,
-    "bytes": 88124,
-    "publicPath": "/assets/coaching/B.jpg",
-    "purpose": "ambiguous-duplicate",
-    "status": "ambiguous",
-    "notes": "Byte-for-byte duplicate of codes/B.jpg; keep unassigned until confirmed."
+    "width": 640,
+    "height": 640,
+    "bytes": 52429,
+    "publicPath": "/assets/coaching/التواصل-العاطفي.jpg",
+    "purpose": "coaching-cover",
+    "status": "available",
+    "notes": null
   },
   {
-    "id": "coaching:C",
+    "id": "coaching:القيم",
     "section": "coaching",
-    "fileName": "C.jpg",
-    "stem": "C",
+    "fileName": "القيم.jpg",
+    "stem": "القيم",
     "extension": ".jpg",
-    "width": 578,
-    "height": 1280,
-    "bytes": 86365,
-    "publicPath": "/assets/coaching/C.jpg",
-    "purpose": "ambiguous-duplicate",
-    "status": "ambiguous",
-    "notes": "Byte-for-byte duplicate of codes/C.jpg; keep unassigned until confirmed."
+    "width": 640,
+    "height": 640,
+    "bytes": 35662,
+    "publicPath": "/assets/coaching/القيم.jpg",
+    "purpose": "coaching-cover",
+    "status": "available",
+    "notes": null
   },
   {
-    "id": "coaching:D",
+    "id": "coaching:خطه-life",
     "section": "coaching",
-    "fileName": "D.jpg",
-    "stem": "D",
+    "fileName": "خطه-life.jpg",
+    "stem": "خطه-life",
     "extension": ".jpg",
-    "width": 578,
+    "width": 903,
     "height": 1280,
-    "bytes": 87930,
-    "publicPath": "/assets/coaching/D.jpg",
-    "purpose": "ambiguous-duplicate",
-    "status": "ambiguous",
-    "notes": "Byte-for-byte duplicate of codes/D.jpg; keep unassigned until confirmed."
+    "bytes": 190494,
+    "publicPath": "/assets/coaching/خطه-life.jpg",
+    "purpose": "coaching-cover",
+    "status": "available",
+    "notes": null
+  },
+  {
+    "id": "coaching:خطه-التواصل",
+    "section": "coaching",
+    "fileName": "خطه-التواصل.jpg",
+    "stem": "خطه-التواصل",
+    "extension": ".jpg",
+    "width": 919,
+    "height": 1280,
+    "bytes": 160878,
+    "publicPath": "/assets/coaching/خطه-التواصل.jpg",
+    "purpose": "coaching-cover",
+    "status": "available",
+    "notes": null
+  },
+  {
+    "id": "coaching:خطه-الجسد",
+    "section": "coaching",
+    "fileName": "خطه-الجسد.jpg",
+    "stem": "خطه-الجسد",
+    "extension": ".jpg",
+    "width": 649,
+    "height": 920,
+    "bytes": 60195,
+    "publicPath": "/assets/coaching/خطه-الجسد.jpg",
+    "purpose": "coaching-cover",
+    "status": "available",
+    "notes": null
+  },
+  {
+    "id": "coaching:خطه-العمل",
+    "section": "coaching",
+    "fileName": "خطه-العمل.jpg",
+    "stem": "خطه-العمل",
+    "extension": ".jpg",
+    "width": 907,
+    "height": 1280,
+    "bytes": 143340,
+    "publicPath": "/assets/coaching/خطه-العمل.jpg",
+    "purpose": "coaching-cover",
+    "status": "available",
+    "notes": null
+  },
+  {
+    "id": "coaching:خطه-بزنس",
+    "section": "coaching",
+    "fileName": "خطه-بزنس.jpg",
+    "stem": "خطه-بزنس",
+    "extension": ".jpg",
+    "width": 652,
+    "height": 949,
+    "bytes": 56905,
+    "publicPath": "/assets/coaching/خطه-بزنس.jpg",
+    "purpose": "coaching-cover",
+    "status": "available",
+    "notes": null
   },
   {
     "id": "codes:A",
@@ -1409,6 +1465,17 @@ export const codeCardAssetIds = {
   D: "codes:D",
 } as const satisfies Record<"A" | "B" | "C" | "D", ImageAssetId>;
 
+export const coachingAssetIds = {
+  release: "coaching:التفريغي",
+  emotionalCommunication: "coaching:التواصل-العاطفي",
+  values: "coaching:القيم",
+  lifePlan: "coaching:خطه-life",
+  communicationPlan: "coaching:خطه-التواصل",
+  bodyPlan: "coaching:خطه-الجسد",
+  workPlan: "coaching:خطه-العمل",
+  businessPlan: "coaching:خطه-بزنس",
+} as const satisfies Record<string, ImageAssetId>;
+
 export const testsOrder = ["codes", "etho", "mindsets", "spectra", "triple"] as const;
 
 export const triadAssetId = "triad:الميولات-السوكيه" as const satisfies ImageAssetId;
@@ -1431,6 +1498,6 @@ export const emptyAssetSections = assetSections.filter(
   (section) => !imageAssets.some((asset) => asset.section === section),
 );
 
-export const ambiguousAssetIds = imageAssets
+export const ambiguousAssetIds = (imageAssets as readonly ImageAsset[])
   .filter((asset) => asset.status === "ambiguous")
   .map((asset) => asset.id);

@@ -29,9 +29,9 @@ Customer accounts, calendar, payments, private feedback, start dates, compass PD
 ## Stage 2 notes
 
 - Local feature branch: `stage-2-assets-content`.
-- Actual assets found: coaching 4, codes 4, compass 6, courses 8, etho 51, programs 10, spectra 12, triad 1, zizi 1.
+- Actual assets found: coaching 8, codes 4, compass 6, courses 8, etho 51, programs 10, spectra 12, triad 1, zizi 1.
 - Empty sections: fingerprints, mindsets, sessions, tests.
 - `src/data/assets.ts` is generated from actual filenames, extensions, dimensions, and public paths.
 - `src/data/offers.ts` keeps offer/content data separate from React components and preserves unknown price/availability behavior.
 - Sessions/consultations were updated from the Stage 2 supplied price list. The previous legacy session paragraph is superseded.
-- No full website pages, Firebase, Cloudinary, push, merge, or deployment were done in Stage 2.
+- Stage 2 remained local until the user later explicitly authorized push and Vercel deployment.

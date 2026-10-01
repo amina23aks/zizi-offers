@@ -1,4 +1,4 @@
-import type { ImageAssetId } from "./assets";
+import { coachingAssetIds, type ImageAssetId } from "./assets";
 
 export type OfferCategory =
   | "tests"
@@ -152,6 +152,7 @@ export const offers = [
     format: "coaching",
     price: usd(100),
     availability: "unknown",
+    assetId: coachingAssetIds.communicationPlan,
     source: "docs/zizi-website-reference.md",
   },
   {
@@ -165,6 +166,7 @@ export const offers = [
       status: "variant",
     },
     availability: "unavailable",
+    assetId: coachingAssetIds.communicationPlan,
     variants: [
       { id: "individual", title: "فردي", price: usd(1000) },
       {
@@ -185,6 +187,7 @@ export const offers = [
     format: "coaching",
     price: usd(100),
     availability: "unknown",
+    assetId: coachingAssetIds.values,
     source: "docs/zizi-website-reference.md",
     internalNotes: "Price still marked as needing confirmation in the reference.",
   },
@@ -196,6 +199,7 @@ export const offers = [
     format: "coaching",
     price: usd(100),
     availability: "available",
+    assetId: coachingAssetIds.emotionalCommunication,
     source: "docs/zizi-website-reference.md",
   },
   {
@@ -209,6 +213,7 @@ export const offers = [
       status: "variant",
     },
     availability: "unknown",
+    assetId: coachingAssetIds.bodyPlan,
     variants: [
       { id: "individual", title: "فردي", price: usd(1000) },
       { id: "group", title: "جماعي", price: usd(100) },
@@ -223,6 +228,7 @@ export const offers = [
     format: "coaching",
     price: unknownPrice,
     availability: "unknown",
+    assetId: coachingAssetIds.release,
     source: "docs/zizi-website-reference.md",
   },
   {
