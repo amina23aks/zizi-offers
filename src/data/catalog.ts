@@ -1,9 +1,11 @@
 import {
   codeCardAssetIds,
+  testCoverAssetIds,
   imageAssetById,
   imageAssets,
   triadAssetId,
   type ImageAsset,
+  type ImageAssetId,
 } from "@/data/assets";
 import { offers, renderPriceValue, type Availability, type Offer, type OfferPrice } from "@/data/offers";
 
@@ -30,6 +32,16 @@ export const formatPrice = (price: OfferPrice) => {
   };
 };
 
+export const formatLabel = (format: Offer["format"]) => {
+  if (format === "test") return "اختبار";
+  if (format === "course") return "دورة";
+  if (format === "coaching") return "كوتشينغ";
+  if (format === "program") return "برنامج";
+  if (format === "session") return "جلسة";
+  if (format === "consultation") return "استشارة";
+  return "باقة";
+};
+
 export const toDisplayOffer = (offer: Offer): DisplayOffer => {
   const price = formatPrice(offer.price);
   return {
@@ -42,6 +54,58 @@ export const toDisplayOffer = (offer: Offer): DisplayOffer => {
 
 export const getAsset = (id: string | null | undefined) =>
   id ? imageAssetById[id as keyof typeof imageAssetById] : null;
+
+export const publicCategories = [
+  {
+    id: "tests",
+    href: "/tests",
+    label: "الاختبارات",
+    note: "الأكواد، الإيثو، العقليات، الأطياف، والثلاثي",
+    accent: "blue",
+  },
+  {
+    id: "coaching",
+    href: "/coaching",
+    label: "الكوتشينغ",
+    note: "مسارات جماعية وفردية",
+    accent: "lavender",
+  },
+  {
+    id: "courses",
+    href: "/courses",
+    label: "الدورات",
+    note: "دورات قصيرة بصورها المعتمدة",
+    accent: "teal",
+  },
+  {
+    id: "programs",
+    href: "/programs",
+    label: "البرمجات",
+    note: "برمجات زيزي",
+    accent: "sage",
+  },
+  {
+    id: "sessions",
+    href: "/sessions",
+    label: "الجلسات",
+    note: "جلسات واستشارات متاحة طوال السنة",
+    accent: "slate",
+  },
+  {
+    id: "fingerprints",
+    href: "/fingerprints",
+    label: "البصمات",
+    note: "أسماء البصمات فقط الآن",
+    accent: "mint",
+  },
+  {
+    id: "compass",
+    href: "/compass",
+    label: "بوصلة المشاعر",
+    note: "مسار الانطلاق وخمس بطاقات",
+    accent: "aqua",
+  },
+] as const;
 
 export const selectedHomeOfferIds = [
   "emotional-communication",
@@ -66,13 +130,31 @@ export const emotionalCommunicationTopics = [
   "الحدود العاطفية",
 ] as const;
 
-export const categoryLinks = [
-  { href: "/tests", label: "الاختبارات", note: "أكواد وإيثو وأطياف" },
-  { href: "/offers/emotional-communication", label: "الكوتشينغ", note: "نموذج تفاصيل أول" },
-  { href: "#selected-offers", label: "البرمجات", note: "معاينات مختارة" },
-  { href: "#selected-offers", label: "الدورات", note: "صور أصلية" },
-  { href: "#booking", label: "الجلسات", note: "بانتظار رابط الحجز" },
-] as const;
+export const categoryLinks = publicCategories;
+
+export const offersByCategory = (category: Offer["category"]) =>
+  offers
+    .filter((offer) => offer.category === category)
+    .map((offer) => toDisplayOffer(offer));
+
+export const categoryPageInfo = {
+  coaching: {
+    title: "الكوتشينغ",
+    intro: "مسارات كوتشينغ جماعية وفردية حسب المعلومات المتاحة لكل عرض.",
+  },
+  courses: {
+    title: "الدورات",
+    intro: "دورات زيزي القصيرة بصورها المعتمدة وأسعارها المعروفة.",
+  },
+  programs: {
+    title: "البرمجات",
+    intro: "برمجات زيزي المتاحة للعرض هنا دون إضافة مواعيد أو وعود غير مؤكدة.",
+  },
+  sessions: {
+    title: "الجلسات والاستشارات",
+    intro: "جلسات واستشارات متاحة طوال السنة حسب القائمة المعتمدة.",
+  },
+} as const;
 
 export const codeCards = [
   {
@@ -152,6 +234,8 @@ export const spectraAssets = imageAssets.filter(
 
 export const triadAsset = imageAssetById[triadAssetId];
 
+export const mindsetCoverAsset = getAsset(testCoverAssetIds.mindsets);
+
 export const mindsets = [
   {
     id: "right",
@@ -173,6 +257,46 @@ export const mindsets = [
     label: "المحبوب",
     text: "محور ضمن نموذج العقليات لدى زيزي. لا تُعرض نسب أو نتائج دون اختبار معتمد.",
   },
+] as const;
+
+export const compassLaunchAsset = getAsset("compass:الانطلاق");
+
+export const compassCards = [
+  { id: "curiosity", title: "الفضول", assetId: "compass:الفضول" },
+  { id: "stillness", title: "السكينة", assetId: "compass:السكينة" },
+  { id: "care", title: "الرعاية", assetId: "compass:الرعاية" },
+  { id: "choice", title: "الاختيار", assetId: "compass:الاختيار" },
+  { id: "panic", title: "الذعر", assetId: "compass:الذعر" },
+].map((item) => ({
+  ...item,
+  asset: getAsset(item.assetId as ImageAssetId)!,
+})) as readonly {
+  id: string;
+  title: string;
+  assetId: ImageAssetId;
+  asset: ImageAsset;
+}[];
+
+export const compassPricing = [
+  { title: "كل عنصر منفرد", price: "500 USD" },
+  { title: "الباقة الكاملة", price: "2500 USD" },
+] as const;
+
+export const fingerprintNames = [
+  "الأذن",
+  "الوجه",
+  "الحرارية",
+  "الكهربائية/الموجات الكهربائية",
+  "الاسم",
+  "التجاعيد",
+  "الساعد",
+  "المودرا",
+  "الأكل",
+  "الأسنان",
+  "الرجل",
+  "الصوت",
+  "الأظافر",
+  "الدهون المخزنة",
 ] as const;
 
 export const normalizeArabic = (value: string) =>

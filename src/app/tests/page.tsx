@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { TestsExperience } from "@/components/tests-experience";
 
 export const metadata: Metadata = {
@@ -9,14 +10,9 @@ export const metadata: Metadata = {
 export default function TestsPage() {
   return (
     <main className="site-main page-shell">
-      <section className="page-hero compact">
-        <p className="eyebrow">صفحة الاختبارات</p>
-        <h1>اختبارات زيزي</h1>
-        <p>
-          ترتيب الصفحة المعتمد: الأكواد، الإيثو، العقليات، الأطياف، ثم الاختبار
-          الثلاثي.
-        </p>
-      </section>
+      <div className="inner-route-link">
+        <Link href="/">الرئيسية</Link>
+      </div>
       <TestsExperience />
     </main>
   );

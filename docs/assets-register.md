@@ -6,19 +6,19 @@ Generated from actual files in `public/assets/` during Stage 2. Preserve origina
 
 | Section | Actual image count | Status |
 |---|---:|---|
-| $section | 8 | Inventoried |
-| $section | 4 | Inventoried |
-| $section | 6 | Inventoried |
-| $section | 8 | Inventoried |
-| $section | 51 | Inventoried |
-| $section | 0 | No originals supplied yet |
-| $section | 0 | No originals supplied yet |
-| $section | 10 | Inventoried |
-| $section | 0 | No originals supplied yet |
-| $section | 12 | Inventoried |
-| $section | 0 | No originals supplied yet |
-| $section | 1 | Inventoried |
-| $section | 1 | Inventoried |
+| coaching | 8 | Inventoried |
+| codes | 4 | Inventoried |
+| compass | 6 | Inventoried |
+| courses | 8 | Inventoried |
+| etho | 51 | Inventoried |
+| fingerprints | 0 | Code component; no image required |
+| mindsets | 1 | Inventoried |
+| programs | 10 | Inventoried |
+| sessions | 0 | Text-card offers; no original price-list image supplied |
+| spectra | 12 | Inventoried |
+| tests | 0 | No general cover originals supplied yet |
+| triad | 1 | Inventoried |
+| zizi | 1 | Inventoried |
 
 ## Mappings
 
@@ -29,7 +29,7 @@ Generated from actual files in `public/assets/` during Stage 2. Preserve origina
 - `courses`: `الخط.jpg` is present for the handwriting/handwriting-analysis course.
 - `zizi`: `photo_2026-05-03_01-47-24.jpg` is a blue digital-eye identity mark and is recorded as the group-logo candidate; no human avatar image is present.
 - `fingerprints`: no image is required for the animated fingerprint; it is a code component.
-- `mindsets`: no individual images are present; text tabs may be used.
+- `mindsets`: `العقليات.jpg` is present as a general cover. Individual images for الصواب، الفوز، المرتاح، المحبوب are not present; text tabs may be used.
 - `sessions`: no session price-list image is present in assets; Stage 2 session data is recorded as text.
 
 ## Actual files
@@ -113,6 +113,7 @@ Generated from actual files in `public/assets/` during Stage 2. Preserve origina
 | etho | `نمله.jpg` | 1240x2206 | `/assets/etho/نمله.jpg` | etho animal card |  |
 | etho | `هامستر.jpg` | 1240x2206 | `/assets/etho/هامستر.jpg` | etho animal card |  |
 | etho | `هدهد.jpg` | 1240x2200 | `/assets/etho/هدهد.jpg` | etho animal card |  |
+| mindsets | `العقليات.jpg` | 1080x1080 | `/assets/mindsets/العقليات.jpg` | mindsets cover | General cover only; not four separate mindset images. |
 | programs | `spa.jpg` | 905x1280 | `/assets/programs/spa.jpg` | program cover |  |
 | programs | `spi-avtar.jpg` | 640x640 | `/assets/programs/spi-avtar.jpg` | program cover |  |
 | programs | `السهم.jpg` | 640x640 | `/assets/programs/السهم.jpg` | program cover |  |
@@ -142,6 +143,7 @@ Generated from actual files in `public/assets/` during Stage 2. Preserve origina
 
 - The old coaching duplicates `A.jpg` through `D.jpg` were removed from `public/assets/coaching`; real coaching originals are now registered.
 - `public/assets/etho/ذيب.jpg` is preserved exactly as supplied. It likely maps to the reference animal title ذئب/ذيب; keep filename unchanged and use display aliases later.
-- `fingerprints`, `mindsets`, `sessions`, and `tests` do not currently contain original images.
+- `fingerprints`, `sessions`, and `tests` do not currently contain original images.
+- `mindsets/العقليات.jpg` is now present as a single general image; no individual mindset images are supplied.
 - Zizi human avatar is missing; only the blue eye identity/group-logo candidate is present.
 - No Firebase, Cloudinary, or remote media paths are registered in this stage.

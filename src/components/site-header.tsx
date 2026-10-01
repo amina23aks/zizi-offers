@@ -4,23 +4,22 @@ import { ThemeToggle } from "@/components/theme-toggle";
 export function SiteHeader() {
   return (
     <header className="site-header">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 md:px-8">
-        <Link href="/" className="brand-mark" aria-label="عروض زيزي - الرئيسية">
-          <span className="brand-dot" aria-hidden="true" />
-          <span>عروض زيزي</span>
+      <nav className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-5 py-3 md:px-8">
+        <Link href="/" className="home-pill" aria-label="العودة إلى الرئيسية">
+          الرئيسية
         </Link>
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="hidden items-center gap-1 md:flex" aria-label="روابط الأقسام">
           <Link className="nav-link" href="/tests">
             الاختبارات
           </Link>
-          <Link className="nav-link" href="/offers/emotional-communication">
-            نموذج عرض
+          <Link className="nav-link" href="/coaching">
+            الكوتشينغ
           </Link>
-          <Link className="nav-link" href="/#about">
-            عن زيزي
+          <Link className="nav-link" href="/courses">
+            الدورات
           </Link>
-          <Link className="nav-link" href="/#booking">
-            احجزي
+          <Link className="nav-link" href="/programs">
+            البرمجات
           </Link>
         </div>
         <ThemeToggle />

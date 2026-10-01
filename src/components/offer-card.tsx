@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getAsset, type DisplayOffer } from "@/data/catalog";
+import { formatLabel, getAsset, type DisplayOffer } from "@/data/catalog";
 
 export function OfferCard({ offer, href }: { offer: DisplayOffer; href?: string }) {
   const asset = getAsset(offer.assetId);
@@ -18,12 +18,10 @@ export function OfferCard({ offer, href }: { offer: DisplayOffer; href?: string 
             sizes="(max-width: 768px) 88vw, 280px"
           />
         </div>
-      ) : (
-        <div className="offer-card-placeholder">بانتظار الأصل</div>
-      )}
+      ) : null}
       <div className="flex flex-1 flex-col gap-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="eyebrow">{offer.format}</p>
+          <p className="eyebrow">{formatLabel(offer.format)}</p>
           {offer.availabilityLabel ? <span className="status-badge">{offer.availabilityLabel}</span> : null}
         </div>
         <h3 className="text-xl font-bold">{offer.title}</h3>

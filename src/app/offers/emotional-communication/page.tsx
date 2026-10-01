@@ -10,7 +10,7 @@ import {
 
 export const metadata: Metadata = {
   title: "التواصل العاطفي | عروض زيزي",
-  description: "نموذج صفحة تفاصيل عرض التواصل العاطفي.",
+  description: "تفاصيل عرض التواصل العاطفي ضمن عروض زيزي.",
 };
 
 export default function EmotionalCommunicationPage() {
@@ -21,7 +21,7 @@ export default function EmotionalCommunicationPage() {
     <main className="site-main page-shell">
       <section className="offer-detail-hero">
         <div className="offer-detail-copy">
-          <Link href="/" className="text-link">
+          <Link href="/" className="text-link inner-inline-link">
             الرئيسية
           </Link>
           <p className="eyebrow">كوتشينغ جماعي</p>
@@ -52,7 +52,7 @@ export default function EmotionalCommunicationPage() {
       <section className="content-band">
         <div className="section-heading">
           <p className="eyebrow">المحاور المعتمدة</p>
-          <h2>ما الذي يظهر في هذا النموذج؟</h2>
+          <h2>محاور التواصل العاطفي</h2>
         </div>
         <div className="topic-grid">
           {emotionalCommunicationTopics.map((topic) => (
@@ -61,20 +61,6 @@ export default function EmotionalCommunicationPage() {
               <h3>{topic}</h3>
             </article>
           ))}
-        </div>
-      </section>
-
-      <section className="content-band alt-band">
-        <div className="booking-panel">
-          <p className="eyebrow">الحجز</p>
-          <h2>الحجز غير متاح من الموقع بعد</h2>
-          <p>
-            لا يوجد رابط بوت أو نموذج حجز معتمد في الإعدادات الحالية. لم نضف
-            تواريخ بدء أو مقاعد متبقية أو وعود نتائج.
-          </p>
-          <Link href="/tests" className="secondary-action">
-            تصفحي الاختبارات
-          </Link>
         </div>
       </section>
     </main>

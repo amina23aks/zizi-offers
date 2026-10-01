@@ -1115,6 +1115,20 @@ export const imageAssets = [
     "notes": null
   },
   {
+    "id": "mindsets:العقليات",
+    "section": "mindsets",
+    "fileName": "العقليات.jpg",
+    "stem": "العقليات",
+    "extension": ".jpg",
+    "width": 1080,
+    "height": 1080,
+    "bytes": 73005,
+    "publicPath": "/assets/mindsets/العقليات.jpg",
+    "purpose": "mindsets-cover",
+    "status": "available",
+    "notes": "Actual supplied mindsets image; use as a general cover, not four separate mindset images."
+  },
+  {
     "id": "programs:spa",
     "section": "programs",
     "fileName": "spa.jpg",
@@ -1489,7 +1503,7 @@ export const ziziIdentityAssetIds = {
 export const testCoverAssetIds = {
   codes: null,
   etho: null,
-  mindsets: null,
+  mindsets: "mindsets:العقليات",
   spectra: null,
   triple: triadAssetId,
 } as const satisfies Record<(typeof testsOrder)[number], ImageAssetId | null>;

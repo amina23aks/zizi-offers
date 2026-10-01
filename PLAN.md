@@ -11,8 +11,8 @@ Status reflects work actually completed in `C:\ziziwebsite\zizi-offers`. User de
 | 5 | GitHub private repository and initial push when instructed | Explicitly authorized for Stage 1; pending available repo creation/push path | Pending |
 | 6 | Vercel linked deployment when instructed | Explicitly authorized for Stage 1; pending GitHub repo or available Vercel import path | Pending |
 | 7 | Prepare Firebase project/web app and Cloudinary when instructed | Deferred; do not integrate in Stage 1 | Pending |
-| 8 | Home, tests and one offer details page | Stage 3 built `/`, `/tests`, and `/offers/emotional-communication`; typecheck, lint, build, and browser interaction checks passed locally | Completed |
-| 9 | Remaining public pages | Deferred | Pending |
+| 8 | Home, tests and one offer details page | Stage 3 first pass built `/`, `/tests`, and `/offers/emotional-communication`; later superseded visually by the public redesign branch | Completed |
+| 9 | Public category pages and revised visual direction | Redesign branch builds `/`, `/tests`, `/coaching`, `/courses`, `/programs`, `/sessions`, `/fingerprints`, `/compass`, and `/offers/emotional-communication` without booking UI | In progress |
 | 10 | Admin frontend prototype | Deferred; prototype saves must be labeled non-durable before backend integration | Pending |
 | 11 | Auth, Firestore, signed media uploads | Deferred; no secrets committed | Pending |
 | 12 | Final content review and deployment when instructed | Deferred | Pending |
@@ -47,3 +47,13 @@ Customer accounts, calendar, payments, private feedback, start dates, compass PD
 - Mindsets use text tabs only. Spectra uses the 12 registered geometric images. Triple displays the full `الميولات-السوكيه.jpg` image and a `متاح` badge without added explanatory text.
 - Emotional communication details use the registered original image, approved topics, group format, capacity 10, USD 100 per seat, and available status. No duration, start dates, remaining seats, or outcomes were invented.
 - No Firebase, Cloudinary, customer accounts, admin pages, payments, calendars, push, merge, or deployment were done in Stage 3.
+
+## Stage 3 redesign notes
+
+- Local feature branch: `stage-3-redesign-public`.
+- The earlier visual direction with large header, booking/status panels, and limited page scope is superseded for the public frontend.
+- Homepage now centers the one-line title `عروض زيزي`, keeps category bubbles around the title on desktop, uses a mobile category grid, includes approved about text, section cards, and selected offer previews.
+- Public category pages added locally: `/coaching`, `/courses`, `/programs`, `/sessions`, `/fingerprints`, and `/compass`.
+- Tests page remains in the exact order: الأكواد → الإيثو → العقليات → الأطياف → الثلاثي. It now uses a fan carousel for الإيثو, the supplied `العقليات.jpg` with text tabs, animated tabs for الأطياف, and the triple image with only the `متاح` badge.
+- Customer-facing booking controls, booking-unavailable panels, development labels, and placeholder image text were removed.
+- No push, merge, GitHub update, Vercel deployment, Firebase, Cloudinary, customer accounts, admin pages, payments, calendars, or start-date fields are authorized in this redesign stage.

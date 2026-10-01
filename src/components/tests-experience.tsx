@@ -1,17 +1,25 @@
 "use client";
 
 import {
-  ArrowLeft,
-  ArrowRight,
+  Brain,
   Cards,
-  GridFour,
-  MagnifyingGlass,
+  Heart,
+  Plant,
+  Sparkle,
 } from "@phosphor-icons/react";
-import Image from "next/image";
 import { useMemo, useState } from "react";
-import { codeCards, ethoAnimals, mindsets, normalizeArabic, spectraAssets, triadAsset } from "@/data/catalog";
-import { cn } from "@/lib/utils";
+import { CardFanCarousel } from "@/components/ui/card-fan-carousel";
+import { AnimatedTabs } from "@/components/ui/animated-tabs";
 import { ZoomableImage } from "@/components/zoomable-image";
+import {
+  codeCards,
+  ethoAnimals,
+  mindsets,
+  mindsetCoverAsset,
+  spectraAssets,
+  triadAsset,
+} from "@/data/catalog";
+import { cn } from "@/lib/utils";
 
 const testsNav = [
   { href: "#codes", label: "الأكواد" },
@@ -21,31 +29,20 @@ const testsNav = [
   { href: "#triple", label: "الثلاثي" },
 ] as const;
 
+const codeLayout = ["C", "A", "B", "D"] as const;
+
+const codeIcon = {
+  A: Brain,
+  B: Plant,
+  C: Heart,
+  D: Sparkle,
+} as const;
+
 export function TestsExperience() {
-  const [activeAnimal, setActiveAnimal] = useState(0);
-  const [query, setQuery] = useState("");
-  const [activeMindset, setActiveMindset] = useState<(typeof mindsets)[number]["id"]>(
-    mindsets[0].id,
+  const orderedCodes = useMemo(
+    () => codeLayout.map((code) => codeCards.find((card) => card.code === code)!),
+    [],
   );
-
-  const filteredAnimals = useMemo(() => {
-    const normalized = normalizeArabic(query);
-    if (!normalized) return ethoAnimals;
-    return ethoAnimals.filter((animal) =>
-      animal.aliases.some((alias) => normalizeArabic(alias).includes(normalized)),
-    );
-  }, [query]);
-
-  const carouselAnimal = ethoAnimals[activeAnimal] ?? ethoAnimals[0];
-
-  const goToAnimal = (direction: "next" | "previous") => {
-    setActiveAnimal((current) => {
-      const next = direction === "next" ? current + 1 : current - 1;
-      if (next < 0) return ethoAnimals.length - 1;
-      if (next >= ethoAnimals.length) return 0;
-      return next;
-    });
-  };
 
   return (
     <div className="tests-page">
@@ -57,145 +54,65 @@ export function TestsExperience() {
         ))}
       </nav>
 
-      <section id="codes" className="page-section scroll-mt-32">
-        <SectionHeading
-          eyebrow="01"
-          title="الأكواد ABCD"
-          text="أربع بطاقات تفاعلية تعرض الواجهة المختصرة، ثم الصورة الأصلية كاملة عند الكشف."
-        />
-        <div className="grid gap-5 lg:grid-cols-4">
-          {codeCards.map((card) => (
+      <section id="codes" className="page-section scroll-mt-28">
+        <SectionHeading number="01" title="الأكواد ABCD" />
+        <div className="codes-sketch-grid">
+          {orderedCodes.map((card) => (
             <CodeFlipCard key={card.code} card={card} />
           ))}
         </div>
       </section>
 
-      <section id="etho" className="page-section scroll-mt-32">
-        <SectionHeading
-          eyebrow="02"
-          title="الإيثو"
-          text="اختبار واحد يضم 51 نمطًا بصريًا. البحث يعمل بالأسماء والمرادفات مع الحفاظ على أسماء الملفات الأصلية."
-        />
-        <div className="etho-layout">
-          <div className="interactive-panel">
-            <div className="flex items-center justify-between gap-3">
-              <p className="eyebrow">كاروسيل الحيوانات</p>
-              <span className="text-sm text-muted">{activeAnimal + 1} / {ethoAnimals.length}</span>
-            </div>
-            <div className="animal-stage">
-              <ZoomableImage
-                asset={carouselAnimal.asset}
-                alt={`صورة ${carouselAnimal.name}`}
-                className="animal-zoom-frame"
-              />
-              <h3>{carouselAnimal.name}</h3>
-            </div>
-            <div className="flex gap-3">
-              <button type="button" className="secondary-action" onClick={() => goToAnimal("previous")}>
-                <ArrowRight size={18} weight="bold" />
-                السابق
-              </button>
-              <button type="button" className="primary-action small-action" onClick={() => goToAnimal("next")}>
-                التالي
-                <ArrowLeft size={18} weight="bold" />
-              </button>
-            </div>
-          </div>
-          <div className="interactive-panel">
-            <label className="search-label" htmlFor="animal-search">
-              <MagnifyingGlass size={18} weight="bold" />
-              <span>ابحثي باسم الحيوان</span>
-            </label>
-            <input
-              id="animal-search"
-              className="search-input"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="مثال: ذئب، ذيب، أرنب"
+      <section id="etho" className="page-section scroll-mt-28">
+        <SectionHeading number="02" title="الإيثو" />
+        <CardFanCarousel items={ethoAnimals} />
+      </section>
+
+      <section id="mindsets" className="page-section scroll-mt-28">
+        <SectionHeading number="03" title="العقليات" />
+        <div className="mindset-layout">
+          {mindsetCoverAsset ? (
+            <ZoomableImage
+              asset={mindsetCoverAsset}
+              alt="غلاف اختبار العقليات"
+              className="mindset-image-frame"
             />
-            <div className="mt-5 flex items-center gap-2 text-sm text-muted">
-              <GridFour size={18} weight="bold" />
-              <span>عرض الكل: {filteredAnimals.length} نتيجة</span>
-            </div>
-            <div className="animal-grid" aria-live="polite">
-              {filteredAnimals.map((animal) => (
-                <button
-                  type="button"
-                  className="animal-grid-item"
-                  key={animal.asset.id}
-                  onClick={() => setActiveAnimal(ethoAnimals.findIndex((item) => item.asset.id === animal.asset.id))}
-                >
-                  <Image
-                    src={animal.asset.publicPath}
-                    alt=""
-                    width={animal.asset.width}
-                    height={animal.asset.height}
-                    className="h-full w-full object-contain"
-                    sizes="120px"
-                  />
-                  <span>{animal.name}</span>
-                </button>
-              ))}
-            </div>
-          </div>
+          ) : null}
+          <AnimatedTabs
+            label="عقليات زيزي"
+            items={mindsets.map((mindset) => ({
+              id: mindset.id,
+              label: mindset.label,
+              content: (
+                <div className="mindset-copy">
+                  <h3>{mindset.label}</h3>
+                  <p>{mindset.text}</p>
+                </div>
+              ),
+            }))}
+          />
         </div>
       </section>
 
-      <section id="mindsets" className="page-section scroll-mt-32">
-        <SectionHeading
-          eyebrow="03"
-          title="العقليات"
-          text="تبويبات نصية فقط الآن، لأن الأصول الفردية غير موجودة ولا توجد نسب أو نتائج معتمدة."
+      <section id="spectra" className="page-section scroll-mt-28">
+        <SectionHeading number="04" title="الأطياف" />
+        <AnimatedTabs
+          label="الطيف الهندسي"
+          items={spectraAssets.map((asset) => ({
+            id: asset.id,
+            label: asset.stem,
+            content: (
+              <article className="spectra-tab-card">
+                <ZoomableImage asset={asset} alt={`شكل ${asset.stem}`} className="spectra-image-frame" />
+                <h3>{asset.stem}</h3>
+              </article>
+            ),
+          }))}
         />
-        <div className="tabs" role="tablist" aria-label="عقليات زيزي">
-          {mindsets.map((mindset) => (
-            <button
-              key={mindset.id}
-              id={`tab-${mindset.id}`}
-              type="button"
-              role="tab"
-              aria-selected={activeMindset === mindset.id}
-              aria-controls={`panel-${mindset.id}`}
-              className={cn("tab-button", activeMindset === mindset.id && "active")}
-              onClick={() => setActiveMindset(mindset.id)}
-            >
-              {mindset.label}
-            </button>
-          ))}
-        </div>
-        {mindsets.map((mindset) => (
-          <div
-            key={mindset.id}
-            id={`panel-${mindset.id}`}
-            role="tabpanel"
-            aria-labelledby={`tab-${mindset.id}`}
-            hidden={activeMindset !== mindset.id}
-            className="tab-panel"
-          >
-            <h3>{mindset.label}</h3>
-            <p>{mindset.text}</p>
-          </div>
-        ))}
       </section>
 
-      <section id="spectra" className="page-section scroll-mt-32">
-        <SectionHeading
-          eyebrow="04"
-          title="الطيف الهندسي"
-          text="الصور الاثنتا عشرة المسجلة فعليًا، مع عرض كامل يحافظ على النصوص داخل الصور."
-        />
-        <div className="spectra-grid">
-          {spectraAssets.map((asset) => (
-            <article key={asset.id} className="image-tile">
-              <ZoomableImage asset={asset} alt={`شكل ${asset.stem}`} className="tile-zoom-frame" />
-              <h3>{asset.stem}</h3>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section id="triple" className="page-section scroll-mt-32">
-        <SectionHeading eyebrow="05" title="الاختبار الثلاثي" />
+      <section id="triple" className="page-section scroll-mt-28">
+        <SectionHeading number="05" title="الاختبار الثلاثي" />
         <div className="triple-panel">
           <span className="status-badge">متاح</span>
           <ZoomableImage
@@ -209,32 +126,24 @@ export function TestsExperience() {
   );
 }
 
-function SectionHeading({
-  eyebrow,
-  title,
-  text,
-}: {
-  eyebrow: string;
-  title: string;
-  text?: string;
-}) {
+function SectionHeading({ number, title }: { number: string; title: string }) {
   return (
-    <div className="section-heading">
-      <p className="eyebrow">{eyebrow}</p>
+    <div className="section-heading compact">
+      <p className="eyebrow">{number}</p>
       <h2>{title}</h2>
-      {text ? <p>{text}</p> : null}
     </div>
   );
 }
 
 function CodeFlipCard({ card }: { card: (typeof codeCards)[number] }) {
   const [revealed, setRevealed] = useState(false);
+  const Icon = codeIcon[card.code];
 
   return (
-    <article className={cn("code-card", card.accent, revealed && "revealed")}>
+    <article className={cn("code-card", card.accent, `code-position-${card.code}`, revealed && "revealed")}>
       <div className="code-card-shell">
         <div className="code-card-face code-card-front" aria-hidden={revealed}>
-          <Cards size={32} weight="duotone" />
+          <Icon size={38} weight="duotone" />
           <span className="code-letter">{card.code}</span>
           <h3>{card.title}</h3>
           <p>{card.summary}</p>
@@ -249,7 +158,10 @@ function CodeFlipCard({ card }: { card: (typeof codeCards)[number] }) {
           </button>
         </div>
       </div>
-      <p className="code-study">{card.study}</p>
+      <div className="code-study">
+        <Cards size={18} weight="duotone" />
+        <p>{card.study}</p>
+      </div>
     </article>
   );
 }
