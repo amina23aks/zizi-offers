@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# عروض زيزي
+
+تطبيق Next.js عربي RTL لتجهيز موقع "عروض زيزي". هذه المرحلة تجهز المشروع والوثائق والهيكل فقط، ولا تبني كل الصفحات أو تربط خدمات خارجية.
 
 ## Getting Started
 
-First, run the development server:
+شغل الخادم المحلي:
 
-```bash
+```sh
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+افتح [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## الفحوص
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```sh
+npm run lint
+npm run typecheck
+npm run build
+```
 
-## Learn More
+## الإعداد
 
-To learn more about Next.js, take a look at the following resources:
+انسخ `.env.example` إلى `.env.local` عند الحاجة، ثم ضع القيم الفعلية محليا فقط. لا ترفع أسرارا إلى Git.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## الوثائق المهمة
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `AGENTS.md`: قواعد العمل والمحتوى والتحقق.
+- `DESIGN.md`: قرارات الهوية والواجهة.
+- `PLAN.md`: مراحل التنفيذ القادمة.
+- `docs/zizi-website-reference.md`: مرجع المحتوى عند توفر الأصل.
+- `docs/assets-register.md`: سجل صور زيزي الأصلية.
 
-## Deploy on Vercel
+## ملاحظات المرحلة
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- لا توجد مكتبة تقويم أو دفع أو حسابات عملاء في هذه المرحلة.
+- لوحة الإدارة ستبدأ لاحقا ببيانات محلية وخدمة قابلة للاستبدال بـ Firestore.
+- لا يعتبر حفظ لوحة الإدارة دائما قبل ربط مصدر حفظ فعلي.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## النشر لاحقا
+
+بعد المراجعة يمكن ربط GitHub وVercel وFirebase. أضف متغيرات البيئة في Vercel/Firebase من لوحة الخدمات، وليس داخل المستودع.
