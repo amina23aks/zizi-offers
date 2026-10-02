@@ -1730,6 +1730,10 @@ body {
 .accent-courses { --accent: #efb3c8; }
 .accent-programs { --accent: #95d5b2; }
 .accent-compass { --accent: #c6b9ff; }
+.category-programs { --accent: #95d5b2; }
+.category-coaching { --accent: #95d5b2; }
+.category-courses { --accent: #efb3c8; }
+.category-sessions { --accent: #9ad4f6; }
 
 .about-layout {
   direction: ltr;
@@ -2215,5 +2219,326 @@ body {
 
   .triple-image-frame {
     width: min(100%, 100%);
+  }
+}
+
+/* Latest refinements: uncropped media, swipeable home rows, filters, and physical-left prices. */
+.accent-programs { --accent: #95d5b2; }
+.accent-compass { --accent: #c6b9ff; }
+
+.home-section-head h2,
+.category-page-hero h1,
+.section-heading h2 {
+  display: inline-block;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent, var(--brand-blue)) 70%, var(--foreground)), var(--foreground));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: color-mix(in srgb, var(--accent, var(--brand-blue)) 55%, var(--foreground));
+}
+
+.section-note {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.section-note span,
+.compass-prices span {
+  border: 1px solid color-mix(in srgb, var(--accent, var(--brand-blue)) 32%, var(--border));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent, var(--brand-blue)) 10%, var(--surface));
+  padding: 0.4rem 0.72rem;
+}
+
+.offer-card-media {
+  height: clamp(180px, 28vw, 270px);
+  min-height: 0;
+  overflow: hidden;
+  padding: 0.6rem;
+}
+
+.home-carousel-item .offer-card-media {
+  height: clamp(138px, 22vw, 180px);
+}
+
+.category-coaching .offer-card-media {
+  height: clamp(230px, 46vw, 380px);
+}
+
+.offer-card-media img,
+.asset-image-contain,
+.code-image-frame img,
+.fan-card img,
+.animal-grid-item img,
+.compass-image-frame img {
+  width: auto !important;
+  max-width: 100%;
+  height: 100% !important;
+  max-height: 100%;
+  object-fit: contain !important;
+}
+
+.offer-card-footer {
+  direction: ltr;
+  align-items: flex-end;
+}
+
+.offer-card-footer > * {
+  direction: rtl;
+}
+
+.offer-price-block {
+  display: grid;
+  justify-items: start;
+  gap: 0.25rem;
+}
+
+.price-badge,
+.mini-meta b {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.mini-meta,
+.test-meta-row,
+.compass-prices {
+  direction: ltr;
+  justify-content: flex-start;
+}
+
+.mini-meta > *,
+.test-meta-row > *,
+.compass-prices > * {
+  direction: rtl;
+}
+
+.mini-meta b,
+.test-meta-row .price-badge {
+  order: -1;
+}
+
+.format-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.format-filter-button {
+  min-height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  padding: 0.45rem 1rem;
+  color: var(--foreground);
+  font-weight: 900;
+}
+
+.format-filter-button.selected {
+  border-color: color-mix(in srgb, var(--brand-green) 55%, var(--border));
+  background: color-mix(in srgb, var(--brand-green) 14%, var(--surface));
+  color: var(--brand-green);
+}
+
+.home-carousel-row {
+  scroll-snap-type: inline proximity;
+  touch-action: pan-x pan-y;
+}
+
+.home-carousel-item,
+.home-overview-card {
+  width: clamp(250px, 34vw, 330px);
+}
+
+.home-section-compass .home-overview-card,
+.home-section-fingerprints .home-overview-card {
+  min-height: 118px;
+}
+
+.fingerprint-name-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+}
+
+.fingerprint-name-grid button {
+  min-width: 0;
+  min-height: 50px;
+  padding: 0.78rem 1rem;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.45;
+}
+
+.compass-prices {
+  --accent: #c6b9ff;
+}
+
+.compass-card-row {
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+}
+
+.compass-card {
+  padding: 0.8rem;
+}
+
+.compass-image-frame {
+  min-height: 0;
+  height: clamp(240px, 34vw, 340px);
+  padding: 0.45rem;
+}
+
+.codes-sketch-grid {
+  direction: ltr;
+  grid-template-areas:
+    "a c"
+    "b d";
+}
+
+.code-card-shell,
+.code-card-face {
+  min-height: 470px;
+}
+
+.code-image-frame {
+  height: 385px;
+}
+
+.fan-stage {
+  height: clamp(338px, 36vw, 398px);
+  overflow: clip;
+}
+
+.fan-card {
+  aspect-ratio: 1240 / 2206;
+  width: clamp(170px, 18vw, 202px);
+  height: auto;
+  min-height: 0;
+  padding: 0.12rem;
+  border-radius: 18px;
+  transition: transform 950ms cubic-bezier(0.22, 1, 0.36, 1), opacity 950ms ease, border-color 220ms ease;
+  will-change: transform;
+}
+
+.fan-card img {
+  display: block;
+  height: auto !important;
+  width: 100% !important;
+  max-width: 100%;
+  max-height: none;
+  border-radius: 15px;
+  object-fit: contain !important;
+}
+
+.fan-card.active {
+  transform: translateX(calc(-50% + var(--x))) rotate(calc(var(--fan-offset) * -5deg)) scale(1.04);
+}
+
+.animal-grid-item {
+  grid-template-rows: 168px auto;
+}
+
+@media (min-width: 900px) {
+  .category-coaching .offer-grid.dense {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .category-coaching .offer-card {
+    display: grid;
+    grid-template-columns: minmax(220px, 0.82fr) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .category-coaching .offer-card-media {
+    height: clamp(310px, 34vw, 430px);
+  }
+
+  .compass-card-row {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1180px) {
+  .compass-card-row {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 899px) {
+  .home-section-coaching .home-carousel-row,
+  .home-section-courses .home-carousel-row,
+  .home-section-programs .home-carousel-row,
+  .home-section-sessions .home-carousel-row,
+  .home-section-tests .home-carousel-row,
+  .home-section-compass .home-carousel-row,
+  .home-section-fingerprints .home-carousel-row {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(236px, 82vw);
+    grid-template-columns: none;
+    gap: 0.75rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-inline: 0.05rem;
+  }
+
+  .home-carousel-item,
+  .home-overview-card {
+    width: auto;
+    min-width: 0;
+  }
+
+  .home-section-coaching .offer-card,
+  .home-section-courses .offer-card,
+  .home-section-programs .offer-card,
+  .home-section-sessions .offer-card {
+    padding: 0.72rem;
+  }
+
+  .home-section-coaching .offer-card-media,
+  .home-section-courses .offer-card-media,
+  .home-section-programs .offer-card-media {
+    height: 150px;
+  }
+
+  .category-coaching .offer-grid.dense {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+  }
+
+  .category-coaching .offer-card {
+    padding: 0.55rem;
+  }
+
+  .category-coaching .offer-card-media {
+    height: clamp(172px, 52vw, 236px);
+    padding: 0.3rem;
+  }
+
+  .category-coaching .offer-meta-list,
+  .category-coaching .offer-variants {
+    display: none;
+  }
+
+  .code-card-shell,
+  .code-card-face {
+    min-height: 440px;
+  }
+
+  .code-image-frame {
+    height: 360px;
+  }
+
+  .fan-stage {
+    height: clamp(312px, 82vw, 350px);
+  }
+
+  .fan-card {
+    width: clamp(150px, 42vw, 178px);
+    padding: 0.1rem;
+    border-radius: 17px;
+  }
+
+  .fan-card img {
+    border-radius: 14px;
   }
 }

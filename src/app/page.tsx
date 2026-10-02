@@ -7,7 +7,7 @@ import {
   Compass,
   Fingerprint,
   GraduationCap,
-  HandHeart,
+  Plant,
   Sparkle,
 } from "@phosphor-icons/react/dist/ssr";
 import { OfferCard } from "@/components/offer-card";
@@ -16,7 +16,7 @@ import { ziziIdentityAssetIds } from "@/data/assets";
 
 const categoryIcons = {
   tests: Brain,
-  coaching: HandHeart,
+  coaching: Plant,
   courses: GraduationCap,
   programs: Sparkle,
   sessions: BookOpenText,
@@ -88,7 +88,12 @@ export default function Home() {
               <div>
                 <h2 id={`${section.id}-title`}>{section.title}</h2>
                 {section.intro ? <p>{section.intro}</p> : null}
-                {section.id === "compass" ? <p className="section-note">كل عنصر منفرد: 500$</p> : null}
+                {section.id === "compass" ? (
+                  <p className="section-note">
+                    <span>كل عنصر منفرد: 500$</span>
+                    <span>الباقة الكاملة: 2500$</span>
+                  </p>
+                ) : null}
               </div>
               <Link href={section.href} className="secondary-action">
                 عرض الكل

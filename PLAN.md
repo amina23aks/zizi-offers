@@ -16,6 +16,7 @@ Status reflects work actually completed in `C:\ziziwebsite\zizi-offers`. User de
 | 10 | Visual refinement from latest review | Local branch refines hero bubbles, category cards, tests interactions, compact media sizing, animated icons, and registers the newly supplied religious-program image | Completed |
 | 11 | Latest corrections: overflow, homepage rows, tests data, prices | Local branch applies mobile overflow fixes, homepage offer carousel sections, updated test/coaching/session data, no USD labels, and compass installment removal | In progress |
 | 12 | Final copy/layout corrections and GitHub push | Remove unwanted copy and extra tests section, update homepage test cards, mobile two-column cards, image containment, Etho centering, verify and push feature branch | In progress |
+| 12b | Latest owner refinements | Plant coaching bubble, uncropped offer images, coaching format filters, physical-left prices, swipeable homepage rows, compass package note, code layout, Etho slow autoplay, verify and push feature branch | In progress |
 | 13 | Admin frontend prototype | Deferred; prototype saves must be labeled non-durable before backend integration | Pending |
 | 14 | Auth, Firestore, signed media uploads | Deferred; no secrets committed | Pending |
 | 15 | Final content review and deployment when instructed | Deferred | Pending |
@@ -90,3 +91,13 @@ Customer accounts, calendar, payments, private feedback, start dates, compass PD
 - Program-category offer labels use singular `برمجة`; named offers such as `برنامج التصالح مع الذات` remain unchanged.
 - Offer artwork must use contained images with preserved aspect ratios; photo-free session cards remain compact.
 - Final corrections are authorized for commit and push to the feature branch only; no merge to `main` and no manual production deployment.
+
+## Latest refinement notes
+
+- Homepage preview collections return to horizontal swipeable rows for all sections, while the dedicated coaching page keeps a two-card grid.
+- Coaching page adds accessible `جماعي` and `فردي` filters that use actual variants or clear group facts; unknown-format offers are not forced into a filter.
+- The coaching hero bubble uses a small plant icon. Programs use the green accent and emotional compass uses the purple accent.
+- Compass package price is shown once beneath the section heading, not as a standalone card. Individual compass pricing remains a section note.
+- Offer/test prices are positioned on the physical left while preserving RTL reading flow.
+- Code cards use the requested physical arrangement: A top-left, B bottom-left, C top-right, D bottom-right.
+- Etho autoplay is slower, keeps Start/Stop, pauses during interaction/off-screen/reduced motion, and preserves direct dragging/search/view-all.

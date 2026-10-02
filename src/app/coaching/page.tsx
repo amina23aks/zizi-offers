@@ -5,6 +5,15 @@ export const metadata: Metadata = {
   title: "الكوتشينغ | عروض زيزي",
 };
 
-export default function CoachingPage() {
-  return <CategoryPage category="coaching" />;
+type CoachingPageProps = {
+  searchParams?: Promise<{
+    format?: string;
+  }>;
+};
+
+export default async function CoachingPage({ searchParams }: CoachingPageProps) {
+  const params = await searchParams;
+  const format = params?.format === "group" || params?.format === "individual" ? params.format : null;
+
+  return <CategoryPage category="coaching" coachingFormat={format} />;
 }

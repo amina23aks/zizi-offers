@@ -410,22 +410,21 @@ export const homeSections = [
     offers: offersByCategory("sessions"),
   },
   {
-    id: "fingerprints",
-    title: "البصمات",
-    intro: "أسماء البصمات الحالية دون أوصاف أو أسعار غير معتمدة.",
-    href: "/fingerprints",
-    accent: "fingerprints",
-    cards: fingerprintNames.slice(0, 8).map((name) => ({ id: `fingerprint-${name}`, title: name, href: "/fingerprints" })),
-  },
-  {
     id: "compass",
     title: "بوصلة المشاعر",
     intro: "مسار الانطلاق وخمس بطاقات مشاعر بالصور الأصلية.",
     href: "/compass",
     accent: "compass",
     cards: [
-      { id: "compass-package", title: "الباقة الكاملة", href: "/compass", priceLabel: "2500$", availabilityLabel: "متاح" },
       ...compassCards.map((card) => ({ id: `compass-${card.id}`, title: card.title, href: "/compass", availabilityLabel: "متاح" })),
     ],
+  },
+  {
+    id: "fingerprints",
+    title: "البصمات",
+    intro: "أسماء البصمات الحالية دون أوصاف أو أسعار غير معتمدة.",
+    href: "/fingerprints",
+    accent: "fingerprints",
+    cards: fingerprintNames.slice(0, 8).map((name) => ({ id: `fingerprint-${name}`, title: name, href: "/fingerprints" })),
   },
 ] as const;

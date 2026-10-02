@@ -26,7 +26,7 @@ const testsNav = [
   { href: "#behavioral-inclinations", label: "الميولات السلوكية" },
 ] as const;
 
-const codeLayout = ["C", "A", "B", "D"] as const;
+const codeLayout = ["A", "C", "B", "D"] as const;
 
 export function TestsExperience() {
   const orderedCodes = useMemo(
