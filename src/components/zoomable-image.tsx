@@ -1,8 +1,8 @@
 "use client";
 
-import { ArrowsOutSimple, X } from "@phosphor-icons/react";
+import { X } from "@phosphor-icons/react";
 import Image from "next/image";
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import type { ImageAsset } from "@/data/assets";
 
 type ZoomableImageProps = {
@@ -22,23 +22,34 @@ export function ZoomableImage({
 }: ZoomableImageProps) {
   const [open, setOpen] = useState(false);
   const titleId = useId();
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!open) return;
+    const trigger = triggerRef.current;
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") setOpen(false);
     };
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKeyDown);
+    window.setTimeout(() => closeRef.current?.focus(), 0);
     return () => {
       document.body.style.overflow = "";
       window.removeEventListener("keydown", onKeyDown);
+      trigger?.focus();
     };
   }, [open]);
 
   return (
     <>
-      <div className={className}>
+      <button
+        ref={triggerRef}
+        type="button"
+        className={className ? `${className} image-view-trigger` : "image-view-trigger"}
+        onClick={() => setOpen(true)}
+        aria-label={buttonLabel}
+      >
         <Image
           src={asset.publicPath}
           alt={alt}
@@ -48,11 +59,7 @@ export function ZoomableImage({
           className="asset-image-contain"
           sizes="(max-width: 768px) 92vw, 520px"
         />
-        <button type="button" className="image-zoom-button" onClick={() => setOpen(true)}>
-          <ArrowsOutSimple size={18} weight="bold" />
-          <span>{buttonLabel}</span>
-        </button>
-      </div>
+      </button>
       {open ? (
         <div
           className="image-dialog"
@@ -68,7 +75,7 @@ export function ZoomableImage({
               <h2 id={titleId} className="text-lg font-bold">
                 {alt}
               </h2>
-              <button type="button" className="icon-button" onClick={() => setOpen(false)} aria-label="إغلاق">
+              <button ref={closeRef} type="button" className="icon-button" onClick={() => setOpen(false)} aria-label="إغلاق">
                 <X size={20} weight="bold" />
               </button>
             </div>

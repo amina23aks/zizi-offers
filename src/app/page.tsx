@@ -1,7 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import {
-  Binoculars,
   BookOpenText,
   Brain,
   Compass,
@@ -10,7 +10,9 @@ import {
   HandHeart,
   Sparkle,
 } from "@phosphor-icons/react/dist/ssr";
-import { publicCategories, ziziAbout } from "@/data/catalog";
+import { OfferCard } from "@/components/offer-card";
+import { getAsset, homeSections, publicCategories, ziziAbout } from "@/data/catalog";
+import { ziziIdentityAssetIds } from "@/data/assets";
 
 const categoryIcons = {
   tests: Brain,
@@ -23,6 +25,8 @@ const categoryIcons = {
 } as const;
 
 export default function Home() {
+  const identityAsset = getAsset(ziziIdentityAssetIds.avatar ?? ziziIdentityAssetIds.groupLogo);
+
   return (
     <main className="site-main home-main">
       <section className="home-hero" aria-labelledby="home-title">
@@ -46,14 +50,26 @@ export default function Home() {
         <div className="home-title-wrap">
           <h1 id="home-title">عروض زيزي</h1>
           <p>مساحة للتأمل في ذاتك، وفهم أنماطك، واختيار خطوتك التالية</p>
-          <Link href="#categories" className="primary-action hero-action">
-            استكشفي العروض
-          </Link>
         </div>
+        <Link href="#offers-sections" className="primary-action hero-action">
+          استكشفي العروض
+        </Link>
       </section>
 
       <section id="about" className="content-band about-band">
-        <div className="about-layout no-avatar">
+        <div className="about-layout">
+          {identityAsset ? (
+            <div className="about-avatar" aria-label="هوية زيزي البصرية">
+              <Image
+                src={identityAsset.publicPath}
+                alt="هوية عروض زيزي"
+                width={identityAsset.width}
+                height={identityAsset.height}
+                className="asset-image-contain"
+                sizes="96px"
+              />
+            </div>
+          ) : null}
           <div className="about-copy">
             <p className="eyebrow">عن زيزي</p>
             <h2>{ziziAbout.heading}</h2>
@@ -62,27 +78,43 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="categories" className="content-band">
-        <div className="section-heading centered">
-          <p className="eyebrow">الأقسام</p>
-          <h2>استكشفي الأقسام</h2>
-        </div>
-        <div className="category-card-grid">
-          {publicCategories.map((category) => {
-            const Icon = categoryIcons[category.id];
-            return (
-              <Link key={category.id} href={category.href} className={`category-card accent-${category.accent}`}>
-                <Icon size={30} weight="duotone" aria-hidden="true" />
-                <span>{category.label}</span>
-                <p>{category.note}</p>
-                <strong>
-                  استكشفي
-                  <Binoculars size={16} weight="bold" aria-hidden="true" />
-                </strong>
+      <section id="offers-sections" className="content-band home-offer-sections">
+        {homeSections.map((section) => (
+          <section key={section.id} className={`home-offer-section accent-${section.accent}`} aria-labelledby={`${section.id}-title`}>
+            <div className="home-section-head">
+              <div>
+                <p className="eyebrow">عروض زيزي</p>
+                <h2 id={`${section.id}-title`}>{section.title}</h2>
+                <p>{section.intro}</p>
+              </div>
+              <Link href={section.href} className="secondary-action">
+                عرض الكل
               </Link>
-            );
-          })}
-        </div>
+            </div>
+            <div className="home-carousel-row" tabIndex={0} aria-label={`عروض ${section.title}`}>
+              {"offers" in section
+                ? section.offers.map((offer) => (
+                    <div className="home-carousel-item" key={offer.id}>
+                      <OfferCard
+                        offer={offer}
+                        href={offer.id === "emotional-communication" ? "/offers/emotional-communication" : undefined}
+                      />
+                    </div>
+                  ))
+                : section.cards.map((card) => (
+                    <Link key={card.id} href={card.href} className="home-overview-card">
+                      <strong>{card.title}</strong>
+                      {"summary" in card && card.summary ? <span>{card.summary}</span> : null}
+                      <div className="mini-meta">
+                        {"availabilityLabel" in card && card.availabilityLabel ? <em>{card.availabilityLabel}</em> : null}
+                        {"priceLabel" in card && card.priceLabel ? <b dir="ltr">{card.priceLabel}</b> : null}
+                      </div>
+                      {"priceClarification" in card && card.priceClarification ? <small>{card.priceClarification}</small> : null}
+                    </Link>
+                  ))}
+            </div>
+          </section>
+        ))}
       </section>
     </main>
   );

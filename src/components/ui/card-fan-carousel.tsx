@@ -3,7 +3,7 @@
 import { CaretLeft, CaretRight, MagnifyingGlass, SquaresFour } from "@phosphor-icons/react";
 import Image from "next/image";
 import type { CSSProperties, PointerEvent } from "react";
-import { useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { normalizeArabic } from "@/data/catalog";
 import type { ImageAsset } from "@/data/assets";
 import { cn } from "@/lib/utils";
@@ -18,7 +18,10 @@ export function CardFanCarousel({ items }: { items: readonly FanCardItem[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [query, setQuery] = useState("");
   const [showAll, setShowAll] = useState(false);
+  const [paused, setPaused] = useState(false);
+  const [interactionPaused, setInteractionPaused] = useState(false);
   const dragStart = useRef<{ x: number; y: number } | null>(null);
+  const resumeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const filtered = useMemo(() => {
     const normalized = normalizeArabic(query);
@@ -30,11 +33,34 @@ export function CardFanCarousel({ items }: { items: readonly FanCardItem[] }) {
 
   const activeItem = items[activeIndex] ?? items[0];
 
-  const move = (direction: 1 | -1) => {
+  const move = useCallback((direction: 1 | -1) => {
     setActiveIndex((current) => (current + direction + items.length) % items.length);
+  }, [items.length]);
+
+  const pauseBriefly = () => {
+    setInteractionPaused(true);
+    if (resumeTimer.current) clearTimeout(resumeTimer.current);
+    resumeTimer.current = setTimeout(() => setInteractionPaused(false), 2800);
   };
 
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (media.matches || paused || interactionPaused) return;
+    const tick = window.setInterval(() => {
+      if (document.hidden) return;
+      move(-1);
+    }, 3600);
+    return () => window.clearInterval(tick);
+  }, [paused, interactionPaused, move]);
+
+  useEffect(() => {
+    return () => {
+      if (resumeTimer.current) clearTimeout(resumeTimer.current);
+    };
+  }, []);
+
   const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    pauseBriefly();
     dragStart.current = { x: event.clientX, y: event.clientY };
   };
 
@@ -74,6 +100,10 @@ export function CardFanCarousel({ items }: { items: readonly FanCardItem[] }) {
       <div
         className="fan-stage"
         aria-live="polite"
+        onMouseEnter={() => setInteractionPaused(true)}
+        onMouseLeave={pauseBriefly}
+        onFocus={() => setInteractionPaused(true)}
+        onBlur={pauseBriefly}
         onPointerDown={onPointerDown}
         onPointerUp={onPointerUp}
         onPointerCancel={() => {
@@ -112,17 +142,26 @@ export function CardFanCarousel({ items }: { items: readonly FanCardItem[] }) {
       <div className="fan-controls">
         <button type="button" className="secondary-action" onClick={() => move(-1)}>
           <CaretRight size={18} weight="bold" />
-          السابق
+          <span className="sr-only">السابق</span>
         </button>
         <div className="fan-current">
           <strong>{activeItem.name}</strong>
           <span>{activeIndex + 1} / {items.length}</span>
         </div>
         <button type="button" className="primary-action small-action" onClick={() => move(1)}>
-          التالي
+          <span className="sr-only">التالي</span>
           <CaretLeft size={18} weight="bold" />
         </button>
       </div>
+
+      <button
+        type="button"
+        className="secondary-action fan-pause"
+        aria-pressed={paused}
+        onClick={() => setPaused((value) => !value)}
+      >
+        {paused ? "استئناف الحركة" : "إيقاف الحركة"}
+      </button>
 
       <button
         type="button"
