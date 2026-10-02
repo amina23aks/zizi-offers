@@ -1,6 +1,7 @@
 "use client";
 
 import { CaretLeft, CaretRight, Plant } from "@phosphor-icons/react";
+import Image from "next/image";
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { CardFanCarousel } from "@/components/ui/card-fan-carousel";
@@ -44,7 +45,11 @@ export function TestsExperience() {
       </nav>
 
       <section id="codes" className="page-section scroll-mt-28">
-        <SectionHeading title="الأكواد" />
+        <SectionHeading
+          title="الأكواد"
+          text="اختبار الأكواد الدماغية في نموذج زيزي يستكشف ميول A/B/C/D كما تظهر في طريقة التفكير والعمل والتعلّم، دون تحويله هنا إلى نظام نتائج آلي."
+        />
+        <TestMeta price="12$" />
         <div className="codes-sketch-grid" aria-label="بطاقات الأكواد">
           {orderedCodes.map((card) => (
             <CodeFlipCard key={card.code} card={card} />
@@ -57,6 +62,7 @@ export function TestsExperience() {
           title="الإيثو"
           text="استكشفي الأنماط السلوكية في نموذج الإيثو لدى زيزي، وتعرّفي على النمط المهيمن لديك وما يتيحه من أسئلة لفهم تفاعلاتك."
         />
+        <TestMeta price="12$" />
         <CardFanCarousel items={ethoAnimals} />
       </section>
 
@@ -65,11 +71,13 @@ export function TestsExperience() {
           title="العقليات"
           text="تعرّفي على استجاباتك الغالبة في المواقف والتعاملات، ضمن عقليات الصواب والفوز والمرتاح والمحبوب في نموذج زيزي."
         />
+        <TestMeta price="12$" />
         <MindsetSlider />
       </section>
 
       <section id="spectra" className="page-section scroll-mt-28">
         <SectionHeading title="الأطياف" text="استكشفي تناسق استجاباتك خلال الأشهر الأخيرة وفق نموذج الطيف لدى زيزي." />
+        <TestMeta price="12$" />
         <AnimatedTabs
           label="الطيف الهندسي"
           className="spectra-tabs"
@@ -100,6 +108,7 @@ export function TestsExperience() {
           />
         </div>
       </section>
+
     </div>
   );
 }
@@ -128,25 +137,37 @@ function CodeFlipCard({ card }: { card: (typeof codeCards)[number] }) {
     );
 
   return (
-    <article className={cn("code-card", card.accent, `code-position-${card.code}`, revealed && "revealed")}>
+    <article
+      className={cn("code-card", card.accent, `code-position-${card.code}`, revealed && "revealed")}
+      role="button"
+      tabIndex={0}
+      aria-label={`${revealed ? "إخفاء" : "عرض"} بطاقة كود ${card.code}`}
+      onClick={() => setRevealed((value) => !value)}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          setRevealed((value) => !value);
+        }
+      }}
+    >
       <div className="code-card-shell">
-        <button
-          type="button"
-          className="code-card-face code-card-front"
-          aria-hidden={revealed}
-          tabIndex={revealed ? -1 : 0}
-          onClick={() => setRevealed(true)}
-        >
+        <div className="code-card-face code-card-front" aria-hidden={revealed}>
           {icon}
           <span className="code-letter">{card.code}</span>
           <h3>{card.title}</h3>
           <span className="code-action">اكتشفي الكود</span>
-        </button>
+        </div>
         <div className="code-card-face code-card-back" aria-hidden={!revealed}>
-          <ZoomableImage asset={card.asset} alt={`بطاقة كود ${card.code}`} className="code-image-frame" />
-          <button type="button" className="code-return" tabIndex={revealed ? 0 : -1} onClick={() => setRevealed(false)}>
-            رجوع
-          </button>
+          <div className="code-image-frame">
+            <Image
+              src={card.asset.publicPath}
+              alt={`بطاقة كود ${card.code}`}
+              width={card.asset.width}
+              height={card.asset.height}
+              className="asset-image-contain"
+              sizes="220px"
+            />
+          </div>
         </div>
       </div>
     </article>
@@ -155,10 +176,12 @@ function CodeFlipCard({ card }: { card: (typeof codeCards)[number] }) {
 
 function MindsetSlider() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [expanded, setExpanded] = useState(false);
   const active = mindsets[activeIndex] ?? mindsets[0];
 
   const move = (direction: 1 | -1) => {
     setActiveIndex((current) => (current + direction + mindsets.length) % mindsets.length);
+    setExpanded(false);
   };
 
   return (
@@ -177,9 +200,31 @@ function MindsetSlider() {
           >
             <p className="eyebrow">{String(activeIndex + 1).padStart(2, "0")} / 04</p>
             <h3>{active.label}</h3>
-            {active.text ? <p>{active.text}</p> : null}
+            <p>{active.summary}</p>
+            <div className="mindset-points">
+              <strong>ملامح إيجابية</strong>
+              <ul>
+                {active.positives.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+            {expanded ? (
+              <div className="mindset-expanded">
+                {"details" in active && active.details ? <p>{active.details}</p> : null}
+                <strong>نقاط تحتاج انتباهًا</strong>
+                <ul>
+                  {active.attention.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
           </motion.div>
         </AnimatePresence>
+        <button type="button" className="secondary-action small-action" onClick={() => setExpanded((value) => !value)}>
+          {expanded ? "عرض أقل" : "عرض المزيد"}
+        </button>
         <div className="mindset-controls">
           <button type="button" className="icon-button subtle" onClick={() => move(-1)} aria-label="العقلية السابقة">
             <CaretRight size={18} weight="bold" />
@@ -189,6 +234,16 @@ function MindsetSlider() {
           </button>
         </div>
       </div>
+    </div>
+  );
+}
+
+function TestMeta({ price, clarification }: { price: string; clarification?: string }) {
+  return (
+    <div className="test-meta-row">
+      <span className="status-badge">متاح</span>
+      <span className="price-badge" dir="ltr">{price}</span>
+      {clarification ? <small>{clarification}</small> : null}
     </div>
   );
 }

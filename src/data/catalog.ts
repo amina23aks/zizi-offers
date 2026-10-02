@@ -7,7 +7,7 @@ import {
   type ImageAsset,
   type ImageAssetId,
 } from "@/data/assets";
-import { offers, renderPriceValue, type Availability, type Offer, type OfferPrice } from "@/data/offers";
+import { additionalTestOffers, offers, renderPriceValue, type Availability, type Offer, type OfferPrice } from "@/data/offers";
 
 export type DisplayOffer = Offer & {
   priceLabel: string;
@@ -27,7 +27,7 @@ export const formatAvailability = (availability: Availability) => {
 export const formatPrice = (price: OfferPrice) => {
   const value = renderPriceValue(price);
   return {
-    label: value === null ? "متعدد" : `${value} USD`,
+    label: price.status === "free" ? "مجاني" : value === null ? "متعدد" : `${value}$`,
     clarification: price.status === "unknown" ? "السعر غير محدد" : null,
   };
 };
@@ -150,14 +150,14 @@ export const categoryPageInfo = {
   },
   courses: {
     title: "الدورات",
-    intro: "دورات زيزي القصيرة بصورها المعتمدة وأسعارها المعروفة.",
+    intro: "",
   },
   programs: {
     title: "البرمجات",
-    intro: "برمجات زيزي المتاحة للعرض هنا دون إضافة مواعيد أو وعود غير مؤكدة.",
+    intro: "",
   },
   sessions: {
-    title: "الجلسات والاستشارات",
+    title: "الجلسات النفسية",
     intro: "جلسات واستشارات متاحة طوال السنة حسب القائمة المعتمدة.",
   },
 } as const;
@@ -246,22 +246,33 @@ export const mindsets = [
   {
     id: "right",
     label: "عقلية الصواب",
-    text: "",
+    summary: "يميل هذا النمط إلى الاهتمام بأن يكون على صواب، وإلى تقدير اعتراف المحيط بذكائه وقدرته على الإنجاز.",
+    positives: ["القدرة على الإنجاز.", "الاستمرار في تنفيذ المهام دون كثرة التذمّر."],
+    details: "قد يعطي آراء المحيط وتوقعات الأسرة وزنًا كبيرًا، أو يفضّل استشارة أشخاص خارج دائرته القريبة.",
+    attention: ["الموازنة بين رأي الآخرين وقناعته الداخلية.", "التمييز بين رغباته الشخصية وتوقعات المحيط."],
   },
   {
     id: "win",
     label: "عقلية الفوز",
-    text: "",
+    summary: "يميل هذا النمط إلى السعي للفوز، ويتميّز بالشجاعة والقدرة على التواصل والإقناع.",
+    positives: ["الشجاعة والمبادرة.", "مهارات التواصل والإقناع."],
+    attention: ["مراجعة توافق الأفعال مع المبادئ والضمير أثناء السعي للفوز.", "الانتباه إلى الاحتفاظ بأشياء لا يحتاج إليها."],
   },
   {
     id: "comfort",
     label: "عقلية المرتاح",
-    text: "",
+    summary: "يميل هذا النمط إلى البحث عن التوازن والتصالح مع الذات، واتخاذ القرارات التي يشعر بالاقتناع والارتياح تجاهها.",
+    positives: ["التعامل بهدوء ومرونة مع المواقف الصعبة.", "الحرص على الانسجام الداخلي.", "التعامل الودود وتجنّب الصدام."],
+    details: "بحسب هذا الوصف، قد لا يغيّر رأيه بسهولة، ويميل إلى الاقتناع بمن يراه متوازنًا ومتصالحًا مع نفسه. وقد يستمع إلى الآخرين، ثم يختار ما يرتاح إليه.",
+    attention: ["قد يتأخر في إنجاز بعض الأولويات والقرارات المهمة."],
   },
   {
     id: "loved",
     label: "عقلية المحبوب",
-    text: "",
+    summary: "يميل هذا النمط إلى الاهتمام بالقبول والعلاقات، وقد يتأثر بدرجة كبيرة بالأشخاص الذين يثق بهم.",
+    positives: ["الكرم.", "المسامحة."],
+    details: "بحسب هذا الوصف، يؤثر اختيار الصحبة في اتجاهاته وقراراته. وقد يستفيد من التوجيه الجيد، بينما يحتاج إلى الانتباه للتوجيه المضلّل أو الاستغلال.",
+    attention: ["اختيار الصحبة بعناية ووضع حدود واضحة.", "تقوية الاستقلال في اتخاذ القرار.", "الانتباه إلى التعلّق بالمشكلات والشعور المستمر بدور الضحية."],
   },
 ] as const;
 
@@ -284,9 +295,15 @@ export const compassCards = [
 }[];
 
 export const compassPricing = [
-  { title: "كل عنصر منفرد", price: "500 USD" },
-  { title: "الباقة الكاملة", price: "2500 USD" },
+  { title: "كل عنصر منفرد", price: "500$" },
+  { title: "الباقة الكاملة", price: "2500$" },
 ] as const;
+
+export const freeAdditionalTests = additionalTestOffers.map((item) => ({
+  ...item,
+  priceLabel: formatPrice(item.price).label,
+  availabilityLabel: formatAvailability(item.availability),
+}));
 
 export const fingerprintNames = [
   "الأذن",
@@ -316,3 +333,99 @@ export const normalizeArabic = (value: string) =>
     .replace(/\s+/g, " ")
     .trim()
     .toLowerCase();
+
+export const homeSections = [
+  {
+    id: "tests",
+    title: "الاختبارات",
+    intro: "اختبارات زيزي للاستكشاف الذاتي دون أسئلة أو نتائج آلية في هذه المرحلة.",
+    href: "/tests",
+    accent: "tests",
+    cards: [
+      {
+        id: "codes-home",
+        title: "اختبار الأكواد الدماغية ABCD",
+        href: "/tests#codes",
+        priceLabel: "12$",
+        availabilityLabel: "متاح",
+        summary: "اختبار يساعدك على فهم نشاط الأقسام الأربعة وفق نموذج الأكواد: A للمنطق والتحليل، وB للإنجاز والتنافس، وC للعاطفة ونشاطها المتغير، وD للتواصل والخيال.",
+      },
+      {
+        id: "etho-home",
+        title: "اختبار الإيثو",
+        href: "/tests#etho",
+        priceLabel: "12$",
+        availabilityLabel: "متاح",
+        summary: "اختبار يساعدك على اكتشاف ترتيب أنماط السلوك الغريزي الفردي والاجتماعي، باستخدام تشبيهات بسلوك الحيوانات. يشمل 51 حيوانًا تُرتّب بحسب نتيجة الاختبار.",
+      },
+      {
+        id: "mindsets-home",
+        title: "اختبار العقليات",
+        href: "/tests#mindsets",
+        priceLabel: "12$",
+        availabilityLabel: "متاح",
+        summary: "يقسّم هذا الاختبار استجاباتك في المواقف غير المتوقعة إلى أربع عقليات: الصواب، والفوز، والمرتاح، والمحبوب. وتُعرض النتيجة بنسب مئوية لفهم نشاط كل منها.",
+      },
+      {
+        id: "spectra-home",
+        title: "اختبار الطيف",
+        href: "/tests#spectra",
+        priceLabel: "12$",
+        availabilityLabel: "متاح",
+        summary: "اختبار يساعدك على فهم تناسق استجاباتك المختلفة خلال الأشهر الأخيرة.",
+      },
+      { id: "triad-home", title: "الاختبارات النفسية للميولات السلوكية", href: "/tests#behavioral-inclinations", priceLabel: "متعدد", availabilityLabel: "متاح", summary: "مثلث الدراما، الأدوار الأربعة، والسلوك النفسي." },
+    ],
+  },
+  {
+    id: "coaching",
+    title: "الكوتشينغ",
+    intro: categoryPageInfo.coaching.intro,
+    href: "/coaching",
+    accent: "coaching",
+    offers: offersByCategory("coaching"),
+  },
+  {
+    id: "courses",
+    title: "الدورات",
+    intro: categoryPageInfo.courses.intro,
+    href: "/courses",
+    accent: "courses",
+    offers: offersByCategory("courses"),
+  },
+  {
+    id: "programs",
+    title: "البرمجات",
+    intro: categoryPageInfo.programs.intro,
+    href: "/programs",
+    accent: "programs",
+    offers: offersByCategory("programs"),
+  },
+  {
+    id: "sessions",
+    title: "الجلسات النفسية",
+    intro: categoryPageInfo.sessions.intro,
+    href: "/sessions",
+    accent: "sessions",
+    offers: offersByCategory("sessions"),
+  },
+  {
+    id: "fingerprints",
+    title: "البصمات",
+    intro: "أسماء البصمات الحالية دون أوصاف أو أسعار غير معتمدة.",
+    href: "/fingerprints",
+    accent: "fingerprints",
+    cards: fingerprintNames.slice(0, 8).map((name) => ({ id: `fingerprint-${name}`, title: name, href: "/fingerprints" })),
+  },
+  {
+    id: "compass",
+    title: "بوصلة المشاعر",
+    intro: "مسار الانطلاق وخمس بطاقات مشاعر بالصور الأصلية.",
+    href: "/compass",
+    accent: "compass",
+    cards: [
+      { id: "compass-package", title: "الباقة الكاملة", href: "/compass", priceLabel: "2500$", availabilityLabel: "متاح" },
+      ...compassCards.map((card) => ({ id: `compass-${card.id}`, title: card.title, href: "/compass", availabilityLabel: "متاح" })),
+    ],
+  },
+] as const;

@@ -7,6 +7,7 @@ import {
   emotionalCommunicationTopics,
   getAsset,
 } from "@/data/catalog";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "التواصل العاطفي | عروض زيزي",
@@ -31,12 +32,14 @@ export default function EmotionalCommunicationPage() {
             في العلاقات.
           </p>
           <div className="detail-meta">
-            {offer.availabilityLabel ? <span className="status-badge">{offer.availabilityLabel}</span> : null}
+            {offer.availabilityLabel ? (
+              <span className={cn("status-badge", `status-${offer.availability}`)}>{offer.availabilityLabel}</span>
+            ) : null}
             <span>
               <UsersThree size={18} weight="bold" />
               جماعي، السعة 10
             </span>
-            <strong>{offer.priceLabel} للمقعد</strong>
+            <strong><span dir="ltr">{offer.priceLabel}</span> للمقعد</strong>
           </div>
         </div>
         {asset ? (

@@ -14,7 +14,7 @@ export type Availability =
   | "completed"
   | "unknown";
 
-export type PriceStatus = "known" | "unknown" | "variant";
+export type PriceStatus = "known" | "unknown" | "variant" | "free";
 
 export type OfferFormat =
   | "test"
@@ -36,6 +36,7 @@ export type OfferVariant = {
   id: string;
   title: string;
   price: OfferPrice;
+  note?: string;
 };
 
 export type Offer = {
@@ -47,6 +48,12 @@ export type Offer = {
   price: OfferPrice;
   availability: Availability;
   summary?: string;
+  bullets?: readonly string[];
+  programDuration?: string;
+  sessionDuration?: string;
+  totalTrainingDuration?: string;
+  capacity?: string;
+  priceBasis?: string;
   assetId?: ImageAssetId | null;
   variants?: readonly OfferVariant[];
   source: string;
@@ -67,6 +74,11 @@ const usd = (amountUsd: number) =>
     status: "known",
   }) as const satisfies OfferPrice;
 
+const freePrice = {
+  amountUsd: 0,
+  status: "free",
+} as const satisfies OfferPrice;
+
 export const testOrder = [
   "codes-abcd",
   "etho",
@@ -83,7 +95,9 @@ export const offers = [
     category: "tests",
     format: "test",
     price: usd(12),
-    availability: "unknown",
+    availability: "available",
+    summary:
+      "اختبار يستكشف ميولك بين الموضوعية والمنطق، التنفيذ والإنجاز، المشاعر والأحاسيس، والإبداع والابتكار ضمن نموذج زيزي.",
     source: "docs/zizi-website-reference.md",
     internalNotes:
       "Approved tests order: codes first. Uses code card backs A/B/C/D from public/assets/codes.",
@@ -115,11 +129,12 @@ export const offers = [
   {
     id: "geometric-spectra",
     slug: "geometric-spectra",
-    title: "الطيف الهندسي",
+    title: "اختبار الطيف",
     category: "tests",
     format: "test",
     price: usd(12),
-    availability: "unknown",
+    availability: "available",
+    summary: "اختبار يساعدك على فهم تناسق استجاباتك المختلفة خلال الأشهر الأخيرة.",
     source: "docs/zizi-website-reference.md",
   },
   {
@@ -135,10 +150,9 @@ export const offers = [
     availability: "available",
     assetId: "triad:الميولات-السوكيه",
     variants: [
-      { id: "triple-first", title: "الأول", price: usd(30) },
-      { id: "triple-second", title: "الثاني", price: usd(30) },
-      { id: "triple-third", title: "الثالث", price: usd(60) },
-      { id: "triple-bundle", title: "الثلاثة معًا", price: usd(90) },
+      { id: "drama-triangle", title: "مثلث الدراما", price: usd(30), note: "المضطهد، المنقذ، الضحية" },
+      { id: "four-roles", title: "تشخيص الأدوار الأربعة", price: usd(30), note: "سلبي، عدواني، متلاعب، معتد بنفسه" },
+      { id: "psychological-behavior", title: "السلوك النفسي", price: usd(60), note: "النفس الطفل، النفس المراهق، النفس الأبوية" },
     ],
     source: "docs/zizi-website-reference.md",
     internalNotes:
@@ -153,6 +167,10 @@ export const offers = [
     price: usd(100),
     availability: "unknown",
     assetId: coachingAssetIds.communicationPlan,
+    programDuration: "شهر واحد",
+    sessionDuration: "ساعتان",
+    capacity: "10 مشاركين",
+    priceBasis: "لكل مشاركة",
     source: "docs/zizi-website-reference.md",
   },
   {
@@ -169,12 +187,11 @@ export const offers = [
     assetId: coachingAssetIds.communicationPlan,
     variants: [
       { id: "individual", title: "فردي", price: usd(1000) },
-      {
-        id: "group-ambiguous",
-        title: "جماعي",
-        price: unknownPrice,
-      },
+      { id: "group", title: "جماعي", price: usd(100) },
     ],
+    programDuration: "شهر واحد",
+    sessionDuration: "ساعتان",
+    capacity: "10 مشاركين",
     source: "docs/zizi-website-reference.md",
     internalNotes:
       "Reference says group price wording is ambiguous; do not publish a resolved per-seat price.",
@@ -188,6 +205,7 @@ export const offers = [
     price: usd(100),
     availability: "unknown",
     assetId: coachingAssetIds.values,
+    bullets: ["استكشاف القيم الأساسية", "ربط القيم بالقرارات والعلاقات"],
     source: "docs/zizi-website-reference.md",
     internalNotes: "Price still marked as needing confirmation in the reference.",
   },
@@ -200,6 +218,9 @@ export const offers = [
     price: usd(100),
     availability: "available",
     assetId: coachingAssetIds.emotionalCommunication,
+    bullets: ["إدارة الضغوط", "إدارة النزاعات", "الحدود الصحية", "الحدود العاطفية"],
+    capacity: "10 مشاركين",
+    priceBasis: "لكل مقعد",
     source: "docs/zizi-website-reference.md",
   },
   {
@@ -218,6 +239,9 @@ export const offers = [
       { id: "individual", title: "فردي", price: usd(1000) },
       { id: "group", title: "جماعي", price: usd(100) },
     ],
+    totalTrainingDuration: "8 ساعات غير متواصلة",
+    capacity: "10 مشاركين",
+    priceBasis: "للجماعي لكل مشاركة",
     source: "docs/zizi-website-reference.md",
   },
   {
@@ -230,6 +254,91 @@ export const offers = [
     availability: "unknown",
     assetId: coachingAssetIds.release,
     source: "docs/zizi-website-reference.md",
+  },
+  {
+    id: "life-coaching",
+    slug: "life-coaching",
+    title: "لايف كوتشينغ",
+    category: "coaching",
+    format: "coaching",
+    price: {
+      amountUsd: null,
+      status: "variant",
+    },
+    availability: "unknown",
+    assetId: coachingAssetIds.lifePlan,
+    variants: [
+      { id: "two-months", title: "شهران", price: usd(4000) },
+      { id: "four-months", title: "أربعة أشهر", price: usd(6000) },
+      { id: "six-months", title: "ستة أشهر", price: usd(8000) },
+    ],
+    sessionDuration: "ساعتان",
+    source: "latest owner corrections",
+  },
+  {
+    id: "business-coaching",
+    slug: "business-coaching",
+    title: "كوتشينغ بزنس",
+    category: "coaching",
+    format: "coaching",
+    price: {
+      amountUsd: null,
+      status: "variant",
+    },
+    availability: "unknown",
+    assetId: coachingAssetIds.businessPlan,
+    variants: [
+      { id: "individual-one-month", title: "فردي - شهر", price: usd(1000) },
+      { id: "individual-two-months", title: "فردي - شهران", price: usd(2000) },
+      { id: "group-one-month", title: "جماعي - شهر", price: usd(100) },
+      { id: "group-two-months", title: "جماعي - شهران", price: usd(200) },
+    ],
+    sessionDuration: "ساعتان",
+    capacity: "10 مشاركين",
+    source: "latest owner corrections",
+  },
+  {
+    id: "work-field-entry",
+    slug: "work-field-entry",
+    title: "الولوج لميدان العمل",
+    category: "coaching",
+    format: "coaching",
+    price: {
+      amountUsd: null,
+      status: "variant",
+    },
+    availability: "unknown",
+    assetId: coachingAssetIds.workPlan,
+    variants: [
+      { id: "individual", title: "فردي", price: usd(1000) },
+      { id: "group", title: "جماعي", price: usd(100) },
+    ],
+    programDuration: "شهر واحد",
+    sessionDuration: "ساعتان",
+    capacity: "10 مشاركين",
+    source: "latest owner corrections",
+  },
+  {
+    id: "decor-psychological-engineering",
+    slug: "decor-psychological-engineering",
+    title: "الهندسة النفسية للديكور",
+    category: "coaching",
+    format: "coaching",
+    price: usd(313),
+    availability: "unknown",
+    sessionDuration: "ساعتان",
+    source: "latest owner corrections",
+  },
+  {
+    id: "under-12-coaching",
+    slug: "under-12-coaching",
+    title: "كوتشينغ أقل من 12 سنة",
+    category: "coaching",
+    format: "coaching",
+    price: usd(313),
+    availability: "unknown",
+    sessionDuration: "ساعتان",
+    source: "latest owner corrections",
   },
   {
     id: "arrow-program",
@@ -389,7 +498,7 @@ export const offers = [
   {
     id: "body-language-course",
     slug: "body-language-course",
-    title: "لغة الجسد",
+    title: "دورة تعلم تحليل لغة الجسد مستوى 1",
     category: "courses",
     format: "course",
     price: usd(20),
@@ -400,7 +509,7 @@ export const offers = [
   {
     id: "handwriting-analysis",
     slug: "handwriting-analysis",
-    title: "تحليل الخط",
+    title: "دورة تعلم تحليل الخط (علم الجرافولوجي)",
     category: "courses",
     format: "course",
     price: usd(20),
@@ -422,7 +531,7 @@ export const offers = [
   {
     id: "major-selection",
     slug: "major-selection",
-    title: "اختيار التخصص المناسب",
+    title: "دورة اختيار التخصص",
     category: "courses",
     format: "course",
     price: usd(20),
@@ -455,7 +564,7 @@ export const offers = [
   {
     id: "getting-to-know",
     slug: "getting-to-know",
-    title: "كورس 0 - تعرّف: كيف التعارف؟",
+    title: "دورة تعرف كيف تتعارف 0",
     category: "courses",
     format: "course",
     price: usd(20),
@@ -466,7 +575,7 @@ export const offers = [
   {
     id: "compatibility-or-separation",
     slug: "compatibility-or-separation",
-    title: "كورس -1 - توافق أم تفارق؟",
+    title: "دورة التوافق أو التفارق -1",
     category: "courses",
     format: "course",
     price: usd(20),
@@ -522,7 +631,7 @@ export const offers = [
   {
     id: "negative-emotions-release-session",
     slug: "negative-emotions-release-session",
-    title: "جلسة طرد المشاعر السلبية",
+    title: "جلسة طرد المشاعر السلبية (تمرين تنظيفي)",
     category: "sessions",
     format: "session",
     price: usd(95),
@@ -534,7 +643,7 @@ export const offers = [
   {
     id: "energy-renewal-session",
     slug: "energy-renewal-session",
-    title: "جلسة تجديد الطاقة",
+    title: "جلسة تجديد طاقة (تنويم)",
     category: "sessions",
     format: "session",
     price: usd(150),
@@ -544,6 +653,27 @@ export const offers = [
     internalNotes: "Subtitle from source: تنويم.",
   },
 ] as const satisfies readonly Offer[];
+
+export const additionalTestOffers = [
+  {
+    id: "multiple-intelligences",
+    title: "أنواع الذكاءات",
+    price: freePrice,
+    availability: "available" as const,
+  },
+  {
+    id: "colors-test",
+    title: "اختبار الألوان",
+    price: freePrice,
+    availability: "available" as const,
+  },
+  {
+    id: "formative-geometry-test",
+    title: "اختبار هندسات تشكيلية",
+    price: freePrice,
+    availability: "available" as const,
+  },
+] as const;
 
 export const sessionPriceListSourceAssetId = null as ImageAssetId | null;
 

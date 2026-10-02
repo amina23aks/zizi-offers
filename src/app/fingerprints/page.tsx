@@ -11,7 +11,6 @@ export default function FingerprintsPage() {
     <main className="site-main page-shell">
       <InnerBackLink />
       <section className="category-page-hero">
-        <p className="eyebrow">عروض زيزي</p>
         <h1>البصمات</h1>
       </section>
       <FingerprintExplorer />

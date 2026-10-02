@@ -23,7 +23,6 @@ export default function CompassPage() {
             </span>
           ))}
         </div>
-        <p className="compass-note">تتوفر خيارات تقسيط؛ تواصلي للتفاصيل.</p>
       </section>
 
       <section className="compass-path" aria-label="مسار بوصلة المشاعر">

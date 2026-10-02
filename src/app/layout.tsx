@@ -4,7 +4,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "عروض زيزي",
-  description: "مساحة للتأمل في ذاتك، وفهم أنماطك، واختيار خطوتك التالية.",
+  description: "عروض زيزي للاختبارات والجلسات والكوتشينغ والدورات.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

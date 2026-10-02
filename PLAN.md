@@ -13,10 +13,12 @@ Status reflects work actually completed in `C:\ziziwebsite\zizi-offers`. User de
 | 7 | Prepare Firebase project/web app and Cloudinary when instructed | Deferred; do not integrate in Stage 1 | Pending |
 | 8 | Home, tests and one offer details page | Stage 3 first pass built `/`, `/tests`, and `/offers/emotional-communication`; later superseded visually by the public redesign branch | Completed |
 | 9 | Public category pages and revised visual direction | Redesign branch builds `/`, `/tests`, `/coaching`, `/courses`, `/programs`, `/sessions`, `/fingerprints`, `/compass`, and `/offers/emotional-communication` without booking UI | Completed |
-| 10 | Visual refinement from latest review | Local branch refines hero bubbles, category cards, tests interactions, compact media sizing, animated icons, and registers the newly supplied religious-program image | In progress |
-| 11 | Admin frontend prototype | Deferred; prototype saves must be labeled non-durable before backend integration | Pending |
-| 12 | Auth, Firestore, signed media uploads | Deferred; no secrets committed | Pending |
-| 13 | Final content review and deployment when instructed | Deferred | Pending |
+| 10 | Visual refinement from latest review | Local branch refines hero bubbles, category cards, tests interactions, compact media sizing, animated icons, and registers the newly supplied religious-program image | Completed |
+| 11 | Latest corrections: overflow, homepage rows, tests data, prices | Local branch applies mobile overflow fixes, homepage offer carousel sections, updated test/coaching/session data, no USD labels, and compass installment removal | In progress |
+| 12 | Final copy/layout corrections and GitHub push | Remove unwanted copy and extra tests section, update homepage test cards, mobile two-column cards, image containment, Etho centering, verify and push feature branch | In progress |
+| 13 | Admin frontend prototype | Deferred; prototype saves must be labeled non-durable before backend integration | Pending |
+| 14 | Auth, Firestore, signed media uploads | Deferred; no secrets committed | Pending |
+| 15 | Final content review and deployment when instructed | Deferred | Pending |
 
 Customer accounts, calendar, payments, private feedback, start dates, compass PDF, and AI-generated test results remain deferred.
 
@@ -46,7 +48,7 @@ Customer accounts, calendar, payments, private feedback, start dates, compass PD
 - Codes include accessible reveal/back flip cards, original A/B/C/D images, and image zoom.
 - Etho includes carousel controls, search by names and aliases, and a grid using the 51 actual animal assets while preserving delivered filenames including `ذيب.jpg`.
 - Mindsets use text tabs only. Spectra uses the 12 registered geometric images. Triple displays the full `الميولات-السوكيه.jpg` image and a `متاح` badge without added explanatory text.
-- Emotional communication details use the registered original image, approved topics, group format, capacity 10, USD 100 per seat, and available status. No duration, start dates, remaining seats, or outcomes were invented.
+- Emotional communication details use the registered original image, approved topics, group format, capacity 10, 100$ per seat, and available status. No duration, start dates, remaining seats, or outcomes were invented.
 - No Firebase, Cloudinary, customer accounts, admin pages, payments, calendars, push, merge, or deployment were done in Stage 3.
 
 ## Stage 3 redesign notes
@@ -67,3 +69,24 @@ Customer accounts, calendar, payments, private feedback, start dates, compass PD
 - Homepage was tightened around a central one-line title with category bubbles visible around it on desktop and mobile, approved about text, and compact section cards.
 - Tests page was refined to use compact code cards, a fan-only Etho carousel with search and view-all, text tabs for mindsets, animated tabs for spectra, and a final section titled `الاختبارات النفسية للميولات السلوكية`.
 - No push, merge, GitHub update, Vercel deployment, Firebase, Cloudinary, customer accounts, admin pages, payments, calendars, or start-date fields are authorized in this refinement stage.
+
+## Stage 3 latest-corrections notes
+
+- Local feature branch: `stage-3-latest-corrections`.
+- Preserved locally modified code-card originals `public/assets/codes/A.jpg` through `D.jpg`.
+- Homepage now uses stacked category sections with contained horizontal rows instead of generic category squares.
+- Mobile overflow fixes focus on contained carousel rows, min-width controls, centered hero coordinates, and compact page gutters.
+- Prices render as `12$`, `95$`, etc.; unknown remains `00` plus `السعر غير محدد`; explicit free renders `مجاني`.
+- Tests page now shows requested availability/prices, approved mindset copy with show more/less, extra free tests, and confirmed behavioral-inclination prices.
+- Compass installment text was removed; programs accent is green and compass accent is purple.
+- Course duplicate/free ambiguity remains unresolved: owner mentioned `دورة تخصص` as free, but the confirmed course remains `دورة اختيار التخصص` at 20$ until clarified.
+- No push, merge, GitHub update, Vercel deployment, Firebase, Cloudinary, customer accounts, admin pages, payments, calendars, or start-date fields are authorized in this correction stage.
+
+## Final corrections notes
+
+- Remove homepage supporting copy, mobile hero CTA, section-level repeated `عروض زيزي`, and the public `اختبارات إضافية` section.
+- Homepage test overview cards use owner-supplied descriptions and all four main tests show 12$ where requested, including `اختبار الطيف`.
+- Coaching, courses, and sessions use two-card mobile grids on homepage collections and category listings.
+- Program-category offer labels use singular `برمجة`; named offers such as `برنامج التصالح مع الذات` remain unchanged.
+- Offer artwork must use contained images with preserved aspect ratios; photo-free session cards remain compact.
+- Final corrections are authorized for commit and push to the feature branch only; no merge to `main` and no manual production deployment.
