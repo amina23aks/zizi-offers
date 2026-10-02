@@ -8,12 +8,11 @@ export function CategoryPage({ category }: { category: Exclude<OfferCategory, "t
   const offers = offersByCategory(category);
 
   return (
-    <main className="site-main page-shell">
+    <main className={`site-main page-shell category-${category}`}>
       <InnerBackLink />
       <section className="category-page-hero">
-        <p className="eyebrow">عروض زيزي</p>
         <h1>{info.title}</h1>
-        <p>{info.intro}</p>
+        {info.intro ? <p>{info.intro}</p> : null}
       </section>
       <OfferList offers={offers} />
     </main>

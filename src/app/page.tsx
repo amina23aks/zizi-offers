@@ -49,7 +49,6 @@ export default function Home() {
 
         <div className="home-title-wrap">
           <h1 id="home-title">عروض زيزي</h1>
-          <p>مساحة للتأمل في ذاتك، وفهم أنماطك، واختيار خطوتك التالية</p>
         </div>
         <Link href="#offers-sections" className="primary-action hero-action">
           استكشفي العروض
@@ -80,12 +79,16 @@ export default function Home() {
 
       <section id="offers-sections" className="content-band home-offer-sections">
         {homeSections.map((section) => (
-          <section key={section.id} className={`home-offer-section accent-${section.accent}`} aria-labelledby={`${section.id}-title`}>
+          <section
+            key={section.id}
+            className={`home-offer-section home-section-${section.id} accent-${section.accent}`}
+            aria-labelledby={`${section.id}-title`}
+          >
             <div className="home-section-head">
               <div>
-                <p className="eyebrow">عروض زيزي</p>
                 <h2 id={`${section.id}-title`}>{section.title}</h2>
-                <p>{section.intro}</p>
+                {section.intro ? <p>{section.intro}</p> : null}
+                {section.id === "compass" ? <p className="section-note">كل عنصر منفرد: 500$</p> : null}
               </div>
               <Link href={section.href} className="secondary-action">
                 عرض الكل
@@ -109,7 +112,7 @@ export default function Home() {
                         {"availabilityLabel" in card && card.availabilityLabel ? <em>{card.availabilityLabel}</em> : null}
                         {"priceLabel" in card && card.priceLabel ? <b dir="ltr">{card.priceLabel}</b> : null}
                       </div>
-                      {"priceClarification" in card && card.priceClarification ? <small>{card.priceClarification}</small> : null}
+                      {"priceClarification" in card && card.priceClarification ? <small>{String(card.priceClarification)}</small> : null}
                     </Link>
                   ))}
             </div>

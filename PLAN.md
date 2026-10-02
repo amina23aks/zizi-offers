@@ -15,9 +15,10 @@ Status reflects work actually completed in `C:\ziziwebsite\zizi-offers`. User de
 | 9 | Public category pages and revised visual direction | Redesign branch builds `/`, `/tests`, `/coaching`, `/courses`, `/programs`, `/sessions`, `/fingerprints`, `/compass`, and `/offers/emotional-communication` without booking UI | Completed |
 | 10 | Visual refinement from latest review | Local branch refines hero bubbles, category cards, tests interactions, compact media sizing, animated icons, and registers the newly supplied religious-program image | Completed |
 | 11 | Latest corrections: overflow, homepage rows, tests data, prices | Local branch applies mobile overflow fixes, homepage offer carousel sections, updated test/coaching/session data, no USD labels, and compass installment removal | In progress |
-| 12 | Admin frontend prototype | Deferred; prototype saves must be labeled non-durable before backend integration | Pending |
-| 13 | Auth, Firestore, signed media uploads | Deferred; no secrets committed | Pending |
-| 14 | Final content review and deployment when instructed | Deferred | Pending |
+| 12 | Final copy/layout corrections and GitHub push | Remove unwanted copy and extra tests section, update homepage test cards, mobile two-column cards, image containment, Etho centering, verify and push feature branch | In progress |
+| 13 | Admin frontend prototype | Deferred; prototype saves must be labeled non-durable before backend integration | Pending |
+| 14 | Auth, Firestore, signed media uploads | Deferred; no secrets committed | Pending |
+| 15 | Final content review and deployment when instructed | Deferred | Pending |
 
 Customer accounts, calendar, payments, private feedback, start dates, compass PDF, and AI-generated test results remain deferred.
 
@@ -80,3 +81,12 @@ Customer accounts, calendar, payments, private feedback, start dates, compass PD
 - Compass installment text was removed; programs accent is green and compass accent is purple.
 - Course duplicate/free ambiguity remains unresolved: owner mentioned `دورة تخصص` as free, but the confirmed course remains `دورة اختيار التخصص` at 20$ until clarified.
 - No push, merge, GitHub update, Vercel deployment, Firebase, Cloudinary, customer accounts, admin pages, payments, calendars, or start-date fields are authorized in this correction stage.
+
+## Final corrections notes
+
+- Remove homepage supporting copy, mobile hero CTA, section-level repeated `عروض زيزي`, and the public `اختبارات إضافية` section.
+- Homepage test overview cards use owner-supplied descriptions and all four main tests show 12$ where requested, including `اختبار الطيف`.
+- Coaching, courses, and sessions use two-card mobile grids on homepage collections and category listings.
+- Program-category offer labels use singular `برمجة`; named offers such as `برنامج التصالح مع الذات` remain unchanged.
+- Offer artwork must use contained images with preserved aspect ratios; photo-free session cards remain compact.
+- Final corrections are authorized for commit and push to the feature branch only; no merge to `main` and no manual production deployment.

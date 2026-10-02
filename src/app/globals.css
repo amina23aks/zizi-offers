@@ -2018,6 +2018,89 @@ body {
   display: none;
 }
 
+/* Final corrections: copy removal, real mobile grids and geometry fixes. */
+.hero-action {
+  min-width: 0;
+}
+
+.section-note {
+  margin-top: 0.35rem;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.offer-card {
+  min-width: 0;
+  justify-content: start;
+}
+
+.offer-card > div:last-child {
+  min-width: 0;
+}
+
+.offer-card-media {
+  min-height: 0;
+  height: clamp(150px, 26vw, 240px);
+  max-height: none;
+  aspect-ratio: auto;
+  padding: 0.45rem;
+}
+
+.offer-card-media img,
+.fan-card img,
+.animal-grid-item img,
+.asset-image-contain {
+  height: 100%;
+  max-height: 100%;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.offer-card:not(:has(.offer-card-media)) {
+  min-height: 0;
+  gap: 0.55rem;
+  padding: 0.85rem;
+}
+
+.offer-card:not(:has(.offer-card-media)) > div:last-child {
+  flex: 0 1 auto;
+  gap: 0.55rem;
+}
+
+.offer-card:not(:has(.offer-card-media)) .pt-2 {
+  padding-top: 0.2rem;
+}
+
+.fan-stage {
+  direction: ltr;
+  width: min(100%, 760px);
+  margin-inline: auto;
+}
+
+.fan-card {
+  inset-inline-start: auto;
+  inset-inline-end: auto;
+  left: 50%;
+  right: auto;
+  transform-origin: center center;
+}
+
+.fan-card > img {
+  height: 100%;
+}
+
+.home-carousel-row,
+.tests-sticky-nav,
+.tab-strip {
+  -webkit-overflow-scrolling: touch;
+}
+
+.home-section-courses .home-section-head > div > p,
+.home-section-programs .home-section-head > div > p {
+  display: none;
+}
+
 @media (max-width: 899px) {
   .content-band,
   .page-shell {
@@ -2057,6 +2140,73 @@ body {
 
   .home-carousel-row {
     grid-auto-columns: minmax(250px, 78vw);
+  }
+
+  .hero-action {
+    display: none;
+  }
+
+  .home-section-coaching .home-carousel-row,
+  .home-section-courses .home-carousel-row,
+  .home-section-sessions .home-carousel-row {
+    grid-auto-flow: row;
+    grid-auto-columns: unset;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+    overflow-x: visible;
+    padding-inline: 0;
+  }
+
+  .home-section-coaching .home-carousel-item,
+  .home-section-courses .home-carousel-item,
+  .home-section-sessions .home-carousel-item {
+    min-width: 0;
+  }
+
+  .category-coaching .offer-grid.dense,
+  .category-courses .offer-grid.dense,
+  .category-sessions .offer-grid.dense {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+  }
+
+  .home-section-coaching .offer-card,
+  .home-section-courses .offer-card,
+  .home-section-sessions .offer-card,
+  .category-coaching .offer-card,
+  .category-courses .offer-card,
+  .category-sessions .offer-card {
+    border-radius: 16px;
+    padding: 0.55rem;
+  }
+
+  .home-section-coaching .offer-card-media,
+  .home-section-courses .offer-card-media,
+  .category-coaching .offer-card-media,
+  .category-courses .offer-card-media {
+    height: 136px;
+    padding: 0.3rem;
+  }
+
+  .home-section-coaching .offer-card h3,
+  .home-section-courses .offer-card h3,
+  .home-section-sessions .offer-card h3,
+  .category-coaching .offer-card h3,
+  .category-courses .offer-card h3,
+  .category-sessions .offer-card h3 {
+    font-size: 0.98rem;
+    line-height: 1.45;
+  }
+
+  .home-section-coaching .offer-meta-list,
+  .home-section-courses .offer-meta-list,
+  .home-section-sessions .offer-meta-list,
+  .category-coaching .offer-meta-list,
+  .category-courses .offer-meta-list,
+  .category-sessions .offer-meta-list,
+  .home-section-coaching .offer-variants,
+  .category-coaching .offer-variants {
+    display: none;
   }
 
   .codes-sketch-grid {

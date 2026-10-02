@@ -129,11 +129,12 @@ export const offers = [
   {
     id: "geometric-spectra",
     slug: "geometric-spectra",
-    title: "الطيف الهندسي",
+    title: "اختبار الطيف",
     category: "tests",
     format: "test",
     price: usd(12),
     availability: "available",
+    summary: "اختبار يساعدك على فهم تناسق استجاباتك المختلفة خلال الأشهر الأخيرة.",
     source: "docs/zizi-website-reference.md",
   },
   {

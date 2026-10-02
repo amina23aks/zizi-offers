@@ -2,7 +2,7 @@
 
 import { CaretLeft, CaretRight, MagnifyingGlass, SquaresFour } from "@phosphor-icons/react";
 import Image from "next/image";
-import type { CSSProperties, PointerEvent } from "react";
+import type { CSSProperties, MouseEvent, PointerEvent, TouchEvent } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { normalizeArabic } from "@/data/catalog";
 import type { ImageAsset } from "@/data/assets";
@@ -59,18 +59,44 @@ export function CardFanCarousel({ items }: { items: readonly FanCardItem[] }) {
     };
   }, []);
 
-  const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
+  const startDrag = (x: number, y: number) => {
     pauseBriefly();
-    dragStart.current = { x: event.clientX, y: event.clientY };
+    dragStart.current = { x, y };
   };
 
-  const onPointerUp = (event: PointerEvent<HTMLDivElement>) => {
+  const endDrag = (x: number, y: number) => {
     if (!dragStart.current) return;
-    const dx = event.clientX - dragStart.current.x;
-    const dy = event.clientY - dragStart.current.y;
+    const dx = x - dragStart.current.x;
+    const dy = y - dragStart.current.y;
     dragStart.current = null;
     if (Math.abs(dx) < 34 || Math.abs(dx) < Math.abs(dy) * 1.25) return;
     move(dx > 0 ? -1 : 1);
+  };
+
+  const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    startDrag(event.clientX, event.clientY);
+  };
+
+  const onPointerUp = (event: PointerEvent<HTMLDivElement>) => {
+    endDrag(event.clientX, event.clientY);
+  };
+
+  const onMouseDown = (event: MouseEvent<HTMLDivElement>) => {
+    startDrag(event.clientX, event.clientY);
+  };
+
+  const onMouseUp = (event: MouseEvent<HTMLDivElement>) => {
+    endDrag(event.clientX, event.clientY);
+  };
+
+  const onTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+    const touch = event.changedTouches[0];
+    if (touch) startDrag(touch.clientX, touch.clientY);
+  };
+
+  const onTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
+    const touch = event.changedTouches[0];
+    if (touch) endDrag(touch.clientX, touch.clientY);
   };
 
   const visibleItems = [-3, -2, -1, 0, 1, 2, 3].map((offset) => {
@@ -106,6 +132,10 @@ export function CardFanCarousel({ items }: { items: readonly FanCardItem[] }) {
         onBlur={pauseBriefly}
         onPointerDown={onPointerDown}
         onPointerUp={onPointerUp}
+        onMouseDown={onMouseDown}
+        onMouseUp={onMouseUp}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
         onPointerCancel={() => {
           dragStart.current = null;
         }}

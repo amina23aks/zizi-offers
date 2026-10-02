@@ -15,7 +15,6 @@ import {
   mindsetCoverAsset,
   spectraAssets,
   triadAsset,
-  freeAdditionalTests,
 } from "@/data/catalog";
 import { cn } from "@/lib/utils";
 
@@ -78,7 +77,7 @@ export function TestsExperience() {
 
       <section id="spectra" className="page-section scroll-mt-28">
         <SectionHeading title="الأطياف" text="استكشفي تناسق استجاباتك خلال الأشهر الأخيرة وفق نموذج الطيف لدى زيزي." />
-        <TestMeta price="00" clarification="السعر غير محدد" />
+        <TestMeta price="12$" />
         <AnimatedTabs
           label="الطيف الهندسي"
           className="spectra-tabs"
@@ -107,26 +106,9 @@ export function TestsExperience() {
             alt="الاختبارات النفسية للميولات السلوكية"
             className="triple-image-frame"
           />
-          <div className="triad-price-list" aria-label="أسعار الاختبارات النفسية للميولات السلوكية">
-            <span>مثلث الدراما: <b dir="ltr">30$</b></span>
-            <span>تشخيص الأدوار الأربعة: <b dir="ltr">30$</b></span>
-            <span>السلوك النفسي: <b dir="ltr">60$</b></span>
-          </div>
         </div>
       </section>
 
-      <section className="page-section scroll-mt-28">
-        <SectionHeading title="اختبارات إضافية" text="عروض اختبارية إضافية دون أسئلة أو محركات نتائج في هذه المرحلة." />
-        <div className="additional-tests-grid">
-          {freeAdditionalTests.map((test) => (
-            <article key={test.id} className="mini-test-card">
-              <h3>{test.title}</h3>
-              <span className="status-badge">متاح</span>
-              <b>{test.priceLabel}</b>
-            </article>
-          ))}
-        </div>
-      </section>
     </div>
   );
 }

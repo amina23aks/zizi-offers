@@ -30,7 +30,7 @@ export function OfferCard({ offer, href }: { offer: DisplayOffer; href?: string 
       ) : null}
       <div className="flex flex-1 flex-col gap-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="eyebrow">{formatLabel(offer.format)}</p>
+          <p className="eyebrow">{offer.category === "programs" ? "برمجة" : formatLabel(offer.format)}</p>
           {offer.availabilityLabel ? (
             <span className={cn("status-badge", `status-${offer.availability}`)}>{offer.availabilityLabel}</span>
           ) : null}
