@@ -61,49 +61,49 @@ export const publicCategories = [
     href: "/tests",
     label: "الاختبارات",
     note: "الأكواد، الإيثو، العقليات، الأطياف، والثلاثي",
-    accent: "blue",
+    accent: "tests",
   },
   {
     id: "coaching",
     href: "/coaching",
     label: "الكوتشينغ",
     note: "مسارات جماعية وفردية",
-    accent: "lavender",
+    accent: "coaching",
   },
   {
     id: "courses",
     href: "/courses",
     label: "الدورات",
     note: "دورات قصيرة بصورها المعتمدة",
-    accent: "teal",
+    accent: "courses",
   },
   {
     id: "programs",
     href: "/programs",
     label: "البرمجات",
     note: "برمجات زيزي",
-    accent: "sage",
+    accent: "programs",
   },
   {
     id: "sessions",
     href: "/sessions",
     label: "الجلسات",
     note: "جلسات واستشارات متاحة طوال السنة",
-    accent: "slate",
+    accent: "sessions",
   },
   {
     id: "fingerprints",
     href: "/fingerprints",
     label: "البصمات",
     note: "أسماء البصمات فقط الآن",
-    accent: "mint",
+    accent: "fingerprints",
   },
   {
     id: "compass",
     href: "/compass",
     label: "بوصلة المشاعر",
     note: "مسار الانطلاق وخمس بطاقات",
-    accent: "aqua",
+    accent: "compass",
   },
 ] as const;
 
@@ -131,6 +131,12 @@ export const emotionalCommunicationTopics = [
 ] as const;
 
 export const categoryLinks = publicCategories;
+
+export const ziziAbout = {
+  heading: "زيزي — أخصائية ومحلّلة نفسية",
+  body:
+    "تقدّم جلسات علاجية، وبرامج كوتشينغ، ودورات، وطوّرت اختبارات لاستكشاف الذات وأنماط التفكير والسلوك. تهتم بالتفاصيل التي قد تغيب عن الآخرين، وتفتح من خلالها مساحة أعمق لفهم النفس والمشاعر.",
+} as const;
 
 export const offersByCategory = (category: Offer["category"]) =>
   offers
@@ -239,23 +245,23 @@ export const mindsetCoverAsset = getAsset(testCoverAssetIds.mindsets);
 export const mindsets = [
   {
     id: "right",
-    label: "الصواب",
-    text: "محور ضمن نموذج العقليات لدى زيزي. لا تُعرض نسب أو نتائج دون اختبار معتمد.",
+    label: "عقلية الصواب",
+    text: "",
   },
   {
     id: "win",
-    label: "الفوز",
-    text: "محور ضمن نموذج العقليات لدى زيزي. لا تُعرض نسب أو نتائج دون اختبار معتمد.",
+    label: "عقلية الفوز",
+    text: "",
   },
   {
     id: "comfort",
-    label: "المرتاح",
-    text: "محور ضمن نموذج العقليات لدى زيزي. لا تُعرض نسب أو نتائج دون اختبار معتمد.",
+    label: "عقلية المرتاح",
+    text: "",
   },
   {
     id: "loved",
-    label: "المحبوب",
-    text: "محور ضمن نموذج العقليات لدى زيزي. لا تُعرض نسب أو نتائج دون اختبار معتمد.",
+    label: "عقلية المحبوب",
+    text: "",
   },
 ] as const;
 
@@ -286,7 +292,7 @@ export const fingerprintNames = [
   "الأذن",
   "الوجه",
   "الحرارية",
-  "الكهربائية/الموجات الكهربائية",
+  "الكهربائية",
   "الاسم",
   "التجاعيد",
   "الساعد",

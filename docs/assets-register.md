@@ -13,7 +13,7 @@ Generated from actual files in `public/assets/` during Stage 2. Preserve origina
 | etho | 51 | Inventoried |
 | fingerprints | 0 | Code component; no image required |
 | mindsets | 1 | Inventoried |
-| programs | 10 | Inventoried |
+| programs | 11 | Inventoried |
 | sessions | 0 | Text-card offers; no original price-list image supplied |
 | spectra | 12 | Inventoried |
 | tests | 0 | No general cover originals supplied yet |
@@ -116,6 +116,7 @@ Generated from actual files in `public/assets/` during Stage 2. Preserve origina
 | mindsets | `العقليات.jpg` | 1080x1080 | `/assets/mindsets/العقليات.jpg` | mindsets cover | General cover only; not four separate mindset images. |
 | programs | `spa.jpg` | 905x1280 | `/assets/programs/spa.jpg` | program cover |  |
 | programs | `spi-avtar.jpg` | 640x640 | `/assets/programs/spi-avtar.jpg` | program cover |  |
+| programs | `الدينيه.jpg` | 640x640 | `/assets/programs/الدينيه.jpg` | program cover | Religious program image; filename preserved as delivered. |
 | programs | `السهم.jpg` | 640x640 | `/assets/programs/السهم.jpg` | program cover |  |
 | programs | `الطفل.jpg` | 720x703 | `/assets/programs/الطفل.jpg` | program cover |  |
 | programs | `العصبية.jpg` | 640x640 | `/assets/programs/العصبية.jpg` | program cover |  |
@@ -145,5 +146,6 @@ Generated from actual files in `public/assets/` during Stage 2. Preserve origina
 - `public/assets/etho/ذيب.jpg` is preserved exactly as supplied. It likely maps to the reference animal title ذئب/ذيب; keep filename unchanged and use display aliases later.
 - `fingerprints`, `sessions`, and `tests` do not currently contain original images.
 - `mindsets/العقليات.jpg` is now present as a single general image; no individual mindset images are supplied.
+- The religious program original `الدينيه.jpg` is now present and registered.
 - Zizi human avatar is missing; only the blue eye identity/group-logo candidate is present.
 - No Firebase, Cloudinary, or remote media paths are registered in this stage.

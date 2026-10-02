@@ -21,23 +21,23 @@ Arabic first: html lang=ar and dir=rtl. Use Cairo for interface and headings, wi
 
 These are starting values; verify contrast in rendered controls. Do not use green body text on white without checking contrast. Primary buttons have dark readable labels or a tested blue/white combination. Gradients are decorative halos and short accents, not long text backgrounds.
 Codes: A blue, B green, C coral, D yellow. Use light tints for card surfaces and dark foregrounds; labels and icons communicate meaning independently of colour.
-Section accents: tests icy blue, coaching soft lavender, programs sage, courses turquoise, sessions blue-grey, compass turquoise with subtle lavender.
+Section accents: tests icy blue, coaching teal/green, courses turquoise, programs lavender, sessions blue-grey, fingerprints mint, compass green/blue. Keep the palette varied; the site should not read as one flat blue theme.
 
 ## Layout and components
 Max content width approximately 1200px. Page padding 20px mobile, 32px tablet, 48px desktop; spacing scale 4/8/12/16/24/32/48/64/96. Offer cards consistent radius around 20px, thin borders and restrained shadows. Controls around 44px minimum touch target. Do not force desktop layouts onto mobile.
 Header: small home link, a few compact section links on desktop, and discreet theme control. Do not use the earlier large navbar or booking links.
-Offer card: image when available, title, brief summary when approved, known format, price, known status, and details action when a real details page exists. Cover artwork displays uncropped when it contains text. Details pages do not show booking actions until an approved booking destination exists.
+Offer card: image when available, title, brief summary or bullets only when approved, known format, price, known status, and details action when a real details page exists. Cover artwork displays uncropped when it contains text. Category cards stay compact; text-heavy offer images should remain readable and can be zoomed when needed. Details pages do not show booking actions until an approved booking destination exists.
 
 ## Home
-Hero title `عروض زيزي` is centered on one line with the supporting line `مساحة للتأمل في ذاتك، وفهم أنماطك، واختيار خطوتك التالية` and primary explore action. Desktop section links gently spread from centre once and settle; mobile displays an orderly grid. Keep title and actions readable without animation. Do not use a hero portrait. Follow with approved about text, section cards, and selected offer previews. No booking footer and no invented quotation attributed to Zizi.
+Hero title `عروض زيزي` is centered on one line with the supporting line `مساحة للتأمل في ذاتك، وفهم أنماطك، واختيار خطوتك التالية` and primary explore action. Section bubbles gently spread around the title once and settle on desktop and mobile. Keep title and actions readable without depending on animation. Do not use a hero portrait unless a confirmed Zizi avatar is supplied; the group logo is not a portrait. Follow with the approved about text and compact section cards. No booking footer and no invented quotation attributed to Zizi.
 
 ## Tests
 Sticky in-page links in this exact order: codes, etho, mindsets, spectra, triple. Horizontal scroll on mobile; anchor scroll offset accounts for header height.
-Codes: four cards, front icon/letter/name/summary, back original A/B/C/D image. Explicit reveal/back actions and zoom. Place long copy below cards. Hide inactive faces from interaction and assistive technology.
-Etho: swipeable carousel, previous/next controls, search and view-all grid for 51 animals. Do not require traversing the whole carousel to find an animal. No automatic motion by default.
+Codes: four compact cards in a stable 2x2 arrangement, front icon/letter/name/action, back original A/B/C/D image. Explicit reveal/back actions and zoom. Hide inactive faces from interaction and assistive technology.
+Etho: fan carousel only, with swipe/drag, previous/next controls, search and view-all grid for 51 animals. Do not require traversing the whole carousel to find an animal. No separate enlarged-image panel next to the fan. No automatic motion by default.
 Mindsets: use the supplied `العقليات.jpg` as a general image beside four text tabs for الصواب، الفوز، المرتاح، المحبوب. Do not invent definitions beyond approved wording.
-Spectra: animated accessible tabs for the 12 geometric images.
-Triple: title, full original image الميولات-السوكيه.jpg, available badge and optional image zoom. No added description.
+Spectra: animated accessible tabs for the 12 geometric images, using the original image and title only unless approved text exists.
+Triple: final section title `الاختبارات النفسية للميولات السلوكية`, full original image الميولات-السوكيه.jpg, available badge and optional image zoom. No added description.
 
 ## Fingerprints and compass
 Fingerprint: real button with animated icon and text استكشفي البصمات. Click/tap toggles a panel of 14 names. Support keyboard and aria-expanded. No human silhouette background for this section.

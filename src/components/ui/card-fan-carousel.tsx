@@ -1,14 +1,12 @@
 "use client";
 
 import { CaretLeft, CaretRight, MagnifyingGlass, SquaresFour } from "@phosphor-icons/react";
-import gsap from "gsap";
 import Image from "next/image";
-import type { CSSProperties } from "react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import type { CSSProperties, PointerEvent } from "react";
+import { useMemo, useRef, useState } from "react";
 import { normalizeArabic } from "@/data/catalog";
 import type { ImageAsset } from "@/data/assets";
 import { cn } from "@/lib/utils";
-import { ZoomableImage } from "@/components/zoomable-image";
 
 export type FanCardItem = {
   name: string;
@@ -20,7 +18,7 @@ export function CardFanCarousel({ items }: { items: readonly FanCardItem[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [query, setQuery] = useState("");
   const [showAll, setShowAll] = useState(false);
-  const stageRef = useRef<HTMLDivElement>(null);
+  const dragStart = useRef<{ x: number; y: number } | null>(null);
 
   const filtered = useMemo(() => {
     const normalized = normalizeArabic(query);
@@ -32,22 +30,24 @@ export function CardFanCarousel({ items }: { items: readonly FanCardItem[] }) {
 
   const activeItem = items[activeIndex] ?? items[0];
 
-  useEffect(() => {
-    const stage = stageRef.current;
-    if (!stage || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const cards = stage.querySelectorAll<HTMLElement>(".fan-card");
-    gsap.fromTo(
-      cards,
-      { y: 20, opacity: 0, rotate: 0 },
-      { y: 0, opacity: 1, rotate: (index) => (index - 2) * 7, stagger: 0.025, duration: 0.35, ease: "power2.out" },
-    );
-  }, [activeIndex]);
-
   const move = (direction: 1 | -1) => {
     setActiveIndex((current) => (current + direction + items.length) % items.length);
   };
 
-  const visibleItems = [-2, -1, 0, 1, 2].map((offset) => {
+  const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    dragStart.current = { x: event.clientX, y: event.clientY };
+  };
+
+  const onPointerUp = (event: PointerEvent<HTMLDivElement>) => {
+    if (!dragStart.current) return;
+    const dx = event.clientX - dragStart.current.x;
+    const dy = event.clientY - dragStart.current.y;
+    dragStart.current = null;
+    if (Math.abs(dx) < 34 || Math.abs(dx) < Math.abs(dy) * 1.25) return;
+    move(dx > 0 ? -1 : 1);
+  };
+
+  const visibleItems = [-3, -2, -1, 0, 1, 2, 3].map((offset) => {
     const index = (activeIndex + offset + items.length) % items.length;
     return { item: items[index], offset, index };
   });
@@ -71,7 +71,15 @@ export function CardFanCarousel({ items }: { items: readonly FanCardItem[] }) {
         />
       </div>
 
-      <div className="fan-stage" ref={stageRef} aria-live="polite">
+      <div
+        className="fan-stage"
+        aria-live="polite"
+        onPointerDown={onPointerDown}
+        onPointerUp={onPointerUp}
+        onPointerCancel={() => {
+          dragStart.current = null;
+        }}
+      >
         {visibleItems.map(({ item, offset, index }) => {
           const isActive = offset === 0;
           return (
@@ -90,11 +98,11 @@ export function CardFanCarousel({ items }: { items: readonly FanCardItem[] }) {
             >
               <Image
                 src={item.asset.publicPath}
-                alt=""
+                alt={isActive ? `صورة ${item.name}` : ""}
                 width={item.asset.width}
                 height={item.asset.height}
                 className="h-full w-full object-contain"
-                sizes="(max-width: 768px) 70vw, 280px"
+                sizes="(max-width: 768px) 175px, 220px"
               />
             </button>
           );
@@ -116,8 +124,6 @@ export function CardFanCarousel({ items }: { items: readonly FanCardItem[] }) {
         </button>
       </div>
 
-      <ZoomableImage asset={activeItem.asset} alt={`صورة ${activeItem.name}`} className="fan-active-image" />
-
       <button
         type="button"
         className="secondary-action fan-grid-toggle"
@@ -125,32 +131,36 @@ export function CardFanCarousel({ items }: { items: readonly FanCardItem[] }) {
         onClick={() => setShowAll((value) => !value)}
       >
         <SquaresFour size={18} weight="bold" />
-        عرض الكل
+        {showAll ? "إخفاء الكل" : "عرض الكل"}
       </button>
 
       {showAll ? (
         <div className="animal-grid roomy" aria-live="polite">
-          {filtered.map((item) => (
-            <button
-              type="button"
-              className="animal-grid-item"
-              key={item.asset.id}
-              onClick={() => {
-                const next = items.findIndex((animal) => animal.asset.id === item.asset.id);
-                if (next >= 0) setActiveIndex(next);
-              }}
-            >
-              <Image
-                src={item.asset.publicPath}
-                alt=""
-                width={item.asset.width}
-                height={item.asset.height}
-                className="h-full w-full object-contain"
-                sizes="150px"
-              />
-              <span>{item.name}</span>
-            </button>
-          ))}
+          {filtered.length ? (
+            filtered.map((item) => (
+              <button
+                type="button"
+                className="animal-grid-item"
+                key={item.asset.id}
+                onClick={() => {
+                  const next = items.findIndex((animal) => animal.asset.id === item.asset.id);
+                  if (next >= 0) setActiveIndex(next);
+                }}
+              >
+                <Image
+                  src={item.asset.publicPath}
+                  alt=""
+                  width={item.asset.width}
+                  height={item.asset.height}
+                  className="h-full w-full object-contain"
+                  sizes="150px"
+                />
+                <span>{item.name}</span>
+              </button>
+            ))
+          ) : (
+            <p className="empty-state">لا توجد نتيجة مطابقة.</p>
+          )}
         </div>
       ) : null}
     </div>
