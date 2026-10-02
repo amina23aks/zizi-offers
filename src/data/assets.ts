@@ -1157,6 +1157,20 @@ export const imageAssets = [
     "notes": null
   },
   {
+    "id": "programs:الدينيه",
+    "section": "programs",
+    "fileName": "الدينيه.jpg",
+    "stem": "الدينيه",
+    "extension": ".jpg",
+    "width": 640,
+    "height": 640,
+    "bytes": 47275,
+    "publicPath": "/assets/programs/الدينيه.jpg",
+    "purpose": "program-cover",
+    "status": "available",
+    "notes": "Actual supplied religious program image; filename preserved as delivered."
+  },
+  {
     "id": "programs:السهم",
     "section": "programs",
     "fileName": "السهم.jpg",

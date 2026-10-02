@@ -1,8 +1,9 @@
 "use client";
 
-import { Fingerprint, X } from "@phosphor-icons/react";
+import { X } from "@phosphor-icons/react";
 import { useState } from "react";
 import { fingerprintNames } from "@/data/catalog";
+import { FingerPrintIcon } from "@/components/ui/animated-icons";
 
 export function FingerprintExplorer() {
   const [open, setOpen] = useState(false);
@@ -18,7 +19,7 @@ export function FingerprintExplorer() {
           aria-controls="fingerprint-list"
           onClick={() => setOpen((value) => !value)}
         >
-          <Fingerprint className="fingerprint-icon" size={58} weight="duotone" />
+          <FingerPrintIcon className="fingerprint-icon" size={58} />
           <span>استكشفي البصمات</span>
         </button>
       </div>

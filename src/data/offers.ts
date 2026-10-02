@@ -383,6 +383,7 @@ export const offers = [
     format: "program",
     price: usd(29),
     availability: "unavailable",
+    assetId: "programs:الدينيه",
     source: "docs/zizi-website-reference.md",
   },
   {

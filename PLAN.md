@@ -12,10 +12,11 @@ Status reflects work actually completed in `C:\ziziwebsite\zizi-offers`. User de
 | 6 | Vercel linked deployment when instructed | Explicitly authorized for Stage 1; pending GitHub repo or available Vercel import path | Pending |
 | 7 | Prepare Firebase project/web app and Cloudinary when instructed | Deferred; do not integrate in Stage 1 | Pending |
 | 8 | Home, tests and one offer details page | Stage 3 first pass built `/`, `/tests`, and `/offers/emotional-communication`; later superseded visually by the public redesign branch | Completed |
-| 9 | Public category pages and revised visual direction | Redesign branch builds `/`, `/tests`, `/coaching`, `/courses`, `/programs`, `/sessions`, `/fingerprints`, `/compass`, and `/offers/emotional-communication` without booking UI | In progress |
-| 10 | Admin frontend prototype | Deferred; prototype saves must be labeled non-durable before backend integration | Pending |
-| 11 | Auth, Firestore, signed media uploads | Deferred; no secrets committed | Pending |
-| 12 | Final content review and deployment when instructed | Deferred | Pending |
+| 9 | Public category pages and revised visual direction | Redesign branch builds `/`, `/tests`, `/coaching`, `/courses`, `/programs`, `/sessions`, `/fingerprints`, `/compass`, and `/offers/emotional-communication` without booking UI | Completed |
+| 10 | Visual refinement from latest review | Local branch refines hero bubbles, category cards, tests interactions, compact media sizing, animated icons, and registers the newly supplied religious-program image | In progress |
+| 11 | Admin frontend prototype | Deferred; prototype saves must be labeled non-durable before backend integration | Pending |
+| 12 | Auth, Firestore, signed media uploads | Deferred; no secrets committed | Pending |
+| 13 | Final content review and deployment when instructed | Deferred | Pending |
 
 Customer accounts, calendar, payments, private feedback, start dates, compass PDF, and AI-generated test results remain deferred.
 
@@ -29,7 +30,7 @@ Customer accounts, calendar, payments, private feedback, start dates, compass PD
 ## Stage 2 notes
 
 - Local feature branch: `stage-2-assets-content`.
-- Actual assets found: coaching 8, codes 4, compass 6, courses 8, etho 51, programs 10, spectra 12, triad 1, zizi 1.
+- Actual assets found during Stage 2: coaching 8, codes 4, compass 6, courses 8, etho 51, programs 10, spectra 12, triad 1, zizi 1.
 - Empty sections: fingerprints, mindsets, sessions, tests.
 - `src/data/assets.ts` is generated from actual filenames, extensions, dimensions, and public paths.
 - `src/data/offers.ts` keeps offer/content data separate from React components and preserves unknown price/availability behavior.
@@ -57,3 +58,12 @@ Customer accounts, calendar, payments, private feedback, start dates, compass PD
 - Tests page remains in the exact order: الأكواد → الإيثو → العقليات → الأطياف → الثلاثي. It now uses a fan carousel for الإيثو, the supplied `العقليات.jpg` with text tabs, animated tabs for الأطياف, and the triple image with only the `متاح` badge.
 - Customer-facing booking controls, booking-unavailable panels, development labels, and placeholder image text were removed.
 - No push, merge, GitHub update, Vercel deployment, Firebase, Cloudinary, customer accounts, admin pages, payments, calendars, or start-date fields are authorized in this redesign stage.
+
+## Stage 3 visual refinement notes
+
+- Local feature branch: `stage-3-visual-refine`.
+- Latest visual instructions supersede the earlier Stage 3 layout where they conflict.
+- Registered the newly supplied `public/assets/programs/الدينيه.jpg` original and mapped it to the religious programming offer.
+- Homepage was tightened around a central one-line title with category bubbles visible around it on desktop and mobile, approved about text, and compact section cards.
+- Tests page was refined to use compact code cards, a fan-only Etho carousel with search and view-all, text tabs for mindsets, animated tabs for spectra, and a final section titled `الاختبارات النفسية للميولات السلوكية`.
+- No push, merge, GitHub update, Vercel deployment, Firebase, Cloudinary, customer accounts, admin pages, payments, calendars, or start-date fields are authorized in this refinement stage.
