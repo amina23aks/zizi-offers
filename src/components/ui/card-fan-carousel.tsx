@@ -20,6 +20,8 @@ export function CardFanCarousel({ items }: { items: readonly FanCardItem[] }) {
   const [showAll, setShowAll] = useState(false);
   const [paused, setPaused] = useState(false);
   const [interactionPaused, setInteractionPaused] = useState(false);
+  const [inView, setInView] = useState(true);
+  const shellRef = useRef<HTMLDivElement | null>(null);
   const dragStart = useRef<{ x: number; y: number } | null>(null);
   const resumeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -45,13 +47,23 @@ export function CardFanCarousel({ items }: { items: readonly FanCardItem[] }) {
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (media.matches || paused || interactionPaused) return;
+    if (media.matches || paused || interactionPaused || !inView) return;
     const tick = window.setInterval(() => {
       if (document.hidden) return;
-      move(-1);
-    }, 3600);
+      move(1);
+    }, 5600);
     return () => window.clearInterval(tick);
-  }, [paused, interactionPaused, move]);
+  }, [paused, interactionPaused, inView, move]);
+
+  useEffect(() => {
+    if (!shellRef.current || typeof IntersectionObserver === "undefined") return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(Boolean(entry?.isIntersecting)),
+      { threshold: 0.18 },
+    );
+    observer.observe(shellRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -105,7 +117,7 @@ export function CardFanCarousel({ items }: { items: readonly FanCardItem[] }) {
   });
 
   return (
-    <div className="fan-shell">
+    <div className="fan-shell" ref={shellRef}>
       <div className="fan-toolbar">
         <label className="search-label" htmlFor="etho-search">
           <MagnifyingGlass size={18} weight="bold" />

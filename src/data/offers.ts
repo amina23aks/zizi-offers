@@ -161,7 +161,7 @@ export const offers = [
   {
     id: "professional-communication-team-10",
     slug: "professional-communication-team-10",
-    title: "التواصل الاحترافي - تيم 10",
+    title: "التواصل الاحترافي",
     category: "coaching",
     format: "coaching",
     price: usd(100),
@@ -337,6 +337,7 @@ export const offers = [
     format: "coaching",
     price: usd(313),
     availability: "unknown",
+    programDuration: "شهر واحد",
     sessionDuration: "ساعتان",
     source: "latest owner corrections",
   },
