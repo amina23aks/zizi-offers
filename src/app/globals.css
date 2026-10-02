@@ -2404,15 +2404,29 @@ body {
 }
 
 .fan-stage {
-  height: 350px;
+  height: clamp(338px, 36vw, 398px);
   overflow: clip;
 }
 
 .fan-card {
-  height: 318px;
-  padding: 0.28rem;
+  aspect-ratio: 1240 / 2206;
+  width: clamp(170px, 18vw, 202px);
+  height: auto;
+  min-height: 0;
+  padding: 0.12rem;
+  border-radius: 18px;
   transition: transform 950ms cubic-bezier(0.22, 1, 0.36, 1), opacity 950ms ease, border-color 220ms ease;
   will-change: transform;
+}
+
+.fan-card img {
+  display: block;
+  height: auto !important;
+  width: 100% !important;
+  max-width: 100%;
+  max-height: none;
+  border-radius: 15px;
+  object-fit: contain !important;
 }
 
 .fan-card.active {
@@ -2515,11 +2529,16 @@ body {
   }
 
   .fan-stage {
-    height: 305px;
+    height: clamp(312px, 82vw, 350px);
   }
 
   .fan-card {
-    height: 282px;
-    width: min(68vw, 205px);
+    width: clamp(150px, 42vw, 178px);
+    padding: 0.1rem;
+    border-radius: 17px;
+  }
+
+  .fan-card img {
+    border-radius: 14px;
   }
 }
