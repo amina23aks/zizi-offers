@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { CheckCircle, UsersThree } from "@phosphor-icons/react/dist/ssr";
 import { ZoomableImage } from "@/components/zoomable-image";
 import {
@@ -22,9 +21,6 @@ export default function EmotionalCommunicationPage() {
     <main className="site-main page-shell">
       <section className="offer-detail-hero">
         <div className="offer-detail-copy">
-          <Link href="/" className="text-link inner-inline-link">
-            الرئيسية
-          </Link>
           <p className="eyebrow">كوتشينغ جماعي</p>
           <h1>{offer.title}</h1>
           <p>

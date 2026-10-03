@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Clock, UsersThree } from "@phosphor-icons/react/dist/ssr";
-import { formatLabel, formatPrice, getAsset, type DisplayOffer } from "@/data/catalog";
+import { Clock, User, UsersThree } from "@phosphor-icons/react/dist/ssr";
+import { formatAvailability, formatLabel, formatPrice, getAsset, type DisplayOffer } from "@/data/catalog";
 import { cn } from "@/lib/utils";
 
 export type CoachingFormatFilter = "group" | "individual";
@@ -27,13 +27,16 @@ export function OfferCard({
     label: offer.priceLabel,
     clarification: offer.priceClarification,
   };
+  const displayAvailability = matchingVariant?.availability
+    ? formatAvailability(matchingVariant.availability)
+    : offer.availabilityLabel;
+  const displayAvailabilityStatus = matchingVariant?.availability ?? offer.availability;
   const meta = [
-    offer.programDuration ? `مدة البرنامج: ${offer.programDuration}` : null,
-    offer.sessionDuration ? `مدة الجلسة: ${offer.sessionDuration}` : null,
-    offer.totalTrainingDuration ? `التدريب: ${offer.totalTrainingDuration}` : null,
-    offer.capacity ? `السعة: ${offer.capacity}` : null,
-    offer.priceBasis ?? null,
-  ].filter(Boolean);
+    offer.programDuration ? { icon: "clock", label: `مدة البرنامج: ${offer.programDuration}` } : null,
+    offer.sessionDuration ? { icon: "clock", label: `مدة الجلسة: ${offer.sessionDuration}` } : null,
+    offer.totalTrainingDuration ? { icon: "clock", label: `مدة التدريب: ${offer.totalTrainingDuration}` } : null,
+    offer.capacity ? { icon: "group", label: `السعة: ${offer.capacity}` } : null,
+  ].filter(Boolean) as { icon: "clock" | "group"; label: string }[];
 
   return (
     <article className="offer-card">
@@ -52,8 +55,8 @@ export function OfferCard({
       <div className="flex flex-1 flex-col gap-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <p className="eyebrow">{offer.category === "programs" ? "برمجة" : formatLabel(offer.format)}</p>
-          {offer.availabilityLabel ? (
-            <span className={cn("status-badge", `status-${offer.availability}`)}>{offer.availabilityLabel}</span>
+          {displayAvailability ? (
+            <span className={cn("status-badge", `status-${displayAvailabilityStatus}`)}>{displayAvailability}</span>
           ) : null}
         </div>
         <h3 className="text-xl font-bold">{offer.title}</h3>
@@ -67,10 +70,10 @@ export function OfferCard({
         ) : null}
         {meta.length ? (
           <div className="offer-meta-list">
-            {meta.map((item, index) => (
-              <span key={item}>
-                {index % 2 === 0 ? <Clock size={15} weight="bold" /> : <UsersThree size={15} weight="bold" />}
-                {item}
+            {meta.map((item) => (
+              <span key={item.label}>
+                {item.icon === "clock" ? <Clock size={15} weight="bold" /> : <UsersThree size={15} weight="bold" />}
+                {item.label}
               </span>
             ))}
           </div>
@@ -78,8 +81,16 @@ export function OfferCard({
         {visibleVariants?.length ? (
           <div className="offer-variants" aria-label="خيارات السعر">
             {visibleVariants.map((variant) => (
-              <span key={variant.id}>
-                {variant.title}: {variant.price.status === "unknown" ? "00" : `${variant.price.amountUsd}$`}
+              <span key={variant.id} className="offer-variant-pill">
+                {variant.title.includes("جماعي") ? <UsersThree size={15} weight="bold" /> : <User size={15} weight="bold" />}
+                <strong>{variant.title}</strong>
+                <b dir="ltr">{formatPrice(variant.price).label}</b>
+                {formatPrice(variant.price).clarification ? <small>{formatPrice(variant.price).clarification}</small> : null}
+                {variant.availability ? (
+                  <em className={cn("variant-status", `status-${variant.availability}`)}>
+                    {formatAvailability(variant.availability)}
+                  </em>
+                ) : null}
               </span>
             ))}
           </div>

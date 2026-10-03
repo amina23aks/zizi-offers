@@ -27,8 +27,8 @@ export const formatAvailability = (availability: Availability) => {
 export const formatPrice = (price: OfferPrice) => {
   const value = renderPriceValue(price);
   return {
-    label: price.status === "free" ? "مجاني" : value === null ? "متعدد" : `${value}$`,
-    clarification: price.status === "unknown" ? "السعر غير محدد" : null,
+    label: price.status === "free" ? "مجاني" : value === null ? "حسب الخيار" : `${value}$`,
+    clarification: price.status === "unknown" ? price.clarification ?? "السعر غير محدد" : null,
   };
 };
 
@@ -88,21 +88,21 @@ export const publicCategories = [
     id: "sessions",
     href: "/sessions",
     label: "الجلسات",
-    note: "جلسات واستشارات متاحة طوال السنة",
+    note: "جلسات واستشارات زيزي",
     accent: "sessions",
   },
   {
     id: "fingerprints",
     href: "/fingerprints",
     label: "البصمات",
-    note: "أسماء البصمات فقط الآن",
+    note: "استكشاف بصمات زيزي",
     accent: "fingerprints",
   },
   {
     id: "compass",
     href: "/compass",
     label: "بوصلة المشاعر",
-    note: "مسار الانطلاق وخمس بطاقات",
+    note: "مسار الانطلاق والمشاعر",
     accent: "compass",
   },
 ] as const;
@@ -146,7 +146,7 @@ export const offersByCategory = (category: Offer["category"]) =>
 export const categoryPageInfo = {
   coaching: {
     title: "الكوتشينغ",
-    intro: "مسارات كوتشينغ جماعية وفردية حسب المعلومات المتاحة لكل عرض.",
+    intro: "",
   },
   courses: {
     title: "الدورات",
@@ -158,7 +158,7 @@ export const categoryPageInfo = {
   },
   sessions: {
     title: "الجلسات النفسية",
-    intro: "جلسات واستشارات متاحة طوال السنة حسب القائمة المعتمدة.",
+    intro: "",
   },
 } as const;
 
@@ -221,6 +221,10 @@ const animalDisplayNames: Record<string, string> = {
   "نمله": "نملة",
 };
 
+const animalAliases: Record<string, readonly string[]> = {
+  "ذيب": ["ذيب", "الذيب", "ذئب", "الذئب", "ديب", "الديب"],
+};
+
 export const ethoAnimals = imageAssets
   .filter((asset) => asset.section === "etho")
   .map((asset) => ({
@@ -229,8 +233,8 @@ export const ethoAnimals = imageAssets
     aliases: [
       asset.stem,
       animalDisplayNames[asset.stem] ?? asset.stem,
-      asset.stem.replaceAll("ه", "ة"),
-      asset.stem === "ذيب" ? "ذئب" : "",
+      `ال${asset.stem}`,
+      ...(animalAliases[asset.stem] ?? []),
     ].filter(Boolean),
   }));
 
@@ -328,11 +332,15 @@ export const normalizeArabic = (value: string) =>
     .replace(/[\u064B-\u065F\u0670]/g, "")
     .replace(/[إأآا]/g, "ا")
     .replace(/ى/g, "ي")
-    .replace(/ة/g, "ه")
     .replace(/ـ/g, "")
     .replace(/\s+/g, " ")
     .trim()
     .toLowerCase();
+
+export const searchableArabicForms = (value: string) => {
+  const normalized = normalizeArabic(value);
+  return normalized.startsWith("ال") ? [normalized, normalized.slice(2)] : [normalized];
+};
 
 export const homeSections = [
   {
@@ -374,7 +382,7 @@ export const homeSections = [
         availabilityLabel: "متاح",
         summary: "اختبار يساعدك على فهم تناسق استجاباتك المختلفة خلال الأشهر الأخيرة.",
       },
-      { id: "triad-home", title: "الاختبارات النفسية للميولات السلوكية", href: "/tests#behavioral-inclinations", priceLabel: "متعدد", availabilityLabel: "متاح", summary: "مثلث الدراما، الأدوار الأربعة، والسلوك النفسي." },
+      { id: "triad-home", title: "الاختبارات النفسية للميولات السلوكية", href: "/tests#behavioral-inclinations", priceLabel: "حسب الاختبار", availabilityLabel: "متاح", summary: "مثلث الدراما، الأدوار الأربعة، والسلوك النفسي." },
     ],
   },
   {
@@ -412,17 +420,18 @@ export const homeSections = [
   {
     id: "compass",
     title: "بوصلة المشاعر",
-    intro: "مسار الانطلاق وخمس بطاقات مشاعر بالصور الأصلية.",
+    intro: "",
     href: "/compass",
     accent: "compass",
     cards: [
-      ...compassCards.map((card) => ({ id: `compass-${card.id}`, title: card.title, href: "/compass", availabilityLabel: "متاح" })),
+      { id: "compass-launch", title: "مسار الانطلاق", href: "/compass", availabilityLabel: "متاح", asset: compassLaunchAsset },
+      ...compassCards.map((card) => ({ id: `compass-${card.id}`, title: card.title, href: "/compass", availabilityLabel: "متاح", asset: card.asset })),
     ],
   },
   {
     id: "fingerprints",
     title: "البصمات",
-    intro: "أسماء البصمات الحالية دون أوصاف أو أسعار غير معتمدة.",
+    intro: "",
     href: "/fingerprints",
     accent: "fingerprints",
     cards: fingerprintNames.slice(0, 8).map((name) => ({ id: `fingerprint-${name}`, title: name, href: "/fingerprints" })),
