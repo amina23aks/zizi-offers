@@ -10,7 +10,7 @@ import {
   Plant,
   Sparkle,
 } from "@phosphor-icons/react/dist/ssr";
-import { OfferCard } from "@/components/offer-card";
+import { OfferCardCollection } from "@/components/offer-card-collection";
 import { getAsset, homeSections, publicCategories, ziziAbout } from "@/data/catalog";
 import { ziziIdentityAssetIds } from "@/data/assets";
 
@@ -101,14 +101,12 @@ export default function Home() {
             </div>
             <div className="home-carousel-row" tabIndex={0} aria-label={`عروض ${section.title}`}>
               {"offers" in section
-                ? section.offers.map((offer) => (
-                    <div className="home-carousel-item" key={offer.id}>
-                      <OfferCard
-                        offer={offer}
-                        href={offer.id === "emotional-communication" ? "/offers/emotional-communication" : undefined}
-                      />
-                    </div>
-                  ))
+                ? (
+                    <OfferCardCollection
+                      offers={section.offers}
+                      itemClassName="home-carousel-item"
+                    />
+                  )
                 : section.cards.map((card) => (
                     <Link key={card.id} href={card.href} className="home-overview-card">
                       {"asset" in card && card.asset ? (

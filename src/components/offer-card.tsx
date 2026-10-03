@@ -1,6 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { Clock, User, UsersThree } from "@phosphor-icons/react/dist/ssr";
+import { Clock, User, UsersThree } from "@phosphor-icons/react";
 import { formatAvailability, formatLabel, formatPrice, getAsset, type DisplayOffer } from "@/data/catalog";
 import { cn } from "@/lib/utils";
 
@@ -13,10 +15,12 @@ export function OfferCard({
   offer,
   href,
   formatFilter,
+  onImageOpen,
 }: {
   offer: DisplayOffer;
   href?: string;
   formatFilter?: CoachingFormatFilter;
+  onImageOpen?: (opener: HTMLButtonElement) => void;
 }) {
   const asset = getAsset(offer.assetId);
   const visibleVariants = formatFilter && offer.variants?.length
@@ -40,7 +44,23 @@ export function OfferCard({
 
   return (
     <article className="offer-card">
-      {asset ? (
+      {asset && onImageOpen ? (
+        <button
+          type="button"
+          className="offer-card-media image-view-trigger"
+          onClick={(event) => onImageOpen?.(event.currentTarget)}
+          aria-label={`عرض غلاف ${offer.title}`}
+        >
+          <Image
+            src={asset.publicPath}
+            alt={`غلاف ${offer.title}`}
+            width={asset.width}
+            height={asset.height}
+            className="asset-image-contain"
+            sizes="(max-width: 768px) 88vw, 280px"
+          />
+        </button>
+      ) : asset ? (
         <div className="offer-card-media">
           <Image
             src={asset.publicPath}
