@@ -120,3 +120,14 @@ Customer accounts, calendar, payments, private feedback, start dates, compass PD
 - Added inner-page back navigation with in-site history fallback and a compact current-page category menu.
 - Dark mode received restrained category-tinted surfaces and ambient backgrounds without dimming text.
 - Independent Playwright verification on the production server passed for responsive overflow, code-card flip, Etho autoplay/stop/search/grid/viewer, and coaching image viewer. The existing dev server on port 3000 was found to serve a non-hydrated stale session; production server on port 3001 hydrated correctly.
+
+## 3 October latest owner corrections pass
+
+- Code cards now preserve the delivered 578 by 1280 artwork ratio with no top/bottom padding on the revealed image face.
+- Category titles, compass pricing, offer cards, and responsive grids were tightened so content drives height and mobile uses compact two-column collections where requested.
+- Header navigation now keeps `الرئيسية` as a Home control and uses a separate Back control plus a mobile category dropdown.
+- Mindsets uses a larger physical-left image on desktop with top-aligned text. Spectra, triple, compass, and offer images stay uncropped and zoomable.
+- The shared image viewer now supports zoom in, zoom out, reset, pinch, pan while zoomed, keyboard arrows, Escape, and mobile swipe when fitted.
+- Compass cards are image-only on the homepage and compass page; captions remain available through accessible labels and the full-screen viewer.
+- All program-category offers are marked `غير متاح` per the latest owner correction.
+- Browser verification covered desktop/mobile `/tests`, `/compass`, `/programs`, and `/`; typecheck, lint, and production build passed before committing.

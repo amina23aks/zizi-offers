@@ -72,7 +72,7 @@ export function OfferCard({
           />
         </div>
       ) : null}
-      <div className="flex flex-1 flex-col gap-3">
+      <div className="offer-card-body">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <p className="eyebrow">{offer.category === "programs" ? "برمجة" : formatLabel(offer.format)}</p>
           {displayAvailability ? (
@@ -115,7 +115,7 @@ export function OfferCard({
             ))}
           </div>
         ) : null}
-        <div className="offer-card-footer mt-auto flex flex-wrap items-end justify-between gap-3 pt-2">
+        <div className="offer-card-footer">
           <div className="offer-price-block">
             <p className="price-badge" dir="ltr">{displayPrice.label}</p>
             {displayPrice.clarification ? (

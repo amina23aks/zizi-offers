@@ -11,6 +11,8 @@ import { ZoomableImage } from "@/components/zoomable-image";
 import {
   codeCards,
   ethoAnimals,
+  formatPrice,
+  getOffer,
   mindsets,
   mindsetCoverAsset,
   spectraAssets,
@@ -27,6 +29,8 @@ const testsNav = [
 ] as const;
 
 const codeLayout = ["A", "C", "B", "D"] as const;
+const tripleOffer = getOffer("triple-test");
+const tripleVariants = tripleOffer && "variants" in tripleOffer ? tripleOffer.variants : [];
 
 export function TestsExperience() {
   const orderedCodes = useMemo(
@@ -100,7 +104,14 @@ export function TestsExperience() {
         <span id="triple" className="anchor-compat" aria-hidden="true" />
         <SectionHeading title="الاختبارات النفسية للميولات السلوكية" />
         <div className="triple-panel">
-          <span className="status-badge">متاح</span>
+          <div className="triple-meta test-meta-row">
+            <span className="status-badge">متاح</span>
+            {tripleVariants.map((variant) => (
+              <span key={variant.id} className="price-badge" dir="ltr">
+                {formatPrice(variant.price).label}
+              </span>
+            ))}
+          </div>
           <ZoomableImage
             asset={triadAsset}
             alt="الاختبارات النفسية للميولات السلوكية"

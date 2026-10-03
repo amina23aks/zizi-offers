@@ -3047,3 +3047,393 @@ body {
     max-height: 150px;
   }
 }
+
+/* Latest owner corrections: compact cards, true image ratios, and shared zoom viewer. */
+.header-primary-controls {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.mobile-nav-menu {
+  position: relative;
+  display: block;
+  margin-inline-start: auto;
+}
+
+.mobile-nav-menu summary {
+  display: inline-flex;
+  min-height: 42px;
+  cursor: pointer;
+  list-style: none;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 86%, transparent);
+  padding: 0.55rem 0.9rem;
+  color: var(--foreground);
+  font-size: 0.92rem;
+  font-weight: 900;
+}
+
+.mobile-nav-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.mobile-nav-menu-panel {
+  position: absolute;
+  inset-block-start: calc(100% + 0.55rem);
+  inset-inline-end: 0;
+  z-index: 60;
+  display: grid;
+  min-width: min(76vw, 260px);
+  gap: 0.35rem;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--surface) 96%, transparent);
+  box-shadow: 0 18px 50px var(--shadow);
+  padding: 0.55rem;
+}
+
+.mobile-nav-link {
+  border-radius: 14px;
+  padding: 0.68rem 0.78rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 900;
+}
+
+.mobile-nav-link.active,
+.mobile-nav-link:hover {
+  background: color-mix(in srgb, var(--brand-blue) 10%, var(--surface));
+  color: var(--brand-blue);
+}
+
+@media (min-width: 900px) {
+  .mobile-nav-menu {
+    display: none;
+  }
+}
+
+.category-page-hero,
+.compass-hero {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+.offer-grid,
+.offer-grid.dense {
+  align-items: start;
+}
+
+.offer-card {
+  height: auto;
+  min-height: 0;
+  align-self: start;
+}
+
+.offer-card-body {
+  display: grid;
+  gap: 0.75rem;
+  align-content: start;
+}
+
+.offer-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-top: 0.35rem;
+}
+
+.home-section-coaching .offer-meta-list,
+.home-section-coaching .offer-variants {
+  display: flex;
+}
+
+.code-card {
+  overflow: hidden;
+  padding: 0;
+}
+
+.code-card-shell,
+.code-card-face {
+  min-height: 0 !important;
+  aspect-ratio: 578 / 1280;
+}
+
+.code-card-front {
+  padding: clamp(0.55rem, 2vw, 0.9rem);
+}
+
+.code-card-back {
+  display: block;
+  padding: 0 !important;
+  background: transparent;
+}
+
+.code-card-back .code-image-frame {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 578 / 1280;
+  border-radius: inherit;
+  background: transparent;
+  padding: 0;
+  overflow: hidden;
+}
+
+.code-card-back .code-image-frame img {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: none;
+  object-fit: contain !important;
+}
+
+.mindset-slider {
+  align-items: start;
+}
+
+.mindset-slider .mindset-copy-panel {
+  align-self: start;
+  min-height: 0;
+}
+
+.mindset-slider .mindset-image-frame {
+  align-self: start;
+  width: min(100%, 300px);
+}
+
+@media (min-width: 900px) {
+  .mindset-slider {
+    align-items: start;
+    grid-template-columns: minmax(260px, 330px) minmax(0, 1fr);
+  }
+
+  .mindset-slider .mindset-image-frame {
+    align-self: start;
+    width: min(100%, 320px);
+  }
+}
+
+.spectra-image-frame {
+  width: min(100%, 320px);
+  min-height: 0;
+  aspect-ratio: auto;
+  overflow: visible;
+  background: transparent;
+}
+
+.spectra-image-frame img {
+  width: auto !important;
+  max-width: 100%;
+  height: auto !important;
+  max-height: min(70svh, 620px);
+}
+
+.triple-panel {
+  gap: 1rem;
+  max-width: none;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+.triple-meta {
+  margin: 0;
+}
+
+.triple-image-frame {
+  width: min(100%, 560px);
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.triple-image-frame img {
+  width: 100% !important;
+  height: auto !important;
+  max-height: none;
+}
+
+.compass-prices,
+.compass-price-note {
+  justify-content: flex-start;
+  text-align: start;
+}
+
+.compass-prices strong,
+.compass-price-note b {
+  unicode-bidi: isolate;
+}
+
+.compass-path {
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+.compass-card-row {
+  align-items: start;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.compass-card-image-only,
+.compass-overview-card {
+  min-height: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+.compass-card-image-only:hover,
+.compass-overview-card:hover {
+  transform: none;
+}
+
+.compass-image-frame {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 905 / 1280;
+  border: 1px solid color-mix(in srgb, var(--border) 76%, transparent);
+  border-radius: 16px;
+  background: var(--surface);
+  padding: 0;
+  overflow: hidden;
+}
+
+.compass-image-frame img {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: none;
+  object-fit: contain !important;
+}
+
+.home-compass-image-frame {
+  max-width: 190px;
+  margin-inline: auto;
+}
+
+@media (min-width: 900px) {
+  .category-coaching .offer-grid.dense,
+  .category-courses .offer-grid.dense,
+  .category-programs .offer-grid.dense,
+  .category-sessions .offer-grid.dense {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .compass-card-row {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1320px) {
+  .category-coaching .offer-grid.dense,
+  .category-courses .offer-grid.dense,
+  .category-programs .offer-grid.dense,
+  .category-sessions .offer-grid.dense,
+  .compass-card-row {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .compass-card-row {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 899px) {
+  .category-coaching .offer-grid.dense,
+  .category-courses .offer-grid.dense,
+  .category-programs .offer-grid.dense,
+  .category-sessions .offer-grid.dense {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+  }
+
+  .category-coaching .offer-card-media img,
+  .home-section-coaching .offer-card-media img {
+    max-height: 190px;
+  }
+
+  .mindset-slider .mindset-image-frame {
+    width: min(100%, 280px);
+  }
+}
+
+@media (max-width: 520px) {
+  .site-header nav {
+    flex-wrap: wrap;
+  }
+
+  .mobile-nav-menu {
+    order: 3;
+    width: 100%;
+  }
+
+  .mobile-nav-menu summary {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .mobile-nav-menu-panel {
+    inset-inline: 0;
+    min-width: 100%;
+  }
+}
+
+.image-viewer {
+  touch-action: none;
+}
+
+.image-viewer-tools {
+  position: absolute;
+  inset-block-start: clamp(0.75rem, 2.5vw, 1.2rem);
+  inset-inline-start: clamp(0.75rem, 2.5vw, 1.2rem);
+  z-index: 2;
+  display: inline-flex;
+  gap: 0.35rem;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.1);
+  padding: 0.25rem;
+  backdrop-filter: blur(12px);
+}
+
+.image-viewer-tools button {
+  display: inline-flex;
+  min-width: 40px;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: #ffffff;
+}
+
+.image-viewer-tools button:hover {
+  background: rgb(255 255 255 / 0.16);
+}
+
+.image-viewer-image {
+  cursor: grab;
+  transform: translate3d(var(--viewer-x, 0), var(--viewer-y, 0), 0) scale(var(--viewer-scale, 1));
+  transform-origin: center;
+  transition: transform 140ms ease;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+@media (max-width: 640px) {
+  .image-viewer-tools {
+    inset-block-start: auto;
+    inset-block-end: 0.75rem;
+    inset-inline-start: 50%;
+    transform: translateX(-50%);
+  }
+
+  .image-viewer-figure {
+    padding-bottom: 3.75rem;
+  }
+}
