@@ -17,6 +17,7 @@ Status reflects work actually completed in `C:\ziziwebsite\zizi-offers`. User de
 | 11 | Latest corrections: overflow, homepage rows, tests data, prices | Local branch applies mobile overflow fixes, homepage offer carousel sections, updated test/coaching/session data, no USD labels, and compass installment removal | In progress |
 | 12 | Final copy/layout corrections and GitHub push | Remove unwanted copy and extra tests section, update homepage test cards, mobile two-column cards, image containment, Etho centering, verify and push feature branch | In progress |
 | 12b | Latest owner refinements | Plant coaching bubble, uncropped offer images, coaching format filters, physical-left prices, swipeable homepage rows, compass package note, code layout, Etho slow autoplay, verify and push feature branch | In progress |
+| 12c | Implementation correction pass | Fix Etho continuous motion/search, desktop mindset layout, centered test badges, coaching variant status data, mobile metadata, compass/home media, code-card geometry, docs and verification | In progress |
 | 13 | Admin frontend prototype | Deferred; prototype saves must be labeled non-durable before backend integration | Pending |
 | 14 | Auth, Firestore, signed media uploads | Deferred; no secrets committed | Pending |
 | 15 | Final content review and deployment when instructed | Deferred | Pending |
@@ -101,3 +102,10 @@ Customer accounts, calendar, payments, private feedback, start dates, compass PD
 - Offer/test prices are positioned on the physical left while preserving RTL reading flow.
 - Code cards use the requested physical arrangement: A top-left, B bottom-left, C top-right, D bottom-right.
 - Etho autoplay is slower, keeps Start/Stop, pauses during interaction/off-screen/reduced motion, and preserves direct dragging/search/view-all.
+
+## 3 October implementation correction notes
+
+- Etho carousel is being corrected from interval-based card jumps to one measured continuous transform, using local animal data and explicit aliases for wolf spellings.
+- Coaching data now carries per-variant availability for individual/group options. Public cards must display meaningful variant information and must not use the generic `متعدد` badge.
+- Latest owner decisions supersede prior session/course/coaching notes: `جلسة استشارية` is unavailable at 40$, `السؤال الصح في الوقت الصح` is the course title, and `الولوج لميدان العمل` is individual-only with unknown price.
+- Public copy flagged by the owner is removed rather than replaced with similar planning language.

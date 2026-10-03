@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Compass } from "@phosphor-icons/react/dist/ssr";
 import type { CSSProperties } from "react";
-import { InnerBackLink } from "@/components/category-page";
 import { ZoomableImage } from "@/components/zoomable-image";
 import { compassCards, compassLaunchAsset, compassPricing } from "@/data/catalog";
 
@@ -12,7 +11,6 @@ export const metadata: Metadata = {
 export default function CompassPage() {
   return (
     <main className="site-main page-shell">
-      <InnerBackLink />
       <section className="category-page-hero compass-hero">
         <Compass size={38} weight="duotone" />
         <h1>بوصلة المشاعر</h1>

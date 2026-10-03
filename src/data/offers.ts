@@ -36,6 +36,7 @@ export type OfferVariant = {
   id: string;
   title: string;
   price: OfferPrice;
+  availability?: Availability;
   note?: string;
 };
 
@@ -164,13 +165,19 @@ export const offers = [
     title: "التواصل الاحترافي",
     category: "coaching",
     format: "coaching",
-    price: usd(100),
-    availability: "unknown",
+    price: {
+      amountUsd: null,
+      status: "variant",
+    },
+    availability: "available",
     assetId: coachingAssetIds.communicationPlan,
+    variants: [
+      { id: "individual", title: "فردي", price: usd(1000), availability: "available" },
+      { id: "group", title: "جماعي", price: usd(100), availability: "unavailable" },
+    ],
     programDuration: "شهر واحد",
     sessionDuration: "ساعتان",
     capacity: "10 مشاركين",
-    priceBasis: "لكل مشاركة",
     source: "docs/zizi-website-reference.md",
   },
   {
@@ -186,12 +193,11 @@ export const offers = [
     availability: "unavailable",
     assetId: coachingAssetIds.communicationPlan,
     variants: [
-      { id: "individual", title: "فردي", price: usd(1000) },
-      { id: "group", title: "جماعي", price: usd(100) },
+      { id: "individual", title: "فردي", price: usd(1000), availability: "unavailable" },
+      { id: "group", title: "جماعي", price: usd(100), availability: "unavailable" },
     ],
     programDuration: "شهر واحد",
     sessionDuration: "ساعتان",
-    capacity: "10 مشاركين",
     source: "docs/zizi-website-reference.md",
     internalNotes:
       "Reference says group price wording is ambiguous; do not publish a resolved per-seat price.",
@@ -236,12 +242,11 @@ export const offers = [
     availability: "unknown",
     assetId: coachingAssetIds.bodyPlan,
     variants: [
-      { id: "individual", title: "فردي", price: usd(1000) },
-      { id: "group", title: "جماعي", price: usd(100) },
+      { id: "individual", title: "فردي", price: usd(1000), availability: "available" },
+      { id: "group", title: "جماعي", price: usd(100), availability: "unavailable" },
     ],
     totalTrainingDuration: "8 ساعات غير متواصلة",
     capacity: "10 مشاركين",
-    priceBasis: "للجماعي لكل مشاركة",
     source: "docs/zizi-website-reference.md",
   },
   {
@@ -288,10 +293,10 @@ export const offers = [
     availability: "unknown",
     assetId: coachingAssetIds.businessPlan,
     variants: [
-      { id: "individual-one-month", title: "فردي - شهر", price: usd(1000) },
-      { id: "individual-two-months", title: "فردي - شهران", price: usd(2000) },
-      { id: "group-one-month", title: "جماعي - شهر", price: usd(100) },
-      { id: "group-two-months", title: "جماعي - شهران", price: usd(200) },
+      { id: "individual-one-month", title: "فردي - شهر", price: usd(1000), availability: "available" },
+      { id: "individual-two-months", title: "فردي - شهران", price: usd(2000), availability: "available" },
+      { id: "group-one-month", title: "جماعي - شهر", price: usd(100), availability: "unavailable" },
+      { id: "group-two-months", title: "جماعي - شهران", price: usd(200), availability: "unavailable" },
     ],
     sessionDuration: "ساعتان",
     capacity: "10 مشاركين",
@@ -303,29 +308,13 @@ export const offers = [
     title: "الولوج لميدان العمل",
     category: "coaching",
     format: "coaching",
-    price: {
-      amountUsd: null,
-      status: "variant",
-    },
+    price: { ...unknownPrice, clarification: "السعر غير محدد بعد" },
     availability: "unknown",
     assetId: coachingAssetIds.workPlan,
     variants: [
-      { id: "individual", title: "فردي", price: usd(1000) },
-      { id: "group", title: "جماعي", price: usd(100) },
+      { id: "individual", title: "فردي", price: { ...unknownPrice, clarification: "السعر غير محدد بعد" } },
     ],
     programDuration: "شهر واحد",
-    sessionDuration: "ساعتان",
-    capacity: "10 مشاركين",
-    source: "latest owner corrections",
-  },
-  {
-    id: "decor-psychological-engineering",
-    slug: "decor-psychological-engineering",
-    title: "الهندسة النفسية للديكور",
-    category: "coaching",
-    format: "coaching",
-    price: usd(313),
-    availability: "unknown",
     sessionDuration: "ساعتان",
     source: "latest owner corrections",
   },
@@ -543,7 +532,7 @@ export const offers = [
   {
     id: "right-question",
     slug: "right-question",
-    title: "السؤال الصحيح في الوقت الصحيح",
+    title: "السؤال الصح في الوقت الصح",
     category: "courses",
     format: "course",
     price: usd(20),
@@ -625,7 +614,7 @@ export const offers = [
     category: "sessions",
     format: "consultation",
     price: usd(40),
-    availability: "available",
+    availability: "unavailable",
     availableThroughoutYear: true,
     source: "Stage 2 supplied sessions price list",
   },

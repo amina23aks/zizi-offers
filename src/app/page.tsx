@@ -111,6 +111,16 @@ export default function Home() {
                   ))
                 : section.cards.map((card) => (
                     <Link key={card.id} href={card.href} className="home-overview-card">
+                      {"asset" in card && card.asset ? (
+                        <Image
+                          src={card.asset.publicPath}
+                          alt={`غلاف ${card.title}`}
+                          width={card.asset.width}
+                          height={card.asset.height}
+                          className="home-overview-image asset-image-contain"
+                          sizes="180px"
+                        />
+                      ) : null}
                       <strong>{card.title}</strong>
                       {"summary" in card && card.summary ? <span>{card.summary}</span> : null}
                       <div className="mini-meta">

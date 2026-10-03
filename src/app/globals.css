@@ -2542,3 +2542,250 @@ body {
     border-radius: 14px;
   }
 }
+
+/* Owner correction pass: layout, local carousel motion, and compact uncropped media. */
+.about-avatar {
+  border-radius: 999px;
+}
+
+.about-avatar img {
+  border-radius: inherit;
+}
+
+.category-page-hero {
+  padding-block: clamp(1rem, 2.8vw, 1.8rem);
+}
+
+.page-section {
+  margin-top: clamp(1.45rem, 3vw, 2.35rem);
+}
+
+.tests-page .test-meta-row {
+  justify-content: center;
+}
+
+.tests-page .section-heading.compact {
+  margin-bottom: 0.65rem;
+  text-align: center;
+}
+
+.mindset-slider {
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .mindset-slider {
+    direction: ltr;
+    grid-template-areas: "image copy";
+    grid-template-columns: minmax(190px, 250px) minmax(0, 1fr);
+    max-width: 840px;
+  }
+
+  .mindset-slider .mindset-image-frame {
+    grid-area: image;
+    align-self: center;
+    justify-self: start;
+    width: min(100%, 230px);
+  }
+
+  .mindset-slider .mindset-copy-panel {
+    grid-area: copy;
+    direction: rtl;
+  }
+}
+
+.spectra-tab-card {
+  justify-items: center;
+}
+
+.spectra-image-frame {
+  display: grid;
+  visibility: visible;
+}
+
+.fan-stage {
+  height: clamp(300px, 33vw, 360px);
+  max-width: min(100%, 760px);
+  touch-action: pan-y;
+}
+
+.fan-track {
+  display: flex;
+  width: max-content;
+  gap: clamp(0.65rem, 2vw, 1rem);
+  padding-block: 0.5rem;
+  will-change: transform;
+  transform: translateX(calc(-1 * var(--fan-shift, 0px)));
+  animation: fan-marquee 160s linear infinite;
+  animation-play-state: paused;
+}
+
+.fan-track.is-running {
+  animation-play-state: running;
+}
+
+.fan-track.is-dragging {
+  animation: none;
+  transform: translateX(calc(-1 * var(--fan-shift, 0px)));
+}
+
+.fan-card,
+.fan-card.active {
+  position: relative;
+  inset: auto;
+  left: auto;
+  right: auto;
+  flex: 0 0 auto;
+  transform: none !important;
+  box-shadow: 0 12px 28px rgb(18 53 59 / 0.1);
+}
+
+.fan-card.active {
+  border-color: color-mix(in srgb, var(--brand-blue) 45%, var(--border));
+}
+
+.code-card {
+  padding: 0.45rem;
+}
+
+.code-card-shell,
+.code-card-face {
+  min-height: 0;
+  aspect-ratio: 578 / 1280;
+}
+
+.code-card-face {
+  padding: clamp(0.55rem, 2vw, 0.8rem);
+}
+
+.code-image-frame {
+  height: auto;
+  width: 100%;
+  aspect-ratio: 578 / 1280;
+  padding: 0;
+}
+
+.code-image-frame img {
+  display: block;
+  height: 100% !important;
+  width: 100% !important;
+  object-fit: contain !important;
+}
+
+.offer-meta-list,
+.offer-variants {
+  align-items: flex-start;
+}
+
+.offer-meta-list span,
+.offer-variants span {
+  white-space: normal;
+  text-align: start;
+}
+
+.offer-variant-pill {
+  flex-wrap: wrap;
+}
+
+.offer-variant-pill b,
+.offer-variant-pill small,
+.offer-variant-pill em {
+  font-style: normal;
+}
+
+.variant-status {
+  border-radius: 999px;
+  padding: 0.12rem 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.variant-status.status-available {
+  background: color-mix(in srgb, var(--brand-green) 14%, var(--surface));
+  color: var(--brand-green);
+}
+
+.variant-status.status-unavailable {
+  background: color-mix(in srgb, #dc2626 12%, var(--surface));
+  color: #dc2626;
+}
+
+.home-overview-image {
+  width: 100%;
+  height: 150px !important;
+  border-radius: 16px;
+  background: var(--surface-soft);
+  padding: 0.25rem;
+}
+
+.home-section-fingerprints .home-overview-card {
+  min-height: 0;
+  padding: 0.8rem;
+}
+
+.home-section-fingerprints .home-carousel-row {
+  grid-auto-columns: clamp(150px, 24vw, 190px);
+}
+
+.home-section-tests .home-overview-card {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--brand-blue) 8%, var(--surface)), var(--surface));
+  border-color: color-mix(in srgb, var(--brand-blue) 16%, var(--border));
+}
+
+@media (max-width: 899px) {
+  .about-avatar {
+    width: 64px;
+    border-radius: 999px;
+  }
+
+  .category-page-hero {
+    padding-block: 0.9rem;
+  }
+
+  .category-coaching .offer-grid.dense {
+    grid-template-columns: 1fr;
+  }
+
+  .category-coaching .offer-meta-list,
+  .category-coaching .offer-variants {
+    display: flex;
+  }
+
+  .fan-stage {
+    height: clamp(286px, 76vw, 322px);
+  }
+
+  .fan-track {
+    gap: 0.7rem;
+  }
+
+  .code-card-shell,
+  .code-card-face,
+  .code-image-frame {
+    aspect-ratio: 578 / 1280;
+  }
+
+  .home-overview-image {
+    height: 126px !important;
+  }
+
+  .home-section-fingerprints .home-carousel-row {
+    grid-auto-columns: minmax(148px, 45vw);
+  }
+}
+
+@keyframes fan-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fan-track {
+    animation: none;
+  }
+}

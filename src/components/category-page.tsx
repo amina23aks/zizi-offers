@@ -15,7 +15,6 @@ export function CategoryPage({
 
   return (
     <main className={`site-main page-shell category-${category}`}>
-      <InnerBackLink />
       <section className="category-page-hero">
         <h1>{info.title}</h1>
         {info.intro ? <p>{info.intro}</p> : null}
@@ -28,7 +27,6 @@ export function CategoryPage({
     </main>
   );
 }
-
 export function OfferList({ offers }: { offers: readonly DisplayOffer[] }) {
   return (
     <section className="page-section">
@@ -99,13 +97,5 @@ export function CoachingOfferList({
         ))}
       </div>
     </section>
-  );
-}
-
-export function InnerBackLink() {
-  return (
-    <div className="inner-route-link">
-      <Link href="/">الرئيسية</Link>
-    </div>
   );
 }
