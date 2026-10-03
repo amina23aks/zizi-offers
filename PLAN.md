@@ -109,3 +109,14 @@ Customer accounts, calendar, payments, private feedback, start dates, compass PD
 - Coaching data now carries per-variant availability for individual/group options. Public cards must display meaningful variant information and must not use the generic `متعدد` badge.
 - Latest owner decisions supersede prior session/course/coaching notes: `جلسة استشارية` is unavailable at 40$, `السؤال الصح في الوقت الصح` is the course title, and `الولوج لميدان العمل` is individual-only with unknown price.
 - Public copy flagged by the owner is removed rather than replaced with similar planning language.
+
+## 3 October complete correction pass
+
+- Replaced the competing Etho CSS marquee/JavaScript motion with one JavaScript-managed offset, preserving slow right-to-left autoplay, explicit Stop/Start, temporary pause during drag/search/viewer/hidden/off-screen states, and reduced-motion behavior.
+- Etho search now centers the first matching animal while keeping the full collection navigable; wolf aliases remain local and explicit.
+- The Etho expanded grid uses actual animal assets with compact uncropped cards. Clicking any visible animal opens the shared full-screen viewer at that item and keeps the grid open on close.
+- Added one shared accessible image viewer for Etho carousel/grid and offer artwork collections on the homepage and category pages. It supports close, arrows, Escape, swipe, scroll lock, and focus return.
+- Offer artwork on homepage previews and category pages now favors intrinsic aspect ratio, subtle borders, and complete uncropped images. Coaching, courses, and programs use two-card grids on dedicated pages.
+- Added inner-page back navigation with in-site history fallback and a compact current-page category menu.
+- Dark mode received restrained category-tinted surfaces and ambient backgrounds without dimming text.
+- Independent Playwright verification on the production server passed for responsive overflow, code-card flip, Etho autoplay/stop/search/grid/viewer, and coaching image viewer. The existing dev server on port 3000 was found to serve a non-hydrated stale session; production server on port 3001 hydrated correctly.

@@ -35,6 +35,29 @@
   --shadow: 0 24px 70px rgb(0 0 0 / 0.32);
 }
 
+.dark .site-main {
+  background:
+    radial-gradient(circle at 18% 12%, color-mix(in srgb, var(--brand-blue) 15%, transparent), transparent 25rem),
+    radial-gradient(circle at 82% 20%, color-mix(in srgb, var(--brand-green) 13%, transparent), transparent 23rem),
+    linear-gradient(180deg, var(--background), color-mix(in srgb, var(--surface-soft) 48%, var(--background)));
+}
+
+.dark .offer-card,
+.dark .category-card,
+.dark .home-overview-card,
+.dark .category-page-hero,
+.dark .interactive-panel,
+.dark .fan-shell,
+.dark .fingerprint-panel,
+.dark .compass-path,
+.dark .animated-tabs,
+.dark .triple-panel {
+  border-color: color-mix(in srgb, var(--accent, var(--brand-blue)) 18%, var(--border));
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent, var(--brand-blue)) 7%, transparent), transparent 42%),
+    var(--surface);
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -94,9 +117,21 @@ button {
 }
 
 .home-pill {
+  gap: 0.45rem;
   border: 1px solid var(--border);
   background: var(--surface);
   padding: 0 1rem;
+}
+
+.header-back {
+  flex: 0 0 auto;
+}
+
+.site-nav-links {
+  display: none;
+  min-width: 0;
+  align-items: center;
+  gap: 0.15rem;
 }
 
 .nav-link {
@@ -105,7 +140,8 @@ button {
   transition: background 180ms ease, color 180ms ease;
 }
 
-.nav-link:hover {
+.nav-link:hover,
+.nav-link.active {
   background: var(--surface-soft);
   color: var(--foreground);
 }
@@ -1014,6 +1050,10 @@ button {
 @media (min-width: 900px) {
   .desktop-only {
     display: block;
+  }
+
+  .site-nav-links {
+    display: flex;
   }
 
   .mobile-category-grid {
@@ -2384,7 +2424,18 @@ body {
 .compass-image-frame {
   min-height: 0;
   height: clamp(240px, 34vw, 340px);
-  padding: 0.45rem;
+  padding: 0.25rem;
+}
+
+.compass-image-frame img,
+.home-overview-image {
+  display: block;
+  width: auto !important;
+  max-width: 100%;
+  height: auto !important;
+  max-height: 180px;
+  margin-inline: auto;
+  object-fit: contain !important;
 }
 
 .codes-sketch-grid {
@@ -2435,6 +2486,93 @@ body {
 
 .animal-grid-item {
   grid-template-rows: 168px auto;
+}
+
+.image-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  grid-template-columns: minmax(44px, 0.12fr) minmax(0, 1fr) minmax(44px, 0.12fr);
+  align-items: center;
+  justify-items: center;
+  gap: clamp(0.35rem, 2vw, 1rem);
+  background: rgb(3 10 18 / 0.9);
+  padding: clamp(0.7rem, 2.5vw, 1.4rem);
+  color: #ffffff;
+  touch-action: pan-y;
+}
+
+.image-viewer-figure {
+  display: grid;
+  min-width: 0;
+  max-width: 100%;
+  max-height: calc(100svh - 2rem);
+  justify-items: center;
+  gap: 0.75rem;
+}
+
+.image-viewer-image {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(100%, 84vw);
+  max-height: calc(100svh - 6.2rem);
+  object-fit: contain;
+  border-radius: 18px;
+  box-shadow: 0 24px 80px rgb(0 0 0 / 0.36);
+}
+
+.image-viewer-figure figcaption {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  border: 1px solid rgb(255 255 255 / 0.16);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.08);
+  padding: 0.45rem 0.8rem;
+  text-align: center;
+}
+
+.image-viewer-figure span {
+  direction: ltr;
+  unicode-bidi: isolate;
+  color: rgb(255 255 255 / 0.78);
+}
+
+.image-viewer-close,
+.image-viewer-nav {
+  display: inline-flex;
+  min-width: 46px;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(255 255 255 / 0.18);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.1);
+  color: #ffffff;
+  backdrop-filter: blur(12px);
+}
+
+.image-viewer-close {
+  position: absolute;
+  inset-block-start: clamp(0.75rem, 2.5vw, 1.2rem);
+  inset-inline-end: clamp(0.75rem, 2.5vw, 1.2rem);
+}
+
+.image-viewer-prev {
+  grid-column: 1;
+}
+
+.image-viewer-next {
+  grid-column: 3;
+}
+
+.image-viewer-nav:hover,
+.image-viewer-close:hover {
+  background: rgb(255 255 255 / 0.18);
 }
 
 @media (min-width: 900px) {
@@ -2541,6 +2679,16 @@ body {
   .fan-card img {
     border-radius: 14px;
   }
+
+  .image-viewer {
+    grid-template-columns: 46px minmax(0, 1fr) 46px;
+    padding: 0.75rem;
+  }
+
+  .image-viewer-image {
+    max-width: min(100%, 82vw);
+    max-height: calc(100svh - 6.5rem);
+  }
 }
 
 /* Owner correction pass: layout, local carousel motion, and compact uncropped media. */
@@ -2596,6 +2744,8 @@ body {
 
 .spectra-tab-card {
   justify-items: center;
+  grid-template-columns: 1fr !important;
+  text-align: center;
 }
 
 .spectra-image-frame {
@@ -2616,17 +2766,16 @@ body {
   padding-block: 0.5rem;
   will-change: transform;
   transform: translateX(calc(-1 * var(--fan-shift, 0px)));
-  animation: fan-marquee 160s linear infinite;
-  animation-play-state: paused;
+  transition: transform 180ms linear;
 }
 
 .fan-track.is-running {
-  animation-play-state: running;
+  transition-duration: 0ms;
 }
 
 .fan-track.is-dragging {
-  animation: none;
   transform: translateX(calc(-1 * var(--fan-shift, 0px)));
+  transition-duration: 0ms;
 }
 
 .fan-card,
@@ -2721,10 +2870,12 @@ body {
 .home-section-fingerprints .home-overview-card {
   min-height: 0;
   padding: 0.8rem;
+  align-content: center;
 }
 
 .home-section-fingerprints .home-carousel-row {
   grid-auto-columns: clamp(150px, 24vw, 190px);
+  gap: 0.7rem;
 }
 
 .home-section-tests .home-overview-card {
@@ -2774,18 +2925,125 @@ body {
   }
 }
 
-@keyframes fan-marquee {
-  from {
-    transform: translateX(0);
+.animal-grid.roomy {
+  grid-template-columns: repeat(auto-fit, minmax(138px, 1fr));
+  gap: 0.75rem;
+  padding-inline: 0;
+}
+
+.animal-grid-item {
+  grid-template-rows: auto auto;
+  gap: 0.45rem;
+  padding: 0.35rem;
+}
+
+.animal-grid-item img {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+  object-fit: contain !important;
+  border-radius: 12px;
+}
+
+/* Final focused pass: preserve original artwork ratios and avoid heavy frames. */
+.offer-card-media {
+  height: auto;
+  min-height: 0;
+  aspect-ratio: auto;
+  overflow: visible;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  background: color-mix(in srgb, var(--surface-soft) 58%, transparent);
+  padding: 0.35rem;
+}
+
+.offer-card-media img,
+.asset-image-contain {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+  max-height: min(420px, 58svh);
+  object-fit: contain !important;
+}
+
+.home-carousel-item .offer-card-media img {
+  max-height: 220px;
+}
+
+.category-coaching .offer-card-media img,
+.category-courses .offer-card-media img,
+.category-programs .offer-card-media img {
+  max-height: min(460px, 62svh);
+}
+
+.category-coaching .offer-card-media,
+.category-courses .offer-card-media,
+.category-programs .offer-card-media {
+  height: auto;
+}
+
+.fan-card {
+  background: color-mix(in srgb, var(--surface) 84%, transparent);
+  border-width: 1px;
+  padding: 0.08rem;
+}
+
+.fan-card img {
+  height: auto !important;
+  width: 100% !important;
+}
+
+.test-meta-row {
+  justify-content: center;
+  margin: 0.75rem 0 1.35rem;
+}
+
+@media (min-width: 900px) {
+  .mindset-slider .mindset-image-frame {
+    width: min(100%, 280px);
   }
 
-  to {
-    transform: translateX(-50%);
+  .category-coaching .offer-grid.dense,
+  .category-courses .offer-grid.dense,
+  .category-programs .offer-grid.dense {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .fan-track {
-    animation: none;
+@media (max-width: 640px) {
+  .animal-grid.roomy {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 899px) {
+  .category-coaching .offer-grid.dense,
+  .category-courses .offer-grid.dense,
+  .category-programs .offer-grid.dense {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+  }
+
+  .category-coaching .offer-card-media img,
+  .category-courses .offer-card-media img,
+  .category-programs .offer-card-media img,
+  .home-carousel-item .offer-card-media img {
+    max-height: 180px;
+  }
+}
+
+@media (max-width: 440px) {
+  .site-header nav {
+    padding-inline: 0.75rem;
+  }
+
+  .home-pill {
+    padding-inline: 0.78rem;
+  }
+
+  .category-coaching .offer-card-media img,
+  .category-courses .offer-card-media img,
+  .category-programs .offer-card-media img,
+  .home-carousel-item .offer-card-media img {
+    max-height: 150px;
   }
 }

@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { OfferCard, type CoachingFormatFilter } from "@/components/offer-card";
+import { type CoachingFormatFilter } from "@/components/offer-card";
+import { OfferCardCollection } from "@/components/offer-card-collection";
 import { categoryPageInfo, offersByCategory, type DisplayOffer } from "@/data/catalog";
 import type { OfferCategory } from "@/data/offers";
 
@@ -31,13 +32,7 @@ export function OfferList({ offers }: { offers: readonly DisplayOffer[] }) {
   return (
     <section className="page-section">
       <div className="offer-grid dense">
-        {offers.map((offer) => (
-          <OfferCard
-            key={offer.id}
-            offer={offer}
-            href={offer.id === "emotional-communication" ? "/offers/emotional-communication" : undefined}
-          />
-        ))}
+        <OfferCardCollection offers={offers} />
       </div>
     </section>
   );
@@ -87,14 +82,7 @@ export function CoachingOfferList({
         })}
       </div>
       <div className="offer-grid dense">
-        {filteredOffers.map((offer) => (
-          <OfferCard
-            key={offer.id}
-            offer={offer}
-            formatFilter={activeFilter ?? undefined}
-            href={offer.id === "emotional-communication" ? "/offers/emotional-communication" : undefined}
-          />
-        ))}
+        <OfferCardCollection offers={filteredOffers} formatFilter={activeFilter} />
       </div>
     </section>
   );
