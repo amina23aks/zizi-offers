@@ -249,26 +249,7 @@ function MindsetSlider() {
           >
             <p className="eyebrow">{String(activeIndex + 1).padStart(2, "0")} / 04</p>
             <h3>{active.label}</h3>
-            <p>{active.summary}</p>
-            <div className="mindset-points">
-              <strong>ملامح إيجابية</strong>
-              <ul>
-                {active.positives.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-            {expanded ? (
-              <div className="mindset-expanded">
-                {"details" in active && active.details ? <p>{active.details}</p> : null}
-                <strong>نقاط تحتاج انتباهًا</strong>
-                <ul>
-                  {active.attention.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
+            <p className={cn("mindset-body-text", !expanded && "collapsed")}>{active.body}</p>
           </motion.div>
         </AnimatePresence>
         <button type="button" className="secondary-action small-action" onClick={() => setExpanded((value) => !value)}>

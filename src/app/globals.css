@@ -3855,3 +3855,164 @@ body {
     font-size: 0.92rem;
   }
 }
+
+/* Focused owner updates: hero CTAs, sticky nav polish, mindset verbatim copy, and natural media ratios. */
+.site-header {
+  position: fixed;
+  top: 0;
+  inset-inline: 0;
+  z-index: 70;
+  background: color-mix(in srgb, var(--background) 94%, transparent);
+  backdrop-filter: blur(18px);
+}
+
+.site-main {
+  padding-top: var(--header-height);
+}
+
+.header-back-chevron {
+  width: 42px;
+  min-width: 42px;
+  min-height: 42px;
+  border: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  box-shadow: 0 8px 20px rgb(18 53 59 / 0.08);
+}
+
+.header-back-chevron:hover,
+.header-back-chevron:focus-visible {
+  background: color-mix(in srgb, var(--brand-blue) 10%, var(--surface));
+  color: var(--brand-blue);
+}
+
+.header-page-menu summary {
+  user-select: none;
+}
+
+.header-page-menu[open] summary {
+  border-color: color-mix(in srgb, var(--brand-blue) 32%, var(--border));
+  background: color-mix(in srgb, var(--brand-blue) 8%, var(--surface));
+}
+
+.header-page-menu[open] summary svg {
+  rotate: 180deg;
+}
+
+.home-hero {
+  min-height: min(700px, calc(100svh - var(--header-height)));
+  grid-template-rows: minmax(0, 1fr) auto auto minmax(0, 0.7fr);
+  row-gap: clamp(0.65rem, 2vw, 1rem);
+  padding-block: clamp(2rem, 5vw, 3.25rem) clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.hero-actions {
+  position: relative;
+  z-index: 4;
+  grid-row: 3;
+  display: flex;
+  width: min(100%, 380px);
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.45rem, 2vw, 0.75rem);
+  margin-top: clamp(0.15rem, 1.2vw, 0.5rem);
+}
+
+.hero-actions .hero-action {
+  display: inline-flex;
+  min-width: 0;
+  min-height: 42px;
+  flex: 1 1 0;
+  justify-content: center;
+  padding: 0.68rem clamp(0.72rem, 2.4vw, 1rem);
+  text-align: center;
+  white-space: nowrap;
+  transform: none;
+}
+
+.hero-actions .secondary-action.hero-action {
+  background: color-mix(in srgb, var(--surface) 86%, transparent);
+  color: var(--foreground);
+  box-shadow: 0 10px 24px rgb(18 53 59 / 0.06);
+}
+
+.category-bubble:nth-child(7) {
+  --bubble-y: clamp(-236px, -21vw, -156px);
+}
+
+.offer-card-media,
+.home-carousel-item .offer-card-media {
+  aspect-ratio: auto;
+  height: auto;
+}
+
+.offer-card-media img,
+.home-carousel-item .offer-card-media img,
+.category-coaching .offer-card-media img,
+.category-courses .offer-card-media img,
+.category-programs .offer-card-media img {
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  object-fit: contain !important;
+}
+
+.home-overview-image {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  border-radius: 14px;
+  padding: 0;
+  object-fit: contain !important;
+}
+
+.home-overview-card:has(.home-overview-image) {
+  align-content: start;
+}
+
+.mindset-body-text {
+  white-space: pre-line;
+  line-height: 1.9;
+  color: var(--foreground);
+}
+
+.mindset-body-text.collapsed {
+  max-height: 13.5rem;
+  overflow: hidden;
+  mask-image: linear-gradient(180deg, #000 72%, transparent);
+}
+
+@media (max-width: 899px) {
+  .home-hero {
+    min-height: 560px;
+    grid-template-rows: minmax(0, 1fr) auto auto minmax(0, 0.55fr);
+    padding-block: 1.4rem 1.25rem;
+  }
+
+  .hero-actions {
+    width: min(100%, 330px);
+  }
+
+  .hero-actions .hero-action {
+    min-height: 40px;
+    padding-inline: 0.55rem;
+    font-size: 0.9rem;
+  }
+
+  .category-bubble:nth-child(7) {
+    --bubble-x: 0px;
+    --bubble-y: -198px;
+  }
+}
+
+@media (max-width: 390px) {
+  .hero-actions {
+    width: min(100%, 310px);
+    gap: 0.4rem;
+  }
+
+  .hero-actions .hero-action {
+    padding-inline: 0.48rem;
+    font-size: 0.84rem;
+  }
+}
