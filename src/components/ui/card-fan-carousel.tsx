@@ -46,6 +46,8 @@ export function CardFanCarousel({ items }: { items: readonly FanCardItem[] }) {
     startX: number;
     startY: number;
     lastX: number;
+    lastTime: number;
+    velocity: number;
     isHorizontal: boolean;
   } | null>(null);
 
@@ -206,14 +208,20 @@ export function CardFanCarousel({ items }: { items: readonly FanCardItem[] }) {
   }, []);
 
   const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    clearResumeTimer();
+    previousTime.current = null;
+    setTemporaryPaused(true);
     pauseBriefly(2200);
     dragMoved.current = false;
+    trackRef.current?.classList.add("is-dragging");
     setIsDragging(true);
     dragging.current = {
       pointerId: event.pointerId,
       startX: event.clientX,
       startY: event.clientY,
       lastX: event.clientX,
+      lastTime: event.timeStamp,
+      velocity: 0,
       isHorizontal: false,
     };
   };
@@ -231,13 +239,24 @@ export function CardFanCarousel({ items }: { items: readonly FanCardItem[] }) {
     if (!drag.isHorizontal) return;
     event.preventDefault();
     const delta = event.clientX - drag.lastX;
+    const elapsed = Math.max(16, event.timeStamp - drag.lastTime);
     drag.lastX = event.clientX;
+    drag.lastTime = event.timeStamp;
+    drag.velocity = delta / elapsed;
     if (Math.abs(delta) > 1) dragMoved.current = true;
     syncOffset(offsetRef.current - delta);
   };
 
   const endDrag = () => {
+    const drag = dragging.current;
+    if (drag?.isHorizontal) {
+      const distance = repeatDistance.current;
+      const step = distance > 0 && loopingItems.length ? distance / loopingItems.length : 190;
+      const momentum = Math.max(-step * 1.25, Math.min(step * 1.25, -drag.velocity * 220));
+      if (Math.abs(momentum) > 10) syncOffset(offsetRef.current + momentum);
+    }
     dragging.current = null;
+    trackRef.current?.classList.remove("is-dragging");
     setIsDragging(false);
     pauseBriefly(1800);
     window.setTimeout(() => {
@@ -330,16 +349,16 @@ export function CardFanCarousel({ items }: { items: readonly FanCardItem[] }) {
       </div>
 
       <div className="fan-controls">
-        <button type="button" className="secondary-action" onClick={() => move(-1)}>
+        <button type="button" className="secondary-action fan-control-button" onClick={() => move(1)}>
           <CaretRight size={18} weight="bold" />
-          <span className="sr-only">السابق</span>
+          <span className="sr-only">اليمين</span>
         </button>
         <div className="fan-current">
           <strong>{activeItem.name}</strong>
           <span>{loopingItems.length ? currentIndex + 1 : 0} / {loopingItems.length}</span>
         </div>
-        <button type="button" className="primary-action small-action" onClick={() => move(1)}>
-          <span className="sr-only">التالي</span>
+        <button type="button" className="secondary-action fan-control-button" onClick={() => move(-1)}>
+          <span className="sr-only">اليسار</span>
           <CaretLeft size={18} weight="bold" />
         </button>
       </div>

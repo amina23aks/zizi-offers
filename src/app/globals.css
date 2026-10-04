@@ -66,6 +66,7 @@
 }
 
 html {
+  direction: ltr;
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--header-height) + 20px);
   overflow-x: clip;
@@ -73,10 +74,16 @@ html {
 
 body {
   min-width: 320px;
+  direction: ltr;
   overflow-x: hidden;
   background: var(--background);
   color: var(--foreground);
   font-family: Cairo, Tahoma, Arial, "Segoe UI", sans-serif;
+}
+
+.site-header,
+.site-main {
+  direction: rtl;
 }
 
 a,
@@ -1597,42 +1604,30 @@ button {
 
 @media (max-width: 899px) {
   .home-hero {
-    min-height: auto;
+    min-height: 620px;
     padding-top: 2rem;
-    align-content: center;
-    gap: 1.2rem;
   }
 
   .hero-bubble-field {
-    position: relative;
-    inset: auto;
-    order: 2;
-    display: grid;
     width: min(100%, 390px);
-    height: auto;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.65rem;
-    overflow: clip;
-    transform: none;
+    height: 430px;
   }
 
   .category-bubble {
-    position: relative;
-    inset: auto;
-    min-width: 0;
     min-height: 38px;
     padding: 0.5rem 0.66rem;
     font-size: 0.82rem;
-    transform: none;
-    animation: none;
   }
 
-  .category-bubble:nth-child(7) {
-    grid-column: 1 / -1;
-  }
+  .category-bubble:nth-child(1) { --bubble-x: -98px; --bubble-y: -132px; }
+  .category-bubble:nth-child(2) { --bubble-x: 96px; --bubble-y: -132px; }
+  .category-bubble:nth-child(3) { --bubble-x: -132px; --bubble-y: -32px; }
+  .category-bubble:nth-child(4) { --bubble-x: 132px; --bubble-y: -32px; }
+  .category-bubble:nth-child(5) { --bubble-x: -104px; --bubble-y: 92px; }
+  .category-bubble:nth-child(6) { --bubble-x: 104px; --bubble-y: 92px; }
+  .category-bubble:nth-child(7) { --bubble-x: 0px; --bubble-y: 152px; }
 
   .home-title-wrap {
-    order: 1;
     max-width: 270px;
   }
 
@@ -1704,6 +1699,8 @@ button {
     height: 15px;
   }
 
+  .category-bubble:nth-child(3) { --bubble-x: -118px; }
+  .category-bubble:nth-child(4) { --bubble-x: 118px; }
 }
 
 /* Latest corrections: contained mobile layout, centered hero and swipe rows. */
@@ -2766,7 +2763,7 @@ body {
   padding-block: 0.5rem;
   will-change: transform;
   transform: translateX(calc(-1 * var(--fan-shift, 0px)));
-  transition: transform 180ms linear;
+  transition: transform 150ms ease-out;
 }
 
 .fan-track.is-running {
@@ -2775,7 +2772,44 @@ body {
 
 .fan-track.is-dragging {
   transform: translateX(calc(-1 * var(--fan-shift, 0px)));
-  transition-duration: 0ms;
+  transition: none;
+}
+
+.fan-control-button {
+  width: 42px;
+  min-width: 42px;
+  min-height: 42px;
+  padding-inline: 0;
+  border-color: color-mix(in srgb, var(--brand-blue) 24%, var(--border));
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  color: var(--brand-blue);
+}
+
+.fan-control-button:hover {
+  border-color: color-mix(in srgb, var(--brand-green) 38%, var(--brand-blue));
+  background: color-mix(in srgb, var(--brand-green) 14%, var(--surface));
+  color: var(--brand-blue);
+}
+
+.fan-control-button:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--brand-green) 36%, transparent);
+  outline-offset: 3px;
+}
+
+.fan-control-button:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.dark .fan-control-button {
+  border-color: color-mix(in srgb, var(--brand-green) 30%, var(--border));
+  background: color-mix(in srgb, var(--surface-soft) 78%, transparent);
+  color: var(--brand-green);
+}
+
+.dark .fan-control-button:hover {
+  border-color: color-mix(in srgb, var(--brand-green) 55%, var(--border));
+  background: color-mix(in srgb, var(--brand-blue) 20%, var(--surface));
+  color: var(--brand-green);
 }
 
 .fan-card,
@@ -3494,45 +3528,5 @@ body {
 
   .image-viewer-figure {
     padding-bottom: 3.75rem;
-  }
-}
-
-@media (max-width: 899px) {
-  .home-hero {
-    min-height: auto;
-    grid-template-rows: auto auto;
-  }
-
-  .home-title-wrap {
-    grid-row: auto;
-  }
-
-  .hero-bubble-field {
-    position: relative;
-    inset: auto;
-    left: auto;
-    right: auto;
-    display: grid;
-    width: min(100%, 390px);
-    max-width: 100%;
-    height: auto;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.65rem;
-    overflow: clip;
-    transform: none;
-  }
-
-  .category-bubble {
-    position: relative;
-    inset: auto;
-    left: auto;
-    right: auto;
-    min-width: 0;
-    transform: none;
-    animation: none;
-  }
-
-  .category-bubble:nth-child(7) {
-    grid-column: 1 / -1;
   }
 }
