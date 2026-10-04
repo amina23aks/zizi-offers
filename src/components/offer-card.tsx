@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Clock, User, UsersThree } from "@phosphor-icons/react";
+import type { CSSProperties } from "react";
 import { formatAvailability, formatLabel, formatPrice, getAsset, type DisplayOffer } from "@/data/catalog";
 import { cn } from "@/lib/utils";
 
@@ -41,6 +42,9 @@ export function OfferCard({
     offer.totalTrainingDuration ? { icon: "clock", label: `مدة التدريب: ${offer.totalTrainingDuration}` } : null,
     offer.capacity ? { icon: "group", label: `السعة: ${offer.capacity}` } : null,
   ].filter(Boolean) as { icon: "clock" | "group"; label: string }[];
+  const mediaStyle = asset
+    ? ({ "--asset-ratio": `${asset.width} / ${asset.height}` } as CSSProperties)
+    : undefined;
 
   return (
     <article className="offer-card">
@@ -48,6 +52,7 @@ export function OfferCard({
         <button
           type="button"
           className="offer-card-media image-view-trigger"
+          style={mediaStyle}
           onClick={(event) => onImageOpen?.(event.currentTarget)}
           aria-label={`عرض غلاف ${offer.title}`}
         >
@@ -61,7 +66,7 @@ export function OfferCard({
           />
         </button>
       ) : asset ? (
-        <div className="offer-card-media">
+        <div className="offer-card-media" style={mediaStyle}>
           <Image
             src={asset.publicPath}
             alt={`غلاف ${offer.title}`}

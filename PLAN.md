@@ -131,3 +131,12 @@ Customer accounts, calendar, payments, private feedback, start dates, compass PD
 - Compass cards are image-only on the homepage and compass page; captions remain available through accessible labels and the full-screen viewer.
 - All program-category offers are marked `غير متاح` per the latest owner correction.
 - Browser verification covered desktop/mobile `/tests`, `/compass`, `/programs`, and `/`; typecheck, lint, and production build passed before committing.
+
+## 4 October remaining layout correction pass
+
+- Diagnosed live computed styles before editing. Root causes were stale code image dimensions in the registry, obsolete coaching desktop split-card CSS, mobile hero bubbles expanding the RTL root scroll canvas, fixed homepage carousel item widths, and compass grid/image rules inherited from earlier large-card passes.
+- Corrected code image registry dimensions from actual delivered files: `A.jpg` 578x815, `B.jpg` 578x816, `C.jpg` 578x816, and `D.jpg` 578x817. Code card faces now use the actual image ratio, and an icon-only `فتح الصورة` control opens the shared full-screen viewer without flipping the card back.
+- Dedicated compass page now uses right-aligned pricing under the heading and a centered modest image gallery: one centered image per mobile row, four emotion cards at desktop width, and five on wide screens.
+- Coaching and programs category pages now keep normal card flow with two mobile columns, three medium columns, and four wide columns. Metadata remains inside each card.
+- Homepage rows remain horizontal and swipeable; row/item containment prevents card widths from expanding the page. Mobile hero category links now use an in-flow grid to avoid RTL horizontal scroll.
+- Browser verification covered 360, 390, 768, 1024, and 1440px for `/`, `/compass`, `/coaching`, `/programs`, and `/tests`; typecheck, lint, and production build passed before committing.

@@ -68,6 +68,7 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--header-height) + 20px);
+  overflow-x: clip;
 }
 
 body {
@@ -1596,30 +1597,42 @@ button {
 
 @media (max-width: 899px) {
   .home-hero {
-    min-height: 620px;
+    min-height: auto;
     padding-top: 2rem;
+    align-content: center;
+    gap: 1.2rem;
   }
 
   .hero-bubble-field {
+    position: relative;
+    inset: auto;
+    order: 2;
+    display: grid;
     width: min(100%, 390px);
-    height: 430px;
+    height: auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+    overflow: clip;
+    transform: none;
   }
 
   .category-bubble {
+    position: relative;
+    inset: auto;
+    min-width: 0;
     min-height: 38px;
     padding: 0.5rem 0.66rem;
     font-size: 0.82rem;
+    transform: none;
+    animation: none;
   }
 
-  .category-bubble:nth-child(1) { --bubble-x: -98px; --bubble-y: -132px; }
-  .category-bubble:nth-child(2) { --bubble-x: 96px; --bubble-y: -132px; }
-  .category-bubble:nth-child(3) { --bubble-x: -132px; --bubble-y: -32px; }
-  .category-bubble:nth-child(4) { --bubble-x: 132px; --bubble-y: -32px; }
-  .category-bubble:nth-child(5) { --bubble-x: -104px; --bubble-y: 92px; }
-  .category-bubble:nth-child(6) { --bubble-x: 104px; --bubble-y: 92px; }
-  .category-bubble:nth-child(7) { --bubble-x: 0px; --bubble-y: 152px; }
+  .category-bubble:nth-child(7) {
+    grid-column: 1 / -1;
+  }
 
   .home-title-wrap {
+    order: 1;
     max-width: 270px;
   }
 
@@ -1691,8 +1704,6 @@ button {
     height: 15px;
   }
 
-  .category-bubble:nth-child(3) { --bubble-x: -118px; }
-  .category-bubble:nth-child(4) { --bubble-x: 118px; }
 }
 
 /* Latest corrections: contained mobile layout, centered hero and swipe rows. */
@@ -2190,17 +2201,6 @@ body {
     display: none;
   }
 
-  .home-section-coaching .home-carousel-row,
-  .home-section-courses .home-carousel-row,
-  .home-section-sessions .home-carousel-row {
-    grid-auto-flow: row;
-    grid-auto-columns: unset;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.65rem;
-    overflow-x: visible;
-    padding-inline: 0;
-  }
-
   .home-section-coaching .home-carousel-item,
   .home-section-courses .home-carousel-item,
   .home-section-sessions .home-carousel-item {
@@ -2381,13 +2381,23 @@ body {
 }
 
 .home-carousel-row {
+  max-inline-size: 100%;
+  contain: inline-size;
   scroll-snap-type: inline proximity;
   touch-action: pan-x pan-y;
 }
 
 .home-carousel-item,
 .home-overview-card {
-  width: clamp(250px, 34vw, 330px);
+  min-width: 0;
+}
+
+.home-carousel-item {
+  width: 100%;
+}
+
+.home-carousel-row > .home-overview-card {
+  width: clamp(230px, 30vw, 300px);
 }
 
 .home-section-compass .home-overview-card,
@@ -2577,17 +2587,7 @@ body {
 
 @media (min-width: 900px) {
   .category-coaching .offer-grid.dense {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .category-coaching .offer-card {
-    display: grid;
-    grid-template-columns: minmax(220px, 0.82fr) minmax(0, 1fr);
-    align-items: start;
-  }
-
-  .category-coaching .offer-card-media {
-    height: clamp(310px, 34vw, 430px);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .compass-card-row {
@@ -2949,18 +2949,18 @@ body {
 .offer-card-media {
   height: auto;
   min-height: 0;
-  aspect-ratio: auto;
-  overflow: visible;
+  aspect-ratio: var(--asset-ratio, auto);
+  overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
   background: color-mix(in srgb, var(--surface-soft) 58%, transparent);
   padding: 0.35rem;
 }
 
 .offer-card-media img,
-.asset-image-contain {
+.offer-card-media .asset-image-contain {
   display: block;
   width: 100% !important;
-  height: auto !important;
+  height: 100% !important;
   max-height: min(420px, 58svh);
   object-fit: contain !important;
 }
@@ -3097,6 +3097,10 @@ body {
   padding: 0.55rem;
 }
 
+.mobile-nav-menu:not([open]) .mobile-nav-menu-panel {
+  display: none;
+}
+
 .mobile-nav-link {
   border-radius: 14px;
   padding: 0.68rem 0.78rem;
@@ -3137,8 +3141,23 @@ body {
 
 .offer-card-body {
   display: grid;
+  min-width: 0;
   gap: 0.75rem;
   align-content: start;
+  text-align: start;
+}
+
+.offer-card-body h3,
+.offer-card-body p,
+.offer-bullets,
+.offer-meta-list,
+.offer-variants {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.offer-card-body h3 {
+  line-height: 1.45;
 }
 
 .offer-card-footer {
@@ -3156,14 +3175,19 @@ body {
 }
 
 .code-card {
+  position: relative;
   overflow: hidden;
   padding: 0;
+}
+
+.code-card-flip-zone {
+  cursor: pointer;
 }
 
 .code-card-shell,
 .code-card-face {
   min-height: 0 !important;
-  aspect-ratio: 578 / 1280;
+  aspect-ratio: var(--code-card-ratio, 578 / 816);
 }
 
 .code-card-front {
@@ -3179,7 +3203,7 @@ body {
 .code-card-back .code-image-frame {
   width: 100%;
   height: 100%;
-  aspect-ratio: 578 / 1280;
+  aspect-ratio: var(--code-card-ratio, 578 / 816);
   border-radius: inherit;
   background: transparent;
   padding: 0;
@@ -3191,6 +3215,24 @@ body {
   height: 100% !important;
   max-height: none;
   object-fit: contain !important;
+}
+
+.code-expand-button {
+  position: absolute;
+  inset-block-start: 0.55rem;
+  inset-inline-end: 0.55rem;
+  z-index: 3;
+  display: inline-flex;
+  min-width: 38px;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--brand-blue) 22%, var(--border));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  color: var(--brand-blue);
+  box-shadow: 0 10px 24px rgb(18 53 59 / 0.14);
+  backdrop-filter: blur(10px);
 }
 
 .mindset-slider {
@@ -3262,6 +3304,8 @@ body {
 
 .compass-prices,
 .compass-price-note {
+  width: 100%;
+  direction: rtl;
   justify-content: flex-start;
   text-align: start;
 }
@@ -3273,11 +3317,26 @@ body {
 
 .compass-path {
   gap: clamp(1rem, 2vw, 1.5rem);
+  max-width: min(100%, 1120px);
+  margin-inline: auto;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+.compass-launch-card {
+  width: min(100%, 260px);
+  margin-inline: auto;
+  margin-bottom: clamp(0.9rem, 2vw, 1.25rem);
 }
 
 .compass-card-row {
   align-items: start;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  justify-content: center;
+  grid-template-columns: repeat(1, minmax(0, min(100%, 250px)));
+  max-width: min(100%, 1120px);
+  margin-inline: auto;
 }
 
 .compass-card-image-only,
@@ -3326,7 +3385,7 @@ body {
   }
 
   .compass-card-row {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(150px, 190px));
   }
 }
 
@@ -3340,7 +3399,7 @@ body {
   }
 
   .compass-card-row {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(150px, 190px));
   }
 }
 
@@ -3435,5 +3494,45 @@ body {
 
   .image-viewer-figure {
     padding-bottom: 3.75rem;
+  }
+}
+
+@media (max-width: 899px) {
+  .home-hero {
+    min-height: auto;
+    grid-template-rows: auto auto;
+  }
+
+  .home-title-wrap {
+    grid-row: auto;
+  }
+
+  .hero-bubble-field {
+    position: relative;
+    inset: auto;
+    left: auto;
+    right: auto;
+    display: grid;
+    width: min(100%, 390px);
+    max-width: 100%;
+    height: auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+    overflow: clip;
+    transform: none;
+  }
+
+  .category-bubble {
+    position: relative;
+    inset: auto;
+    left: auto;
+    right: auto;
+    min-width: 0;
+    transform: none;
+    animation: none;
+  }
+
+  .category-bubble:nth-child(7) {
+    grid-column: 1 / -1;
   }
 }
