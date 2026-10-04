@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { MagnifyingGlassPlus } from "@phosphor-icons/react";
 import { useRef, useState } from "react";
 import { ImageViewerOverlay } from "@/components/image-viewer-overlay";
 import type { ImageAsset } from "@/data/assets";
@@ -16,7 +17,7 @@ type ZoomableImageProps = {
 export function ZoomableImage({
   asset,
   alt,
-  buttonLabel = "تكبير الصورة",
+  buttonLabel = "عرض الصورة وتكبيرها",
   className,
   priority,
 }: ZoomableImageProps) {
@@ -42,6 +43,9 @@ export function ZoomableImage({
           className="asset-image-contain"
           sizes="(max-width: 768px) 92vw, 520px"
         />
+        <span className="image-expand-affordance" aria-hidden="true">
+          <MagnifyingGlassPlus size={18} weight="bold" />
+        </span>
       </button>
       {open ? (
         <ImageViewerOverlay

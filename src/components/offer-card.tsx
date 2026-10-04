@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Clock, User, UsersThree } from "@phosphor-icons/react";
+import { Clock, MagnifyingGlassPlus, User, UsersThree } from "@phosphor-icons/react";
 import type { CSSProperties } from "react";
 import { formatAvailability, formatLabel, formatPrice, getAsset, type DisplayOffer } from "@/data/catalog";
 import { cn } from "@/lib/utils";
@@ -54,7 +54,7 @@ export function OfferCard({
           className="offer-card-media image-view-trigger"
           style={mediaStyle}
           onClick={(event) => onImageOpen?.(event.currentTarget)}
-          aria-label={`عرض غلاف ${offer.title}`}
+          aria-label="عرض الصورة وتكبيرها"
         >
           <Image
             src={asset.publicPath}
@@ -64,6 +64,9 @@ export function OfferCard({
             className="asset-image-contain"
             sizes="(max-width: 768px) 88vw, 280px"
           />
+          <span className="image-expand-affordance" aria-hidden="true">
+            <MagnifyingGlassPlus size={18} weight="bold" />
+          </span>
         </button>
       ) : asset ? (
         <div className="offer-card-media" style={mediaStyle}>
