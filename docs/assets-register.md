@@ -44,10 +44,10 @@ Generated from actual files in `public/assets/` during Stage 2. Preserve origina
 | coaching | `خطه-الجسد.jpg` | 649x920 | `/assets/coaching/خطه-الجسد.jpg` | coaching cover |  |
 | coaching | `خطه-العمل.jpg` | 907x1280 | `/assets/coaching/خطه-العمل.jpg` | coaching cover |  |
 | coaching | `خطه-بزنس.jpg` | 652x949 | `/assets/coaching/خطه-بزنس.jpg` | coaching cover |  |
-| codes | `A.jpg` | 578x815 | `/assets/codes/A.jpg` | code card back | Corrected from the actual delivered file. |
-| codes | `B.jpg` | 578x816 | `/assets/codes/B.jpg` | code card back | Corrected from the actual delivered file. |
-| codes | `C.jpg` | 578x816 | `/assets/codes/C.jpg` | code card back | Corrected from the actual delivered file. |
-| codes | `D.jpg` | 578x817 | `/assets/codes/D.jpg` | code card back | Corrected from the actual delivered file. |
+| codes | `A.jpg` | 578x815 | `/assets/codes/A.jpg?v=1123e5179aec` | code card back | Current original in `public/assets/codes`; query string busts stale optimized-image cache. |
+| codes | `B.jpg` | 578x816 | `/assets/codes/B.jpg?v=9863a09ef46f` | code card back | Current original in `public/assets/codes`; query string busts stale optimized-image cache. |
+| codes | `C.jpg` | 578x816 | `/assets/codes/C.jpg?v=8a93f786179f` | code card back | Current original in `public/assets/codes`; query string busts stale optimized-image cache. |
+| codes | `D.jpg` | 578x817 | `/assets/codes/D.jpg?v=d4526d67c868` | code card back | Current original in `public/assets/codes`; query string busts stale optimized-image cache. |
 | compass | `الاختيار.jpg` | 905x1280 | `/assets/compass/الاختيار.jpg` | compass card |  |
 | compass | `الانطلاق.jpg` | 905x1280 | `/assets/compass/الانطلاق.jpg` | compass launch cover |  |
 | compass | `الذعر.jpg` | 905x1280 | `/assets/compass/الذعر.jpg` | compass card |  |

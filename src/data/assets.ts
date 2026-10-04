@@ -157,7 +157,7 @@ export const imageAssets = [
     "width": 578,
     "height": 815,
     "bytes": 76817,
-    "publicPath": "/assets/codes/A.jpg",
+    "publicPath": "/assets/codes/A.jpg?v=1123e5179aec",
     "purpose": "code-card-back",
     "status": "available",
     "notes": null
@@ -171,7 +171,7 @@ export const imageAssets = [
     "width": 578,
     "height": 816,
     "bytes": 94557,
-    "publicPath": "/assets/codes/B.jpg",
+    "publicPath": "/assets/codes/B.jpg?v=9863a09ef46f",
     "purpose": "code-card-back",
     "status": "available",
     "notes": null
@@ -185,7 +185,7 @@ export const imageAssets = [
     "width": 578,
     "height": 816,
     "bytes": 82026,
-    "publicPath": "/assets/codes/C.jpg",
+    "publicPath": "/assets/codes/C.jpg?v=8a93f786179f",
     "purpose": "code-card-back",
     "status": "available",
     "notes": null
@@ -199,7 +199,7 @@ export const imageAssets = [
     "width": 578,
     "height": 817,
     "bytes": 93218,
-    "publicPath": "/assets/codes/D.jpg",
+    "publicPath": "/assets/codes/D.jpg?v=d4526d67c868",
     "purpose": "code-card-back",
     "status": "available",
     "notes": null
