@@ -9,6 +9,7 @@ import {
   GraduationCap,
   Plant,
   Sparkle,
+  TelegramLogo,
 } from "@phosphor-icons/react/dist/ssr";
 import { OfferCardCollection } from "@/components/offer-card-collection";
 import { ZoomableImage } from "@/components/zoomable-image";
@@ -24,6 +25,13 @@ const categoryIcons = {
   fingerprints: Fingerprint,
   compass: Compass,
 } as const;
+
+const bookingContacts = [
+  { country: "السعودية", href: "https://t.me/rawabiv" },
+  { country: "الكويت", href: "https://t.me/mnjko89" },
+  { country: "المغرب", href: "https://t.me/Slowallday" },
+  { country: "الإمارات", href: "https://t.me/lamer_iam" },
+] as const;
 
 export default function Home() {
   const identityAsset = getAsset(ziziIdentityAssetIds.avatar ?? ziziIdentityAssetIds.groupLogo);
@@ -51,8 +59,8 @@ export default function Home() {
         <div className="home-title-wrap">
           <h1 id="home-title">عروض زيزي</h1>
         </div>
-        <Link href="#offers-sections" className="primary-action hero-action">
-          استكشفي العروض
+        <Link href="#booking-contact" className="primary-action hero-action">
+          احجزي الآن
         </Link>
       </section>
 
@@ -141,6 +149,39 @@ export default function Home() {
             </div>
           </section>
         ))}
+      </section>
+      <section id="booking-contact" className="content-band booking-contact-section" aria-labelledby="booking-contact-title">
+        <div className="booking-contact-copy">
+          <p className="eyebrow">تواصل مباشر</p>
+          <h2 id="booking-contact-title">للحجز والاستفسار</h2>
+          <p>
+            تواصلي مع إحدى مساعدات زيزي حسب بلدك لإتمام الحجز.
+            <br />
+            وإذا كنتِ من بلد آخر، يمكنكِ التواصل مع أيٍّ منهن.
+          </p>
+        </div>
+        <div className="booking-contact-grid" aria-label="مساعدات زيزي حسب البلد">
+          {bookingContacts.map((contact) => (
+            <a
+              key={contact.country}
+              href={contact.href}
+              className="booking-contact-button"
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`التواصل مع مساعدة زيزي في ${contact.country}`}
+            >
+              <TelegramLogo size={19} weight="fill" aria-hidden="true" />
+              <span>{contact.country}</span>
+            </a>
+          ))}
+        </div>
+        <div className="payment-methods" aria-label="طرق الدفع المتاحة">
+          <p>طرق الدفع المتاحة</p>
+          <div>
+            <span>Visa</span>
+            <span>PayPal</span>
+          </div>
+        </div>
       </section>
     </main>
   );

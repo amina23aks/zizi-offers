@@ -140,3 +140,12 @@ Customer accounts, calendar, payments, private feedback, start dates, compass PD
 - Coaching and programs category pages now keep normal card flow with two mobile columns, three medium columns, and four wide columns. Metadata remains inside each card.
 - Homepage rows remain horizontal and swipeable; row/item containment prevents card widths from expanding the page. Mobile hero category links now use an in-flow grid to avoid RTL horizontal scroll.
 - Browser verification covered 360, 390, 768, 1024, and 1440px for `/`, `/compass`, `/coaching`, `/programs`, and `/tests`; typecheck, lint, and production build passed before committing.
+
+## 4 October booking contact and focused UI correction pass
+
+- Latest owner decision supersedes the earlier "omit booking" note only for contact-based booking: homepage CTA now reads `احجزي الآن` and scrolls to `#booking-contact`; no checkout, calendar, payment SDK, or auto-message flow is added.
+- Header arrangement is now physical-right Home icon, centered selected-page dropdown, and physical-left theme toggle plus lean Back chevron. Back uses in-site history with scroll restoration and falls back to home on direct visits.
+- Offer artwork and shared zoomable images show a visible corner expand icon, keep original artwork uncropped, and remove CSS-created padded bands above homepage/card images.
+- Added the booking-contact section near the bottom of the homepage with country-only Telegram buttons for السعودية، الكويت، المغرب، الإمارات and informational Visa/PayPal text labels.
+- Page-title frames and homepage fingerprint cards were tightened to avoid oversized decoration, overlap, and document-level horizontal overflow.
+- This pass is authorized for commit and push to the working feature branch only; it does not authorize merge to `main`, production deployment, Firebase, Cloudinary, accounts, calendars, or payment processing.
