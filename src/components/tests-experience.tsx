@@ -1,9 +1,11 @@
 "use client";
 
-import { CaretLeft, CaretRight, Plant } from "@phosphor-icons/react";
+import { ArrowsOutSimple, CaretLeft, CaretRight, Plant } from "@phosphor-icons/react";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import type { CSSProperties } from "react";
+import { useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { ImageViewerOverlay } from "@/components/image-viewer-overlay";
 import { CardFanCarousel } from "@/components/ui/card-fan-carousel";
 import { AnimatedTabs } from "@/components/ui/animated-tabs";
 import { BrainIcon, HeartIcon, SparklesIcon } from "@/components/ui/animated-icons";
@@ -11,6 +13,8 @@ import { ZoomableImage } from "@/components/zoomable-image";
 import {
   codeCards,
   ethoAnimals,
+  formatPrice,
+  getOffer,
   mindsets,
   mindsetCoverAsset,
   spectraAssets,
@@ -27,6 +31,8 @@ const testsNav = [
 ] as const;
 
 const codeLayout = ["A", "C", "B", "D"] as const;
+const tripleOffer = getOffer("triple-test");
+const tripleVariants = tripleOffer && "variants" in tripleOffer ? tripleOffer.variants : [];
 
 export function TestsExperience() {
   const orderedCodes = useMemo(
@@ -100,7 +106,14 @@ export function TestsExperience() {
         <span id="triple" className="anchor-compat" aria-hidden="true" />
         <SectionHeading title="الاختبارات النفسية للميولات السلوكية" />
         <div className="triple-panel">
-          <span className="status-badge">متاح</span>
+          <div className="triple-meta test-meta-row">
+            <span className="status-badge">متاح</span>
+            {tripleVariants.map((variant) => (
+              <span key={variant.id} className="price-badge" dir="ltr">
+                {formatPrice(variant.price).label}
+              </span>
+            ))}
+          </div>
           <ZoomableImage
             asset={triadAsset}
             alt="الاختبارات النفسية للميولات السلوكية"
@@ -124,6 +137,12 @@ function SectionHeading({ title, text }: { title: string; text?: string }) {
 
 function CodeFlipCard({ card }: { card: (typeof codeCards)[number] }) {
   const [revealed, setRevealed] = useState(false);
+  const [viewerOpen, setViewerOpen] = useState(false);
+  const expandButtonRef = useRef<HTMLButtonElement | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const codeRatioStyle = {
+    "--code-card-ratio": `${card.asset.width} / ${card.asset.height}`,
+  } as CSSProperties;
 
   const icon =
     card.code === "A" ? (
@@ -139,37 +158,67 @@ function CodeFlipCard({ card }: { card: (typeof codeCards)[number] }) {
   return (
     <article
       className={cn("code-card", card.accent, `code-position-${card.code}`, revealed && "revealed")}
-      role="button"
-      tabIndex={0}
-      aria-label={`${revealed ? "إخفاء" : "عرض"} بطاقة كود ${card.code}`}
-      onClick={() => setRevealed((value) => !value)}
-      onKeyDown={(event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          setRevealed((value) => !value);
-        }
-      }}
+      style={codeRatioStyle}
     >
-      <div className="code-card-shell">
-        <div className="code-card-face code-card-front" aria-hidden={revealed}>
-          {icon}
-          <span className="code-letter">{card.code}</span>
-          <h3>{card.title}</h3>
-          <span className="code-action">اكتشفي الكود</span>
-        </div>
-        <div className="code-card-face code-card-back" aria-hidden={!revealed}>
-          <div className="code-image-frame">
-            <Image
-              src={card.asset.publicPath}
-              alt={`بطاقة كود ${card.code}`}
-              width={card.asset.width}
-              height={card.asset.height}
-              className="asset-image-contain"
-              sizes="220px"
-            />
+      <div
+        className="code-card-flip-zone"
+        role="button"
+        tabIndex={0}
+        aria-label={`${revealed ? "إخفاء" : "عرض"} بطاقة كود ${card.code}`}
+        onClick={() => setRevealed((value) => !value)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            setRevealed((value) => !value);
+          }
+        }}
+      >
+        <div className="code-card-shell">
+          <div className="code-card-face code-card-front" aria-hidden={revealed}>
+            {icon}
+            <span className="code-letter">{card.code}</span>
+            <h3>{card.title}</h3>
+            <span className="code-action">اكتشفي الكود</span>
+          </div>
+          <div className="code-card-face code-card-back" aria-hidden={!revealed}>
+            <div className="code-image-frame">
+              <Image
+                src={card.asset.publicPath}
+                alt={`بطاقة كود ${card.code}`}
+                width={card.asset.width}
+                height={card.asset.height}
+                className="asset-image-contain"
+                sizes="220px"
+              />
+            </div>
           </div>
         </div>
       </div>
+      {revealed ? (
+        <button
+          ref={expandButtonRef}
+          type="button"
+          className="code-expand-button"
+          aria-label="فتح الصورة"
+          onClick={(event) => {
+            event.stopPropagation();
+            setViewerOpen(true);
+          }}
+        >
+          <ArrowsOutSimple size={18} weight="bold" />
+        </button>
+      ) : null}
+      {viewerOpen ? (
+        <ImageViewerOverlay
+          items={[{ id: card.asset.id, name: `كود ${card.code}`, asset: card.asset }]}
+          index={0}
+          openerRef={expandButtonRef}
+          closeButtonRef={closeButtonRef}
+          onClose={() => setViewerOpen(false)}
+          onMove={() => undefined}
+          labelPrefix="بطاقة"
+        />
+      ) : null}
     </article>
   );
 }

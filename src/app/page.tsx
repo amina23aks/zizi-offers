@@ -11,6 +11,7 @@ import {
   Sparkle,
 } from "@phosphor-icons/react/dist/ssr";
 import { OfferCardCollection } from "@/components/offer-card-collection";
+import { ZoomableImage } from "@/components/zoomable-image";
 import { getAsset, homeSections, publicCategories, ziziAbout } from "@/data/catalog";
 import { ziziIdentityAssetIds } from "@/data/assets";
 
@@ -89,9 +90,9 @@ export default function Home() {
                 <h2 id={`${section.id}-title`}>{section.title}</h2>
                 {section.intro ? <p>{section.intro}</p> : null}
                 {section.id === "compass" ? (
-                  <p className="section-note">
-                    <span>كل عنصر منفرد: 500$</span>
-                    <span>الباقة الكاملة: 2500$</span>
+                  <p className="section-note compass-price-note">
+                    <span>كل عنصر منفرد: <b dir="ltr">500$</b></span>
+                    <span>الباقة الكاملة: <b dir="ltr">2500$</b></span>
                   </p>
                 ) : null}
               </div>
@@ -107,7 +108,16 @@ export default function Home() {
                       itemClassName="home-carousel-item"
                     />
                   )
-                : section.cards.map((card) => (
+                : section.cards.map((card) => section.id === "compass" && "asset" in card && card.asset ? (
+                    <div key={card.id} className="home-overview-card compass-overview-card">
+                      <ZoomableImage
+                        asset={card.asset}
+                        alt={`بطاقة ${card.title}`}
+                        className="compass-image-frame home-compass-image-frame"
+                      />
+                      <span className="sr-only">{card.title}</span>
+                    </div>
+                  ) : (
                     <Link key={card.id} href={card.href} className="home-overview-card">
                       {"asset" in card && card.asset ? (
                         <Image

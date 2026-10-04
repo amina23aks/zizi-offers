@@ -1,6 +1,6 @@
 "use client";
 
-import { CaretRight, House } from "@phosphor-icons/react";
+import { CaretDown, CaretRight, House } from "@phosphor-icons/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -20,6 +20,7 @@ export function SiteHeader() {
   const pathname = usePathname();
   const router = useRouter();
   const isHome = pathname === "/";
+  const currentPage = navLinks.find((link) => pathname === link.href || pathname.startsWith(`${link.href}/`));
 
   const goBack = () => {
     if (typeof window !== "undefined" && window.history.length > 1 && document.referrer.startsWith(window.location.origin)) {
@@ -32,17 +33,18 @@ export function SiteHeader() {
   return (
     <header className="site-header">
       <nav className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-5 py-3 md:px-8">
-        {isHome ? (
+        <div className="header-primary-controls">
           <Link href="/" className="home-pill" aria-label="الرئيسية">
             <House size={17} weight="bold" />
             الرئيسية
           </Link>
-        ) : (
+          {!isHome ? (
           <button type="button" className="home-pill header-back" onClick={goBack} aria-label="العودة">
             <CaretRight size={18} weight="bold" />
             رجوع
           </button>
-        )}
+          ) : null}
+        </div>
         <div className="site-nav-links" aria-label="روابط الأقسام">
           {navLinks.map((link) => {
             const active = pathname === link.href || pathname.startsWith(`${link.href}/`);
@@ -58,6 +60,27 @@ export function SiteHeader() {
             );
           })}
         </div>
+        <details className="mobile-nav-menu">
+          <summary>
+            <span>{currentPage?.label ?? "الأقسام"}</span>
+            <CaretDown size={16} weight="bold" />
+          </summary>
+          <div className="mobile-nav-menu-panel" aria-label="روابط الأقسام">
+            {navLinks.map((link) => {
+              const active = pathname === link.href || pathname.startsWith(`${link.href}/`);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn("mobile-nav-link", active && "active")}
+                  aria-current={active ? "page" : undefined}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+          </div>
+        </details>
         <ThemeToggle />
       </nav>
     </header>

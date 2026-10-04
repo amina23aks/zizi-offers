@@ -274,6 +274,7 @@ export function CardFanCarousel({ items }: { items: readonly FanCardItem[] }) {
           id="etho-search"
           className="search-input"
           value={query}
+          suppressHydrationWarning
           onChange={(event) => {
             setQuery(event.target.value);
             setShowAll(true);

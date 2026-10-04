@@ -44,10 +44,10 @@ Generated from actual files in `public/assets/` during Stage 2. Preserve origina
 | coaching | `خطه-الجسد.jpg` | 649x920 | `/assets/coaching/خطه-الجسد.jpg` | coaching cover |  |
 | coaching | `خطه-العمل.jpg` | 907x1280 | `/assets/coaching/خطه-العمل.jpg` | coaching cover |  |
 | coaching | `خطه-بزنس.jpg` | 652x949 | `/assets/coaching/خطه-بزنس.jpg` | coaching cover |  |
-| codes | `A.jpg` | 578x1280 | `/assets/codes/A.jpg` | code card back |  |
-| codes | `B.jpg` | 578x1280 | `/assets/codes/B.jpg` | code card back |  |
-| codes | `C.jpg` | 578x1280 | `/assets/codes/C.jpg` | code card back |  |
-| codes | `D.jpg` | 578x1280 | `/assets/codes/D.jpg` | code card back |  |
+| codes | `A.jpg` | 578x815 | `/assets/codes/A.jpg` | code card back | Corrected from the actual delivered file. |
+| codes | `B.jpg` | 578x816 | `/assets/codes/B.jpg` | code card back | Corrected from the actual delivered file. |
+| codes | `C.jpg` | 578x816 | `/assets/codes/C.jpg` | code card back | Corrected from the actual delivered file. |
+| codes | `D.jpg` | 578x817 | `/assets/codes/D.jpg` | code card back | Corrected from the actual delivered file. |
 | compass | `الاختيار.jpg` | 905x1280 | `/assets/compass/الاختيار.jpg` | compass card |  |
 | compass | `الانطلاق.jpg` | 905x1280 | `/assets/compass/الانطلاق.jpg` | compass launch cover |  |
 | compass | `الذعر.jpg` | 905x1280 | `/assets/compass/الذعر.jpg` | compass card |  |

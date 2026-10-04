@@ -120,3 +120,23 @@ Customer accounts, calendar, payments, private feedback, start dates, compass PD
 - Added inner-page back navigation with in-site history fallback and a compact current-page category menu.
 - Dark mode received restrained category-tinted surfaces and ambient backgrounds without dimming text.
 - Independent Playwright verification on the production server passed for responsive overflow, code-card flip, Etho autoplay/stop/search/grid/viewer, and coaching image viewer. The existing dev server on port 3000 was found to serve a non-hydrated stale session; production server on port 3001 hydrated correctly.
+
+## 3 October latest owner corrections pass
+
+- Code cards now preserve the delivered 578 by 1280 artwork ratio with no top/bottom padding on the revealed image face.
+- Category titles, compass pricing, offer cards, and responsive grids were tightened so content drives height and mobile uses compact two-column collections where requested.
+- Header navigation now keeps `الرئيسية` as a Home control and uses a separate Back control plus a mobile category dropdown.
+- Mindsets uses a larger physical-left image on desktop with top-aligned text. Spectra, triple, compass, and offer images stay uncropped and zoomable.
+- The shared image viewer now supports zoom in, zoom out, reset, pinch, pan while zoomed, keyboard arrows, Escape, and mobile swipe when fitted.
+- Compass cards are image-only on the homepage and compass page; captions remain available through accessible labels and the full-screen viewer.
+- All program-category offers are marked `غير متاح` per the latest owner correction.
+- Browser verification covered desktop/mobile `/tests`, `/compass`, `/programs`, and `/`; typecheck, lint, and production build passed before committing.
+
+## 4 October remaining layout correction pass
+
+- Diagnosed live computed styles before editing. Root causes were stale code image dimensions in the registry, obsolete coaching desktop split-card CSS, mobile hero bubbles expanding the RTL root scroll canvas, fixed homepage carousel item widths, and compass grid/image rules inherited from earlier large-card passes.
+- Corrected code image registry dimensions from actual delivered files: `A.jpg` 578x815, `B.jpg` 578x816, `C.jpg` 578x816, and `D.jpg` 578x817. Code card faces now use the actual image ratio, and an icon-only `فتح الصورة` control opens the shared full-screen viewer without flipping the card back.
+- Dedicated compass page now uses right-aligned pricing under the heading and a centered modest image gallery: one centered image per mobile row, four emotion cards at desktop width, and five on wide screens.
+- Coaching and programs category pages now keep normal card flow with two mobile columns, three medium columns, and four wide columns. Metadata remains inside each card.
+- Homepage rows remain horizontal and swipeable; row/item containment prevents card widths from expanding the page. Mobile hero category links now use an in-flow grid to avoid RTL horizontal scroll.
+- Browser verification covered 360, 390, 768, 1024, and 1440px for `/`, `/compass`, `/coaching`, `/programs`, and `/tests`; typecheck, lint, and production build passed before committing.
