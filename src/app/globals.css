@@ -4108,3 +4108,38 @@ body {
     font-size: 1rem;
   }
 }
+
+/* Fine-tune mobile hero balance from visual review. */
+@media (max-width: 899px) {
+  .home-title-wrap {
+    justify-self: center;
+    text-align: center;
+    transform: translateX(0);
+  }
+
+  .category-bubble:nth-child(5) {
+    --bubble-x: -72px;
+  }
+
+  .category-bubble:nth-child(6) {
+    --bubble-x: 72px;
+  }
+
+  .hero-actions {
+    margin-top: clamp(11.9rem, 29.5vw, 12.7rem);
+  }
+}
+
+@media (max-width: 390px) {
+  .category-bubble:nth-child(5) {
+    --bubble-x: -66px;
+  }
+
+  .category-bubble:nth-child(6) {
+    --bubble-x: 66px;
+  }
+
+  .hero-actions {
+    margin-top: 11.9rem;
+  }
+}
