@@ -13,8 +13,8 @@ const navLinks = [
   { href: "/courses", label: "الدورات" },
   { href: "/programs", label: "البرمجات" },
   { href: "/sessions", label: "الجلسات" },
+  { href: "/compass", label: "بوصلة المشاعر" },
   { href: "/fingerprints", label: "البصمات" },
-  { href: "/compass", label: "البوصلة" },
 ] as const;
 
 type HistoryEntry = {
@@ -304,6 +304,23 @@ export function SiteHeader() {
             })}
           </div>
         </details>
+        <div className="site-nav-links desktop-nav-links" aria-label="روابط الصفحات">
+          {navLinks.map((link) => {
+            const active = pathname === link.href || pathname.startsWith(`${link.href}/`);
+            return (
+              <Link
+                key={link.href}
+                className={cn("nav-link", active && "active")}
+                href={link.href}
+                aria-current={active ? "page" : undefined}
+                onPointerDown={captureNavigationScroll}
+                onClick={captureNavigationScroll}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+        </div>
         <div className="header-utility-controls">
           <ThemeToggle />
           <button type="button" className="header-back-chevron" onClick={goBack} aria-label="العودة للصفحة السابقة">

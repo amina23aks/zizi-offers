@@ -4016,3 +4016,52 @@ body {
     font-size: 0.84rem;
   }
 }
+
+/* Small hero-position and desktop navigation adjustments. */
+.desktop-nav-links.site-nav-links {
+  grid-area: menu;
+  justify-self: center;
+  display: none !important;
+}
+
+.hero-actions {
+  margin-top: clamp(0.95rem, 2.3vw, 1.35rem);
+}
+
+.category-bubble:nth-child(7) {
+  --bubble-y: clamp(-214px, -19vw, -140px);
+}
+
+@media (min-width: 1180px) {
+  .header-page-menu {
+    display: none !important;
+  }
+
+  .desktop-nav-links.site-nav-links {
+    display: flex !important;
+    max-width: min(70vw, 760px);
+    justify-content: center;
+    gap: 0.08rem;
+  }
+
+  .desktop-nav-links .nav-link {
+    min-height: 38px;
+    padding-inline: 0.55rem;
+    font-size: 0.86rem;
+    white-space: nowrap;
+  }
+
+  .desktop-nav-links .nav-link.active {
+    color: var(--brand-blue);
+  }
+}
+
+@media (max-width: 899px) {
+  .hero-actions {
+    margin-top: 0.95rem;
+  }
+
+  .category-bubble:nth-child(7) {
+    --bubble-y: -176px;
+  }
+}
