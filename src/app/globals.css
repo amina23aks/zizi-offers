@@ -4086,7 +4086,7 @@ body {
 
 @media (max-width: 899px) {
   .hero-actions {
-    margin-top: clamp(8.45rem, 22vw, 9.05rem);
+    margin-top: clamp(9.15rem, 23.5vw, 9.85rem);
   }
 
   .category-bubble:nth-child(7) {
@@ -4096,7 +4096,7 @@ body {
 
 @media (max-width: 390px) {
   .hero-actions {
-    margin-top: 8.45rem;
+    margin-top: 9.15rem;
   }
 
   .payment-method-tiles {
