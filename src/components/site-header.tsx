@@ -3,7 +3,7 @@
 import { CaretDown, House } from "@phosphor-icons/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
 
@@ -13,8 +13,8 @@ const navLinks = [
   { href: "/courses", label: "الدورات" },
   { href: "/programs", label: "البرمجات" },
   { href: "/sessions", label: "الجلسات" },
+  { href: "/compass", label: "بوصلة المشاعر" },
   { href: "/fingerprints", label: "البصمات" },
-  { href: "/compass", label: "البوصلة" },
 ] as const;
 
 type HistoryEntry = {
@@ -139,6 +139,8 @@ const captureNavigationScroll = () => {
 export function SiteHeader() {
   const pathname = usePathname();
   const router = useRouter();
+  const menuRef = useRef<HTMLDetailsElement | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   const currentPage = navLinks.find((link) => pathname === link.href || pathname.startsWith(`${link.href}/`));
 
   useEffect(() => {
@@ -179,6 +181,30 @@ export function SiteHeader() {
       }
     }
   }, [pathname]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const onPointerDown = (event: PointerEvent) => {
+      if (!menuRef.current?.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [menuOpen]);
 
   useEffect(() => {
     let frame = 0;
@@ -247,8 +273,13 @@ export function SiteHeader() {
             <span className="sr-only">الرئيسية</span>
           </Link>
         </div>
-        <details className="mobile-nav-menu header-page-menu">
-          <summary onPointerDown={captureNavigationScroll}>
+        <details
+          ref={menuRef}
+          className="mobile-nav-menu header-page-menu"
+          open={menuOpen}
+          onToggle={(event) => setMenuOpen(event.currentTarget.open)}
+        >
+          <summary aria-expanded={menuOpen} onPointerDown={captureNavigationScroll}>
             <span>{currentPage?.label ?? "الأقسام"}</span>
             <CaretDown size={16} weight="bold" />
           </summary>
@@ -262,7 +293,10 @@ export function SiteHeader() {
                   className={cn("mobile-nav-link", active && "active")}
                   aria-current={active ? "page" : undefined}
                   onPointerDown={captureNavigationScroll}
-                  onClick={captureNavigationScroll}
+                  onClick={() => {
+                    captureNavigationScroll();
+                    setMenuOpen(false);
+                  }}
                 >
                   {link.label}
                 </Link>
@@ -270,6 +304,23 @@ export function SiteHeader() {
             })}
           </div>
         </details>
+        <div className="site-nav-links desktop-nav-links" aria-label="روابط الصفحات">
+          {navLinks.map((link) => {
+            const active = pathname === link.href || pathname.startsWith(`${link.href}/`);
+            return (
+              <Link
+                key={link.href}
+                className={cn("nav-link", active && "active")}
+                href={link.href}
+                aria-current={active ? "page" : undefined}
+                onPointerDown={captureNavigationScroll}
+                onClick={captureNavigationScroll}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+        </div>
         <div className="header-utility-controls">
           <ThemeToggle />
           <button type="button" className="header-back-chevron" onClick={goBack} aria-label="العودة للصفحة السابقة">

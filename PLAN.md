@@ -149,3 +149,11 @@ Customer accounts, calendar, payments, private feedback, start dates, compass PD
 - Added the booking-contact section near the bottom of the homepage with country-only Telegram buttons for السعودية، الكويت، المغرب، الإمارات and informational Visa/PayPal text labels.
 - Page-title frames and homepage fingerprint cards were tightened to avoid oversized decoration, overlap, and document-level horizontal overflow.
 - This pass is authorized for commit and push to the working feature branch only; it does not authorize merge to `main`, production deployment, Firebase, Cloudinary, accounts, calendars, or payment processing.
+
+## 5 October focused owner update pass
+
+- Mindset data now uses the exact owner-provided copy with the order المرتاح، الصواب، الفوز، المحبوب and المرتاح selected first. The UI renders one heading and one verbatim body per mindset.
+- Header remains sticky and keeps the approved physical layout. The centered page dropdown now closes on selection, outside click, and Escape while preserving Back scroll restoration.
+- Hero now shows two buttons on mobile and desktop: `استكشفي العروض` to the offer sections and `احجزي الآن` to booking contact. The compass bubble is moved into the upper available hero space without redesigning the hero.
+- Homepage offer images continue to use original artwork with natural proportions, no crop, no stretch, and no forced shared height.
+- This pass is authorized for commit and push to the working feature branch only; it does not authorize merge to `main` or production deployment.

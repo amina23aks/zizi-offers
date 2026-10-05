@@ -59,9 +59,14 @@ export default function Home() {
         <div className="home-title-wrap">
           <h1 id="home-title">عروض زيزي</h1>
         </div>
-        <Link href="#booking-contact" className="primary-action hero-action">
-          احجزي الآن
-        </Link>
+        <div className="hero-actions" aria-label="روابط سريعة">
+          <Link href="#offers-sections" className="secondary-action hero-action">
+            استكشفي العروض
+          </Link>
+          <Link href="#booking-contact" className="primary-action hero-action">
+            احجزي الآن
+          </Link>
+        </div>
       </section>
 
       <section id="about" className="content-band about-band">
