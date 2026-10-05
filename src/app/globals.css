@@ -4114,7 +4114,7 @@ body {
   .home-title-wrap {
     justify-self: center;
     text-align: center;
-    transform: translateX(0);
+    transform: translateY(0.7rem);
   }
 
   .category-bubble:nth-child(5) {
