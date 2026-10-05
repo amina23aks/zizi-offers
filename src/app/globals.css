@@ -3819,30 +3819,58 @@ body {
   font-weight: 850;
 }
 
-.payment-methods > div {
-  display: flex;
-  flex-wrap: wrap;
+.payment-method-tiles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   justify-content: center;
-  gap: 0.55rem;
+  gap: clamp(0.55rem, 2vw, 0.85rem);
+  width: min(100%, 420px);
 }
 
-.payment-methods span {
-  display: inline-flex;
-  min-height: 38px;
+.payment-method-tile {
+  position: relative;
+  display: flex;
+  aspect-ratio: 1.72 / 1;
+  min-width: 0;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--surface);
-  padding: 0.45rem 0.9rem;
-  color: var(--foreground);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, #9ad4f6 58%, var(--border));
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 18% 20%, rgb(255 255 255 / 0.7), transparent 3.8rem),
+    linear-gradient(135deg, #edf9ff 0%, #cceeff 48%, #dff8f2 100%);
+  color: #123c5f;
+  font-size: clamp(1.05rem, 4.3vw, 1.35rem);
   font-weight: 950;
   letter-spacing: 0;
+  box-shadow: 0 16px 34px rgb(37 99 235 / 0.11);
+}
+
+.payment-method-tile::after {
+  position: absolute;
+  inset: auto -18% -44% auto;
+  width: 58%;
+  aspect-ratio: 1;
+  border: 1px solid rgb(255 255 255 / 0.46);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.22);
+  content: "";
+  pointer-events: none;
 }
 
 .dark .booking-contact-button {
   background: color-mix(in srgb, #9ad4f6 22%, var(--surface));
   color: #d9f0ff;
+}
+
+.dark .payment-method-tile {
+  border-color: color-mix(in srgb, #9ad4f6 34%, var(--border));
+  background:
+    radial-gradient(circle at 18% 20%, rgb(255 255 255 / 0.16), transparent 3.8rem),
+    linear-gradient(135deg, #173f5d 0%, #0f2e46 52%, #123f3b 100%);
+  color: #e6f7ff;
+  box-shadow: 0 16px 34px rgb(0 0 0 / 0.28);
 }
 
 @media (max-width: 390px) {
@@ -4058,10 +4086,25 @@ body {
 
 @media (max-width: 899px) {
   .hero-actions {
-    margin-top: 0.95rem;
+    margin-top: clamp(8.45rem, 22vw, 9.05rem);
   }
 
   .category-bubble:nth-child(7) {
     --bubble-y: -176px;
+  }
+}
+
+@media (max-width: 390px) {
+  .hero-actions {
+    margin-top: 8.45rem;
+  }
+
+  .payment-method-tiles {
+    gap: 0.5rem;
+  }
+
+  .payment-method-tile {
+    border-radius: 15px;
+    font-size: 1rem;
   }
 }
