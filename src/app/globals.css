@@ -4126,7 +4126,7 @@ body {
   }
 
   .hero-actions {
-    margin-top: clamp(11.9rem, 29.5vw, 12.7rem);
+    margin-top: clamp(12.45rem, 31vw, 13.25rem);
   }
 }
 
@@ -4140,6 +4140,6 @@ body {
   }
 
   .hero-actions {
-    margin-top: 11.9rem;
+    margin-top: 12.45rem;
   }
 }
