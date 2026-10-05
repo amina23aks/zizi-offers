@@ -142,6 +142,7 @@ export function SiteHeader() {
   const menuRef = useRef<HTMLDetailsElement | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const currentPage = navLinks.find((link) => pathname === link.href || pathname.startsWith(`${link.href}/`));
+  const showBackButton = pathname !== "/";
 
   useEffect(() => {
     const href = currentHref();
@@ -323,9 +324,11 @@ export function SiteHeader() {
         </div>
         <div className="header-utility-controls">
           <ThemeToggle />
-          <button type="button" className="header-back-chevron" onClick={goBack} aria-label="العودة للصفحة السابقة">
-            <span aria-hidden="true">&lt;</span>
-          </button>
+          {showBackButton ? (
+            <button type="button" className="header-back-chevron" onClick={goBack} aria-label="العودة للصفحة السابقة">
+              <span aria-hidden="true">&lt;</span>
+            </button>
+          ) : null}
         </div>
       </nav>
     </header>

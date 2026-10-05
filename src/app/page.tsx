@@ -182,9 +182,9 @@ export default function Home() {
         </div>
         <div className="payment-methods" aria-label="طرق الدفع المتاحة">
           <p>طرق الدفع المتاحة</p>
-          <div>
-            <span>Visa</span>
-            <span>PayPal</span>
+          <div className="payment-method-tiles">
+            <div className="payment-method-tile">Visa</div>
+            <div className="payment-method-tile">PayPal</div>
           </div>
         </div>
       </section>
