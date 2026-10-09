@@ -1,0 +1,61 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null && request.auth.token.admin == true;
+    }
+    function validPrice(price) {
+      return price is map
+        && price.keys().hasOnly(['amountUsd', 'status'])
+        && price.status in ['known', 'unknown', 'free']
+        && ((price.status == 'unknown' && price.amountUsd == null)
+          || (price.status == 'free' && price.amountUsd == 0)
+          || (price.status == 'known' && price.amountUsd is number && price.amountUsd >= 0));
+    }
+    function validVariant(variant) {
+      return variant is map
+        && variant.keys().hasOnly(['id', 'title', 'price', 'availability'])
+        && variant.id is string && variant.id.size() > 0 && variant.id.size() <= 80
+        && variant.title is string && variant.title.size() > 0 && variant.title.size() <= 160
+        && validPrice(variant.price)
+        && variant.availability in ['available', 'unavailable', 'completed', 'unknown'];
+    }
+    function validImage(image) {
+      return image is map
+        && image.keys().hasOnly(['kind', 'assetId', 'secureUrl', 'publicId', 'width', 'height', 'alt'])
+        && image.kind in ['none', 'local', 'cloudinary']
+        && image.alt is string && image.alt.size() <= 300
+        && (image.kind != 'local' || (image.assetId is string && image.assetId.size() > 0 && image.assetId.size() <= 300))
+        && (image.kind != 'cloudinary' || (image.secureUrl is string && image.secureUrl.matches('https://.*')
+          && image.publicId is string && image.publicId.size() > 0 && image.publicId.size() <= 300
+          && image.width is int && image.width > 0 && image.height is int && image.height > 0));
+    }
+    function validOffer(data, id) {
+      return data.keys().hasOnly([
+          'id', 'title', 'category', 'description', 'topics', 'image', 'variants',
+          'duration', 'sessionDuration', 'capacity', 'displayOrder', 'status',
+          'createdAt', 'updatedAt'
+        ])
+        && data.id == id && data.id is string && data.id.size() > 0 && data.id.size() <= 80
+        && data.title is string && data.title.size() > 0 && data.title.size() <= 160
+        && data.category in ['tests', 'coaching', 'programs', 'courses', 'sessions', 'compass']
+        && data.description is string && data.description.size() <= 5000
+        && data.topics is list && data.topics.size() <= 30
+        && data.keys().hasAll(['id', 'title', 'category', 'description', 'topics', 'image', 'variants', 'duration', 'sessionDuration', 'capacity', 'displayOrder', 'status', 'createdAt', 'updatedAt'])
+        && validImage(data.image)
+        && data.variants is list && data.variants.size() <= 2
+        && data.duration is string && data.duration.size() <= 160
+        && data.sessionDuration is string && data.sessionDuration.size() <= 160
+        && data.capacity is string && data.capacity.size() <= 160
+        && data.displayOrder is int && data.displayOrder >= 0
+        && data.status in ['draft', 'published']
+        && data.createdAt is timestamp && data.updatedAt is timestamp;
+    }
+    match /offers/{offerId} {
+      allow get, list: if resource.data.status == 'published' || isAdmin();
+      allow create, update: if isAdmin() && validOffer(request.resource.data, offerId);
+      allow delete: if isAdmin();
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}

@@ -19,7 +19,7 @@ Status reflects work actually completed in `C:\ziziwebsite\zizi-offers`. User de
 | 12b | Latest owner refinements | Plant coaching bubble, uncropped offer images, coaching format filters, physical-left prices, swipeable homepage rows, compass package note, code layout, Etho slow autoplay, verify and push feature branch | In progress |
 | 12c | Implementation correction pass | Fix Etho continuous motion/search, desktop mindset layout, centered test badges, coaching variant status data, mobile metadata, compass/home media, code-card geometry, docs and verification | In progress |
 | 13 | Admin frontend prototype | Deferred; prototype saves must be labeled non-durable before backend integration | Pending |
-| 14 | Auth, Firestore, signed media uploads | Deferred; no secrets committed | Pending |
+| 14 | Auth, Firestore, authenticated media uploads | Backend Stage 1 implemented on `backend-stage-1`: trusted-claim login/admin APIs, validated durable offers, restrictive rules/tests, Cloudinary uploads, provisioning and idempotent migration tooling. Live credential checks, claim grant, rules deployment and cloud migration remain pending environment access. | In progress |
 | 15 | Final content review and deployment when instructed | Deferred | Pending |
 
 Customer accounts, calendar, payments, private feedback, start dates, compass PDF, and AI-generated test results remain deferred.

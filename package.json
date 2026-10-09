@@ -2,31 +2,49 @@
   "name": "zizi-offers",
   "version": "0.1.0",
   "private": true,
+  "overrides": {
+    "firebase": {
+      "@firebase/app": "0.13.2",
+      "@firebase/app-compat": "0.4.2"
+    }
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:rules": "vitest run tests/firestore.rules.test.ts",
+    "emulators": "firebase emulators:start --only firestore,auth",
+    "admin:provision": "tsx scripts/provision-admin.ts",
+    "migrate:offers": "tsx scripts/migrate-offers.ts"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
+    "cloudinary": "^2.11.0",
     "clsx": "^2.1.1",
+    "firebase": "11.10.0",
+    "firebase-admin": "^13.10.0",
     "gsap": "^3.15.0",
     "motion": "^13.5.0",
     "next": "16.3.8",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "tailwind-merge": "^3.7.0"
+    "tailwind-merge": "^3.7.0",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
+    "@firebase/rules-unit-testing": "4.0.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.8",
+    "firebase-tools": "^14.27.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "tsx": "^4.23.15",
+    "typescript": "^5",
+    "vitest": "^4.1.11"
   }
 }
