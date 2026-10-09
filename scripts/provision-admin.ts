@@ -2,7 +2,7 @@ import { cert, initializeApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 
 async function main() {
-const targetUid = "P0kKC8FA5MUUMCluTBaYVmAee7N2";
+const targetUid = "Qhmsmesd3jNE32F5SDU52u5IGRt2";
 const projectId = process.env.FIREBASE_ADMIN_PROJECT_ID;
 const clientEmail = process.env.FIREBASE_ADMIN_CLIENT_EMAIL;
 const rawKey = process.env.FIREBASE_ADMIN_PRIVATE_KEY;
@@ -14,6 +14,7 @@ if (!privateKey.includes("BEGIN PRIVATE KEY")) throw new Error("Malformed enviro
 
 const auth = getAuth(initializeApp({ credential: cert({ projectId, clientEmail, privateKey }) }));
 const user = await auth.getUser(targetUid); // authenticated operation proves the UID exists in this project
+console.log(`UID ${targetUid} exists; current admin claim: ${user.customClaims?.admin === true}.`);
 await auth.setCustomUserClaims(targetUid, { ...user.customClaims, admin: true });
 const verified = await auth.getUser(targetUid);
 if (verified.customClaims?.admin !== true) throw new Error("Admin claim verification failed");
