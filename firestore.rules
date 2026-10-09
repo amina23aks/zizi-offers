@@ -14,9 +14,10 @@ service cloud.firestore {
     }
     function validVariant(variant) {
       return variant is map
-        && variant.keys().hasOnly(['id', 'title', 'price', 'availability'])
+        && variant.keys().hasOnly(['id', 'title', 'price', 'availability', 'note'])
         && variant.id is string && variant.id.size() > 0 && variant.id.size() <= 80
         && variant.title is string && variant.title.size() > 0 && variant.title.size() <= 160
+        && (!('note' in variant) || (variant.note is string && variant.note.size() <= 300))
         && validPrice(variant.price)
         && variant.availability in ['available', 'unavailable', 'completed', 'unknown'];
     }
@@ -33,7 +34,7 @@ service cloud.firestore {
     function validOffer(data, id) {
       return data.keys().hasOnly([
           'id', 'title', 'category', 'description', 'topics', 'image', 'variants',
-          'duration', 'sessionDuration', 'capacity', 'displayOrder', 'status',
+          'duration', 'sessionDuration', 'capacity', 'displayOrder', 'status', 'delivery',
           'createdAt', 'updatedAt'
         ])
         && data.id == id && data.id is string && data.id.size() > 0 && data.id.size() <= 80
@@ -43,7 +44,10 @@ service cloud.firestore {
         && data.topics is list && data.topics.size() <= 30
         && data.keys().hasAll(['id', 'title', 'category', 'description', 'topics', 'image', 'variants', 'duration', 'sessionDuration', 'capacity', 'displayOrder', 'status', 'createdAt', 'updatedAt'])
         && validImage(data.image)
-        && data.variants is list && data.variants.size() <= 2
+        && (!('delivery' in data) || data.delivery in ['individual', 'group', 'both', 'general'])
+        && data.variants is list && data.variants.size() >= 1 && data.variants.size() <= 2
+        && (data.variants.size() <= 0 || validVariant(data.variants[0]))
+        && (data.variants.size() <= 1 || validVariant(data.variants[1]))
         && data.duration is string && data.duration.size() <= 160
         && data.sessionDuration is string && data.sessionDuration.size() <= 160
         && data.capacity is string && data.capacity.size() <= 160
@@ -51,6 +55,8 @@ service cloud.firestore {
         && data.status in ['draft', 'published']
         && data.createdAt is timestamp && data.updatedAt is timestamp;
     }
+    // Larger package arrays are written only through the authenticated server API,
+    // which validates every variant. Retain the existing direct-client limit.
     match /offers/{offerId} {
       allow get, list: if resource.data.status == 'published' || isAdmin();
       allow create, update: if isAdmin() && validOffer(request.resource.data, offerId);

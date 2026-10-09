@@ -22,6 +22,7 @@ export function getFirebaseAuth() {
     ["NEXT_PUBLIC_FIREBASE_APP_ID", config.appId],
   ].filter(([, value]) => !value).map(([name]) => name);
   if (missing.length) throw new Error(`متغيرات Firebase الناقصة: ${missing.join(", ")}`);
+  if (config.projectId !== "zizi-offers") throw new Error("يلزم استخدام مشروع Firebase نفسه للوحة الإدارة والخادم: zizi-offers.");
   const app = getApps().length ? getApp() : initializeApp(config);
   return getAuth(app);
 }

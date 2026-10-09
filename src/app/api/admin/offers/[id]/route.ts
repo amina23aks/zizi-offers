@@ -10,7 +10,8 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
     await requireAdmin(request);
     const { id } = await context.params;
     const parsed = adminOfferSchema.safeParse(await request.json());
-    if (!parsed.success || parsed.data.id !== id) return Response.json({ error: "بيانات العرض أو المعرّف غير صالحة." }, { status: 400 });
+    if (!parsed.success) return Response.json({ error: "راجعي الحقول المطلوبة والقيم المدخلة.", fields: parsed.error.flatten().fieldErrors }, { status: 400 });
+    if (parsed.data.id !== id) return Response.json({ error: "المعرّف غير صالح." }, { status: 400 });
     const ref = getFirebaseAdmin().db.collection("offers").doc(id);
     if (!(await ref.get()).exists) return Response.json({ error: "العرض غير موجود." }, { status: 404 });
     await ref.set({ ...parsed.data, updatedAt: FieldValue.serverTimestamp() }, { merge: true });

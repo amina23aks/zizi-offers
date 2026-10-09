@@ -7,8 +7,8 @@ async function main() {
 const apply = process.argv.includes("--apply");
 const localOffers: readonly Offer[] = offers;
 const mapped = localOffers.map((offer, displayOrder) => {
-  const baseVariants = offer.variants?.filter((variant) => variant.id === "individual" || variant.id === "group") ?? [];
-  const variants = baseVariants.length ? baseVariants.map((variant) => ({ id: variant.id, title: variant.title, price: { amountUsd: variant.price.amountUsd, status: variant.price.status === "variant" ? "unknown" : variant.price.status }, availability: variant.availability ?? "unknown" })) : [{ id: "individual", title: "فردي", price: { amountUsd: offer.price.status === "variant" ? null : offer.price.amountUsd, status: offer.price.status === "variant" ? "unknown" : offer.price.status }, availability: offer.availability }];
+  // Retain every package and duration variant; never collapse them to two formats.
+  const variants = offer.variants?.length ? offer.variants.map((variant) => ({ id: variant.id, title: variant.title, price: { amountUsd: variant.price.status === "variant" ? null : variant.price.amountUsd, status: variant.price.status === "variant" ? "unknown" : variant.price.status }, availability: variant.availability ?? "unknown", ...(variant.note ? { note: variant.note } : {}) })) : [{ id: "general", title: "السعر", price: { amountUsd: offer.price.status === "variant" ? null : offer.price.amountUsd, status: offer.price.status === "variant" ? "unknown" : offer.price.status }, availability: offer.availability }];
   return { id: offer.id, title: offer.title, category: offer.category, description: offer.summary ?? "", topics: [...(offer.bullets ?? [])], image: offer.assetId ? { kind: "local", assetId: offer.assetId, alt: offer.title } : { kind: "none", alt: offer.title }, variants, duration: offer.programDuration ?? offer.totalTrainingDuration ?? "", sessionDuration: offer.sessionDuration ?? "", capacity: offer.capacity ?? "", displayOrder, status: "draft" as const };
 });
 console.log(`Dry-run mapping: ${mapped.length} local offers with ${new Set(mapped.map((offer) => offer.id)).size} stable IDs.`);

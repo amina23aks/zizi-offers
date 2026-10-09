@@ -8,8 +8,11 @@ export const runtime = "nodejs";
 export async function GET(request: Request) {
   try {
     await requireAdmin(request);
-    const snapshot = await getFirebaseAdmin().db.collection("offers").orderBy("displayOrder").get();
-    return Response.json({ offers: snapshot.docs.map((doc) => doc.data()) });
+    // orderBy excludes older documents that do not have displayOrder.
+    const snapshot = await getFirebaseAdmin().db.collection("offers").get();
+    const offers = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id, displayOrder: doc.data().displayOrder ?? 0 }));
+    offers.sort((a, b) => a.displayOrder - b.displayOrder || a.id.localeCompare(b.id));
+    return Response.json({ offers });
   } catch (error) { return safeAdminError(error); }
 }
 

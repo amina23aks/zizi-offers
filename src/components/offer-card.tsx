@@ -17,13 +17,16 @@ export function OfferCard({
   href,
   formatFilter,
   onImageOpen,
+  image,
 }: {
   offer: DisplayOffer;
   href?: string;
   formatFilter?: CoachingFormatFilter;
   onImageOpen?: (opener: HTMLButtonElement) => void;
+  image?: { src: string; width: number; height: number; alt: string };
 }) {
-  const asset = getAsset(offer.assetId);
+  const localAsset = getAsset(offer.assetId);
+  const asset = image ? { publicPath: image.src, width: image.width, height: image.height } : localAsset;
   const visibleVariants = formatFilter && offer.variants?.length
     ? offer.variants.filter((variant) => variantMatchesFormat(variant.title, formatFilter))
     : offer.variants;
@@ -58,7 +61,8 @@ export function OfferCard({
         >
           <Image
             src={asset.publicPath}
-            alt={`غلاف ${offer.title}`}
+            alt={image?.alt ?? `غلاف ${offer.title}`}
+            unoptimized={Boolean(image)}
             width={asset.width}
             height={asset.height}
             className="asset-image-contain"
@@ -72,7 +76,8 @@ export function OfferCard({
         <div className="offer-card-media" style={mediaStyle}>
           <Image
             src={asset.publicPath}
-            alt={`غلاف ${offer.title}`}
+            alt={image?.alt ?? `غلاف ${offer.title}`}
+            unoptimized={Boolean(image)}
             width={asset.width}
             height={asset.height}
             className="asset-image-contain"
