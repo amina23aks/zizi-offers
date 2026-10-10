@@ -21,6 +21,8 @@ export const adminOfferSchema = z.object({
     z.object({ kind: z.literal("local"), assetId: z.string().min(1).max(300), alt: z.string().max(300) }),
     z.object({ kind: z.literal("cloudinary"), secureUrl: z.string().url().startsWith("https://"), publicId: z.string().min(1).max(300), width: z.number().int().positive(), height: z.number().int().positive(), alt: z.string().max(300) }),
   ]),
+  badge: z.string().trim().max(20, "شارة البطاقة لا تتجاوز 20 حرفًا.").optional(),
+  catalogDetails: z.object({ format: z.enum(["test", "course", "coaching", "program", "session", "consultation", "package"]).optional(), durationKind: z.enum(["program", "training"]).optional(), priceBasis: z.string().max(160).optional(), availableThroughoutYear: z.boolean().optional() }).optional(),
   delivery: z.enum(["individual", "group", "both", "general"]).optional(),
   variants: z.array(z.object({ id: z.string().min(1).max(80), title: z.string().trim().min(1, "اسم الخيار مطلوب.").max(160), price, availability, note: z.string().max(300).optional() })).min(1, "أضيفي خيار سعر واحدًا على الأقل.").max(30),
   duration: z.string().max(160).refine(validDuration, "المدة يجب أن تكون موجبة.").default(""),

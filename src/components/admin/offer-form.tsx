@@ -55,7 +55,7 @@ export function OfferForm({ initial, user, busy, onSave, onDirty }: { initial: A
     <form ref={formRef} className="admin-edit-form" onSubmit={submit} noValidate>
       <fieldset disabled={disabled}><legend>معلومات العرض</legend>
         <label>اسم العرض<input required maxLength={160} value={offer.title} {...invalid("title")} onChange={(e) => patch({ title: e.target.value })} />{errorFor("title")}</label>
-        <label>القسم<select required value={offer.category} onChange={(e) => patch({ category: e.target.value as AdminOffer["category"] })}>{Object.entries(categories).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></label>
+        <label>القسم<select required value={offer.category} onChange={(e) => patch({ category: e.target.value as AdminOffer["category"], catalogDetails: { ...offer.catalogDetails, format: undefined } })}>{Object.entries(categories).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></label>
         <label>وصف مختصر<textarea rows={3} maxLength={5000} value={offer.description} {...invalid("description")} onChange={(e) => patch({ description: e.target.value })} />{errorFor("description")}</label>
         <div><p className="admin-field-label">محاور العرض <small>(اختياري)</small></p>{offer.topics.map((topic, index) => <div className="admin-topic-row" key={index}><input aria-label={`محور العرض ${index + 1}`} maxLength={300} value={topic} onChange={(e) => patch({ topics: offer.topics.map((item, i) => i === index ? e.target.value : item) })} /><button type="button" className="admin-secondary" aria-label={`إزالة المحور ${index + 1}`} onClick={() => patch({ topics: offer.topics.filter((_, i) => i !== index) })}>إزالة</button></div>)}<button type="button" className="admin-secondary" disabled={offer.topics.length >= 30} onClick={() => patch({ topics: [...offer.topics, ""] })}>إضافة محور</button>{errorFor("topics")}</div>
       </fieldset>
@@ -75,7 +75,8 @@ export function OfferForm({ initial, user, busy, onSave, onDirty }: { initial: A
       <fieldset disabled={disabled}><legend>معلومات إضافية</legend>
         <DurationField onValidity={(error) => validateExtra("duration", error)} label="مدة العرض / البرمجة" value={offer.duration} onChange={(duration) => patch({ duration })} />
         <DurationField onValidity={(error) => validateExtra("sessionDuration", error)} label="مدة الجلسة" value={offer.sessionDuration} onChange={(sessionDuration) => patch({ sessionDuration })} />
-        <details><summary>إعدادات إضافية</summary><label>ترتيب العرض<input type="number" dir="ltr" min={0} max={100000} step={1} value={Number.isNaN(offer.displayOrder) ? "" : offer.displayOrder} {...invalid("displayOrder")} onChange={(e) => patch({ displayOrder: e.target.value === "" ? NaN : Number(e.target.value) })} />{errorFor("displayOrder")}</label></details>
+        <BadgeField value={offer.badge ?? ""} onChange={(badge) => patch({ badge })} />
+
       </fieldset>
       <div className="admin-save-actions"><p>حالة النشر الحالية: <strong>{initial.status === "published" ? "منشور" : "مسودة"}</strong></p><small>حالة النشر مستقلة عن توفر العرض.</small>
         {saveError && <p className="admin-error" role="alert">{saveError}</p>}
@@ -164,4 +165,10 @@ function ImageUpload({ image, title, user, disabled, onChange, onBusy, onPending
     {error && <div role="alert" className="admin-error"><p>{error}</p>{file && <button type="button" disabled={busy || disabled} className="admin-secondary" onClick={() => void upload(file)}>إعادة المحاولة</button>}<p>لم تُستبدل الصورة المحفوظة. أزيلي الاختيار أو أعيدي المحاولة.</p></div>}
     {uploaded && <p role="status">تم رفع الصورة. احفظي العرض لتثبيت التغيير.</p>}
   </div>;
+}
+
+function BadgeField({ value, onChange }: { value: string; onChange: (value: string) => void }) {
+  const [kind, setKind] = useState(value === "جديد" ? "new" : value === "مميز" ? "featured" : value ? "custom" : "none");
+  const [custom, setCustom] = useState(value && !["جديد", "مميز"].includes(value) ? value : "");
+  return <div><label>شارة البطاقة<select value={kind} onChange={(e) => { setKind(e.target.value); onChange(e.target.value === "new" ? "جديد" : e.target.value === "featured" ? "مميز" : e.target.value === "custom" ? custom : ""); }}><option value="none">بدون شارة</option><option value="new">جديد</option><option value="featured">مميز</option><option value="custom">نص مخصص</option></select></label>{kind === "custom" && <label>نص الشارة<input maxLength={20} value={custom} onChange={(e) => { setCustom(e.target.value); onChange(e.target.value); }} /></label>}</div>;
 }

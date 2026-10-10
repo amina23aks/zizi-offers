@@ -10,6 +10,9 @@ import {
 import { additionalTestOffers, offers, renderPriceValue, type Availability, type Offer, type OfferPrice } from "@/data/offers";
 
 export type DisplayOffer = Offer & {
+  delivery?: "individual" | "group" | "both" | "general";
+  badge?: string;
+  image?: { src: string; width: number; height: number; alt: string };
   priceLabel: string;
   priceClarification: string | null;
   availabilityLabel: string | null;

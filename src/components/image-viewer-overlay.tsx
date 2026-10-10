@@ -194,6 +194,7 @@ export function ImageViewerOverlay({
       </button>
       <figure className="image-viewer-figure">
         <Image
+          unoptimized={item.asset.publicPath.startsWith("https://")}
           src={item.asset.publicPath}
           alt={`${labelPrefix} ${item.name}`}
           width={item.asset.width}

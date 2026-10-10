@@ -35,7 +35,7 @@ service cloud.firestore {
       return data.keys().hasOnly([
           'id', 'title', 'category', 'description', 'topics', 'image', 'variants',
           'duration', 'sessionDuration', 'capacity', 'displayOrder', 'status', 'delivery',
-          'createdAt', 'updatedAt'
+          'createdAt', 'updatedAt', 'badge', 'catalogDetails', 'firstPublishedAt', 'legacyImported'
         ])
         && data.id == id && data.id is string && data.id.size() > 0 && data.id.size() <= 80
         && data.title is string && data.title.size() > 0 && data.title.size() <= 160
@@ -43,6 +43,8 @@ service cloud.firestore {
         && data.description is string && data.description.size() <= 5000
         && data.topics is list && data.topics.size() <= 30
         && data.keys().hasAll(['id', 'title', 'category', 'description', 'topics', 'image', 'variants', 'duration', 'sessionDuration', 'capacity', 'displayOrder', 'status', 'createdAt', 'updatedAt'])
+        && (!('badge' in data) || (data.badge is string && data.badge.size() <= 20))
+        && (!('firstPublishedAt' in data) ? (request.method == "create" || !('firstPublishedAt' in resource.data)) : (data.firstPublishedAt is timestamp && (request.method == "create" || !('firstPublishedAt' in resource.data) ? data.firstPublishedAt == request.time : data.firstPublishedAt == resource.data.firstPublishedAt)))
         && validImage(data.image)
         && (!('delivery' in data) || data.delivery in ['individual', 'group', 'both', 'general'])
         && data.variants is list && data.variants.size() >= 1 && data.variants.size() <= 2

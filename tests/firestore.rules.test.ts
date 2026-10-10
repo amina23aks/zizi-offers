@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import "firebase/compat/firestore";
 import { assertFails, assertSucceeds, initializeTestEnvironment, type RulesTestEnvironment } from "@firebase/rules-unit-testing";
-import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
+import { doc, getDoc, setDoc, serverTimestamp, Timestamp } from "firebase/firestore";
 import { afterAll, beforeAll, describe, it } from "vitest";
 
 let env: RulesTestEnvironment;
@@ -38,5 +38,25 @@ describe("Firestore offer authorization", () => {
   });
   it("denies a signed-in member access to drafts", async () => {
     await assertFails(getDoc(doc(env.authenticatedContext("member").firestore(), "offers/draft-offer")));
+  });
+});
+
+
+describe("publication metadata and promotional badges", () => {
+  it("allows a badge independently of unavailable status and rejects oversized text", async () => {
+    const ref = doc(env.authenticatedContext("admin", { admin: true }).firestore(), "offers/badged-offer");
+    const data = { ...valid("published"), id: "badged-offer", badge: "جديد", variants: [{ ...valid("published").variants[0], availability: "unavailable" }] };
+    await assertSucceeds(setDoc(ref, data));
+    await assertSucceeds(getDoc(doc(env.unauthenticatedContext().firestore(), "offers/badged-offer")));
+    await assertFails(setDoc(ref, { ...data, badge: "a".repeat(21) }));
+  });
+  it("keeps first publication time immutable on direct client updates", async () => {
+    const ref = doc(env.authenticatedContext("admin", { admin: true }).firestore(), "offers/ordered-offer");
+    await assertSucceeds(setDoc(ref, { ...valid("published"), id: "ordered-offer", firstPublishedAt: serverTimestamp() }));
+    const data = (await getDoc(ref)).data()!;
+    await assertSucceeds(setDoc(ref, { ...data, title: "تعديل" }));
+    await assertFails(setDoc(ref, { ...data, firstPublishedAt: Timestamp.fromMillis(1) }));
+    const withoutDate = { ...data }; delete withoutDate.firstPublishedAt;
+    await assertFails(setDoc(ref, withoutDate));
   });
 });

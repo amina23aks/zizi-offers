@@ -1,9 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+vi.mock("../src/lib/invalidate-public-offers", () => ({ invalidatePublicOffers: vi.fn() }));
 const store = vi.hoisted(() => new Map<string, Record<string, unknown>>());
 vi.mock("../src/lib/firebase/admin", () => ({ getFirebaseAdmin: () => ({
   auth: { verifyIdToken: async (token: string) => { if (token === "expired") throw new Error("expired"); return { uid: token, admin: token === "admin" }; } },
-  db: { collection: () => ({
+  db: { runTransaction: async (fn: (tx: unknown) => Promise<unknown>) => fn({ get: (ref: { get: () => unknown }) => ref.get(), set: (ref: { set: (data: unknown) => unknown }, data: unknown) => ref.set(data) }), collection: () => ({
     get: async () => ({ docs: [...store.entries()].map(([id, data]) => ({ id, data: () => data })) }),
     doc: (id: string) => ({ get: async () => ({ exists: store.has(id), data: () => store.get(id) }), create: async (data: Record<string, unknown>) => { store.set(id, data); }, set: async (data: Record<string, unknown>) => { store.set(id, { ...store.get(id), ...data }); } }),
   }) },
