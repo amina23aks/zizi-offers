@@ -14,6 +14,7 @@ import {
 import { OfferCardCollection } from "@/components/offer-card-collection";
 import { ZoomableImage } from "@/components/zoomable-image";
 import { getAsset, homeSections, publicCategories, ziziAbout } from "@/data/catalog";
+import { getPublicOffers } from "@/lib/public-offers";
 import { ziziIdentityAssetIds } from "@/data/assets";
 
 const categoryIcons = {
@@ -33,7 +34,9 @@ const bookingContacts = [
   { country: "الإمارات", href: "https://t.me/lamer_iam" },
 ] as const;
 
-export default function Home() {
+export default async function Home() {
+  const savedOffers = await getPublicOffers();
+  const connected = process.env.PUBLIC_OFFERS_SOURCE === "firestore";
   const identityAsset = getAsset(ziziIdentityAssetIds.avatar ?? ziziIdentityAssetIds.groupLogo);
 
   return (
@@ -102,7 +105,7 @@ export default function Home() {
               <div>
                 <h2 id={`${section.id}-title`}>{section.title}</h2>
                 {section.intro ? <p>{section.intro}</p> : null}
-                {section.id === "compass" ? (
+                {section.id === "compass" && !connected ? (
                   <p className="section-note compass-price-note">
                     <span>كل عنصر منفرد: <b dir="ltr">500$</b></span>
                     <span>الباقة الكاملة: <b dir="ltr">2500$</b></span>
@@ -114,10 +117,10 @@ export default function Home() {
               </Link>
             </div>
             <div className="home-carousel-row" tabIndex={0} aria-label={`عروض ${section.title}`}>
-              {"offers" in section
+              {(connected && section.id !== "fingerprints") || "offers" in section
                 ? (
                     <OfferCardCollection
-                      offers={section.offers}
+                      offers={savedOffers.filter((offer) => offer.category === section.id)}
                       itemClassName="home-carousel-item"
                     />
                   )

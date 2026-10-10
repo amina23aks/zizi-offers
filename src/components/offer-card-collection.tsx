@@ -22,7 +22,8 @@ export function OfferCardCollection({
     () =>
       offers
         .map((offer) => {
-          const asset = getAsset(offer.assetId);
+          const local = getAsset(offer.assetId);
+          const asset = offer.image ? { ...local, id: offer.id, section: offer.category, fileName: offer.title, stem: offer.title, extension: "", bytes: 0, purpose: "cover", status: "available", notes: null, publicPath: offer.image.src, width: offer.image.width, height: offer.image.height } as ViewerImageItem["asset"] : local;
           return asset ? ({ id: offer.id, name: offer.title, asset } satisfies ViewerImageItem) : null;
         })
         .filter(Boolean) as ViewerImageItem[],

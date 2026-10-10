@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Clock, MagnifyingGlassPlus, User, UsersThree } from "@phosphor-icons/react";
 import type { CSSProperties } from "react";
 import { formatAvailability, formatLabel, formatPrice, getAsset, type DisplayOffer } from "@/data/catalog";
+import { matchesVariant } from "@/lib/public-offer-model";
 import { cn } from "@/lib/utils";
 
 export type CoachingFormatFilter = "group" | "individual";
@@ -17,15 +18,19 @@ export function OfferCard({
   href,
   formatFilter,
   onImageOpen,
+  image,
 }: {
   offer: DisplayOffer;
   href?: string;
   formatFilter?: CoachingFormatFilter;
   onImageOpen?: (opener: HTMLButtonElement) => void;
+  image?: { src: string; width: number; height: number; alt: string };
 }) {
-  const asset = getAsset(offer.assetId);
+  image = image ?? offer.image;
+  const localAsset = getAsset(offer.assetId);
+  const asset = image ? { publicPath: image.src, width: image.width, height: image.height } : localAsset;
   const visibleVariants = formatFilter && offer.variants?.length
-    ? offer.variants.filter((variant) => variantMatchesFormat(variant.title, formatFilter))
+    ? offer.variants.filter((variant) => (offer.delivery ? matchesVariant(variant.id, formatFilter) : variantMatchesFormat(variant.title, formatFilter)))
     : offer.variants;
   const matchingVariant = formatFilter && visibleVariants?.length === 1 ? visibleVariants[0] : null;
   const displayPrice = matchingVariant ? formatPrice(matchingVariant.price) : {
@@ -40,7 +45,7 @@ export function OfferCard({
     offer.programDuration ? { icon: "clock", label: `مدة البرنامج: ${offer.programDuration}` } : null,
     offer.sessionDuration ? { icon: "clock", label: `مدة الجلسة: ${offer.sessionDuration}` } : null,
     offer.totalTrainingDuration ? { icon: "clock", label: `مدة التدريب: ${offer.totalTrainingDuration}` } : null,
-    offer.capacity ? { icon: "group", label: `السعة: ${offer.capacity}` } : null,
+    offer.capacity && formatFilter !== "individual" ? { icon: "group", label: `السعة: ${offer.capacity}` } : null,
   ].filter(Boolean) as { icon: "clock" | "group"; label: string }[];
   const mediaStyle = asset
     ? ({ "--asset-ratio": `${asset.width} / ${asset.height}` } as CSSProperties)
@@ -58,7 +63,8 @@ export function OfferCard({
         >
           <Image
             src={asset.publicPath}
-            alt={`غلاف ${offer.title}`}
+            alt={image?.alt ?? `غلاف ${offer.title}`}
+            unoptimized={Boolean(image?.src.startsWith("https://"))}
             width={asset.width}
             height={asset.height}
             className="asset-image-contain"
@@ -72,7 +78,8 @@ export function OfferCard({
         <div className="offer-card-media" style={mediaStyle}>
           <Image
             src={asset.publicPath}
-            alt={`غلاف ${offer.title}`}
+            alt={image?.alt ?? `غلاف ${offer.title}`}
+            unoptimized={Boolean(image?.src.startsWith("https://"))}
             width={asset.width}
             height={asset.height}
             className="asset-image-contain"
@@ -81,6 +88,7 @@ export function OfferCard({
         </div>
       ) : null}
       <div className="offer-card-body">
+        {offer.badge ? <span className="offer-promo-badge">{offer.badge}</span> : null}
         <div className="flex flex-wrap items-center justify-between gap-2">
           <p className="eyebrow">{offer.category === "programs" ? "برمجة" : formatLabel(offer.format)}</p>
           {displayAvailability ? (
@@ -110,11 +118,11 @@ export function OfferCard({
           <div className="offer-variants" aria-label="خيارات السعر">
             {visibleVariants.map((variant) => (
               <span key={variant.id} className="offer-variant-pill">
-                {variant.title.includes("جماعي") ? <UsersThree size={15} weight="bold" /> : <User size={15} weight="bold" />}
+                {matchesVariant(variant.id, "group") ? <UsersThree size={15} weight="bold" /> : matchesVariant(variant.id, "individual") ? <User size={15} weight="bold" /> : null}
                 <strong>{variant.title}</strong>
                 <b dir="ltr">{formatPrice(variant.price).label}</b>
                 {formatPrice(variant.price).clarification ? <small>{formatPrice(variant.price).clarification}</small> : null}
-                {variant.availability ? (
+                {variant.availability && variant.availability !== "unknown" ? (
                   <em className={cn("variant-status", `status-${variant.availability}`)}>
                     {formatAvailability(variant.availability)}
                   </em>

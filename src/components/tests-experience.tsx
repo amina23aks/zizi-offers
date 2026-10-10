@@ -20,6 +20,8 @@ import {
   spectraAssets,
   triadAsset,
 } from "@/data/catalog";
+import { OfferCardCollection } from "./offer-card-collection";
+import type { DisplayOffer } from "@/data/catalog";
 import { cn } from "@/lib/utils";
 
 const testsNav = [
@@ -34,7 +36,10 @@ const codeLayout = ["A", "C", "B", "D"] as const;
 const tripleOffer = getOffer("triple-test");
 const tripleVariants = tripleOffer && "variants" in tripleOffer ? tripleOffer.variants : [];
 
-export function TestsExperience() {
+export function TestsExperience({ savedOffers }: { savedOffers?: readonly DisplayOffer[] }) {
+  const familyIds = ["codes-abcd", "etho", "mindsets", "geometric-spectra", "triple-test"];
+  const meta = (id: string) => savedOffers ? <OfferCardCollection offers={savedOffers.filter((o) => o.id === id)} /> : <TestMeta price="12$" />;
+  const present = (id: string) => !savedOffers || savedOffers.some((o) => o.id === id);
   const orderedCodes = useMemo(
     () => codeLayout.map((code) => codeCards.find((card) => card.code === code)!),
     [],
@@ -42,6 +47,7 @@ export function TestsExperience() {
 
   return (
     <div className="tests-page">
+      {savedOffers && <div className="offer-grid dense"><OfferCardCollection offers={savedOffers.filter((o) => !familyIds.includes(o.id))} /></div>}
       <nav className="tests-sticky-nav" aria-label="أقسام صفحة الاختبارات">
         {testsNav.map((item) => (
           <a key={item.href} href={item.href}>
@@ -50,40 +56,47 @@ export function TestsExperience() {
         ))}
       </nav>
 
+      {present("codes-abcd") && <>
       <section id="codes" className="page-section scroll-mt-28">
         <SectionHeading
           title="الأكواد"
           text="اختبار الأكواد الدماغية في نموذج زيزي يستكشف ميول A/B/C/D كما تظهر في طريقة التفكير والعمل والتعلّم، دون تحويله هنا إلى نظام نتائج آلي."
         />
-        <TestMeta price="12$" />
+        {meta("codes-abcd")}
         <div className="codes-sketch-grid" aria-label="بطاقات الأكواد">
           {orderedCodes.map((card) => (
             <CodeFlipCard key={card.code} card={card} />
           ))}
         </div>
       </section>
+      </>}
 
+      {present("etho") && <>
       <section id="etho" className="page-section scroll-mt-28">
         <SectionHeading
           title="الإيثو"
           text="استكشفي الأنماط السلوكية في نموذج الإيثو لدى زيزي، وتعرّفي على النمط المهيمن لديك وما يتيحه من أسئلة لفهم تفاعلاتك."
         />
-        <TestMeta price="12$" />
+        {meta("etho")}
         <CardFanCarousel items={ethoAnimals} />
       </section>
+      </>}
 
+      {present("mindsets") && <>
       <section id="mindsets" className="page-section scroll-mt-28">
         <SectionHeading
           title="العقليات"
           text="تعرّفي على استجاباتك الغالبة في المواقف والتعاملات، ضمن عقليات الصواب والفوز والمرتاح والمحبوب في نموذج زيزي."
         />
-        <TestMeta price="12$" />
+        {meta("mindsets")}
         <MindsetSlider />
       </section>
+      </>}
 
+      {present("geometric-spectra") && <>
       <section id="spectra" className="page-section scroll-mt-28">
         <SectionHeading title="الأطياف" text="استكشفي تناسق استجاباتك خلال الأشهر الأخيرة وفق نموذج الطيف لدى زيزي." />
-        <TestMeta price="12$" />
+        {meta("geometric-spectra")}
         <AnimatedTabs
           label="الطيف الهندسي"
           className="spectra-tabs"
@@ -101,11 +114,14 @@ export function TestsExperience() {
           }))}
         />
       </section>
+      </>}
 
+      {present("triple-test") && <>
       <section id="behavioral-inclinations" className="page-section scroll-mt-28">
         <span id="triple" className="anchor-compat" aria-hidden="true" />
         <SectionHeading title="الاختبارات النفسية للميولات السلوكية" />
         <div className="triple-panel">
+          {savedOffers ? meta("triple-test") : <>
           <div className="triple-meta test-meta-row">
             <span className="status-badge">متاح</span>
             {tripleVariants.map((variant) => (
@@ -119,8 +135,10 @@ export function TestsExperience() {
             alt="الاختبارات النفسية للميولات السلوكية"
             className="triple-image-frame"
           />
+          </>}
         </div>
       </section>
+      </>}
 
     </div>
   );

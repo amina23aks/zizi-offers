@@ -4218,3 +4218,38 @@ body {
     margin-top: 12.45rem;
   }
 }
+
+/* Admin only: keep public catalogue layout and card styling intact. */
+.admin-topbar { flex-wrap: wrap; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+.admin-topbar nav { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; font-weight: 700; }
+.admin-dashboard { width: min(100%, 1680px); }
+.admin-columns { grid-template-columns: minmax(240px, .65fr) minmax(0, 2.4fr); }
+.admin-editor-with-preview { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(250px, 1fr); align-items: start; gap: 1.5rem; }
+.admin-edit-form, .admin-card-preview, .admin-panel { min-width: 0; }
+.admin-edit-form fieldset:disabled { opacity: .7; }
+.admin-edit-form fieldset { min-width: 0; }
+.admin-pricing-group { border-top: 1px solid var(--border); padding-top: 1rem; }
+.admin-pricing-group h3, .admin-field-label { font-weight: 800; }
+.admin-topic-row { display: flex; gap: .5rem; margin-block: .5rem; }
+.admin-topic-row input { min-width: 0; }
+.admin-field-error { color: #a32929; }
+.admin-warning { border-inline-start: 3px solid #c58c20; padding: .75rem; background: var(--surface-soft); }
+.admin-image-upload { padding: 1rem; border: 2px dashed var(--border); border-radius: 1rem; text-align: center; display: grid; gap: .75rem; }
+.admin-image-preview { display: block; width: 100%; height: auto; max-height: 360px; object-fit: contain; margin-inline: auto; }
+.admin-upload-actions, .admin-save-actions > div { display: flex; flex-wrap: wrap; gap: .65rem; justify-content: center; }
+.admin-save-actions { display: grid; gap: .5rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+.admin-save-actions > div { justify-content: start; }
+.admin-card-preview { position: sticky; top: 1rem; margin-top: 1.5rem; }
+.admin-card-preview > h3 { font-weight: 800; margin-bottom: 1rem; }
+.admin-card-preview .offer-card { width: 100%; }
+.admin-duration { display: grid; gap: .5rem; }
+.admin-edit-form details summary { cursor: pointer; padding-block: .5rem; font-weight: 700; }
+.admin-edit-form [aria-invalid="true"] { border-color: #a32929; }
+.admin-offer-list button[aria-current="true"] { border-color: var(--brand-blue); background: var(--surface-soft); }
+@media (max-width: 1199px) { .admin-editor-with-preview { grid-template-columns: minmax(0, 1fr); } .admin-card-preview { position: static; max-width: 420px; } }
+@media (max-width: 850px) { .admin-columns { grid-template-columns: minmax(0, 1fr); } .admin-topbar nav { gap: .7rem; } .admin-stats span { font-size: .8rem; } }
+.offer-promo-badge { align-self: start; width: fit-content; padding: .25rem .6rem; border-radius: .6rem; background: rgb(220 205 250 / .65); border: 1px solid rgb(120 85 170 / .2); color: #4d2672; font-size: .8rem; font-weight: 700; }
+.dark .offer-promo-badge { background: rgb(100 70 150 / .4); color: #eedcff; }
+.admin-columns { grid-template-columns: minmax(310px, .9fr) minmax(0, 2.4fr); }
+.admin-offer-list strong { overflow-wrap: anywhere; }
+@media (max-width: 850px) { .admin-columns { grid-template-columns: minmax(0, 1fr); } }

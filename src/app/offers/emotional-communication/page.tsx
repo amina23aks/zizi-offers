@@ -1,3 +1,6 @@
+import { getPublicOffers } from "@/lib/public-offers";
+import { OfferCardCollection } from "@/components/offer-card-collection";
+import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { CheckCircle, UsersThree } from "@phosphor-icons/react/dist/ssr";
 import { ZoomableImage } from "@/components/zoomable-image";
@@ -13,7 +16,13 @@ export const metadata: Metadata = {
   description: "تفاصيل عرض التواصل العاطفي ضمن عروض زيزي.",
 };
 
-export default function EmotionalCommunicationPage() {
+export default async function EmotionalCommunicationPage() {
+  const records = await getPublicOffers();
+  if (process.env.PUBLIC_OFFERS_SOURCE === "firestore") {
+    const saved = records.find((o) => o.id === "emotional-communication");
+    if (!saved) notFound();
+    return <main className="site-main page-shell"><OfferCardCollection offers={[saved]} /></main>;
+  }
   const offer = emotionalCommunicationOffer;
   const asset = getAsset(offer.assetId);
 

@@ -259,6 +259,8 @@ export function SiteHeader() {
     router.push("/");
   }, [router]);
 
+  if (pathname === "/admin" || pathname.startsWith("/admin/")) return null;
+
   return (
     <header className="site-header">
       <nav className="header-nav-shell mx-auto max-w-6xl px-5 py-3 md:px-8">

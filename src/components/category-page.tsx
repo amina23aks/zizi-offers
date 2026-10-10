@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { type CoachingFormatFilter } from "@/components/offer-card";
 import { OfferCardCollection } from "@/components/offer-card-collection";
-import { categoryPageInfo, offersByCategory, type DisplayOffer } from "@/data/catalog";
+import { categoryPageInfo, type DisplayOffer } from "@/data/catalog";
+import { getPublicOffers } from "@/lib/public-offers";
+import { matchesDelivery } from "@/lib/public-offer-model";
 import type { OfferCategory } from "@/data/offers";
 
-export function CategoryPage({
+export async function CategoryPage({
   category,
   coachingFormat = null,
 }: {
@@ -12,7 +14,7 @@ export function CategoryPage({
   coachingFormat?: CoachingFormatFilter | null;
 }) {
   const info = categoryPageInfo[category as keyof typeof categoryPageInfo];
-  const offers = offersByCategory(category);
+  const offers = (await getPublicOffers()).filter((offer) => offer.category === category);
 
   return (
     <main className={`site-main page-shell category-${category}`}>
@@ -43,17 +45,6 @@ const filterLabels: Record<CoachingFormatFilter, string> = {
   individual: "فردي",
 };
 
-const variantMatches = (title: string, filter: CoachingFormatFilter) =>
-  filter === "group" ? title.includes("جماعي") : title.includes("فردي");
-
-const offerMatches = (offer: DisplayOffer, filter: CoachingFormatFilter) => {
-  if (offer.variants?.some((variant) => variantMatches(variant.title, filter))) return true;
-  if (filter === "group") {
-    return Boolean(offer.capacity || offer.priceBasis?.includes("مشارك") || offer.priceBasis?.includes("مقعد"));
-  }
-  return false;
-};
-
 export function CoachingOfferList({
   offers,
   activeFilter,
@@ -61,7 +52,7 @@ export function CoachingOfferList({
   offers: readonly DisplayOffer[];
   activeFilter: CoachingFormatFilter | null;
 }) {
-  const filteredOffers = activeFilter ? offers.filter((offer) => offerMatches(offer, activeFilter)) : offers;
+  const filteredOffers = activeFilter ? offers.filter((offer) => matchesDelivery(offer, activeFilter)) : offers;
 
   return (
     <section className="page-section">
