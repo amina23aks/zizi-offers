@@ -183,3 +183,11 @@ Customer accounts, calendar, payments, private feedback, start dates, compass PD
 - Documented supporting-content editors, metadata preservation and empty-catalog handling needed before activation. No live writes, uploads, source switch, push or deployment occurred.
 - Lint, typecheck, build, 39 local tests and production HTTP content checks passed. Rules suite did not execute: emulator artifact download was rejected with network HTTP 403. Saved reusable cloud setup/start instructions and configuration requirements for review; live setup and publication remain pending.
 - See docs/catalog-migration-review.md and docs/catalog-migration-inventory.json for the concrete review and later commands.
+
+## 10 October Firestore Preview activation
+
+- On `codex/catalog-migration-schema-safety`, live Firestore comparison found all 48 reviewed legacy IDs already present in `zizi-offers`; no creates were needed. Thirty-four records differ from the old local migration source because current dashboard/Cloudinary edits are now the source of truth and were not overwritten.
+- Saved ignored private backups under `.verification/` before live writes. Published only the reviewed legacy IDs: 46 newly published, 2 already published, 0 failures. Unavailable offers stayed unavailable; publication status only controls public visibility.
+- Wrote the `catalogState/legacy-v1` activation marker using the current inventory hash, then configured Vercel `PUBLIC_OFFERS_SOURCE=firestore` only for Preview deployments of branch `codex/catalog-migration-schema-safety`. Production configuration remains unchanged.
+- Public Firestore-mode verification on the local production server rendered 48 homepage offer cards across tests, coaching, courses, programs, sessions and compass; coaching individual/group filters each rendered 5 matching cards; published unavailable offers remained visible. No live promotional badges are currently set, but the shared card component now renders saved badges as the approved top-right gradient pill.
+- Checks passed: lint, typecheck, production build, and focused public/admin/editor/migration tests. Firestore rules emulator could not start on this machine because Java is not installed.

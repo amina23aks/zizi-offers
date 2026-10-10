@@ -37,6 +37,32 @@ The mapper preserves original IDs, Arabic content, prices (including free zero/u
 
 Only the automatic single-field status index is required; ordering happens after fetching, so older documents without firstPublishedAt are not excluded by an orderBy query. No composite index is necessary. Rules keep public reads limited to published records and writes restricted to trusted admins; the existing server API validates every larger package array.
 
+## 10 October 2026 Preview activation update
+
+The live database comparison was rerun from the Windows checkout with `.env.local` loaded by `scripts/migrate-offers.ts`. Firestore contained all 48 reviewed legacy IDs, so no import creates were needed. The report still listed 34 conflicts against the older local inventory, which is expected after dashboard and Cloudinary edits; those existing records were preserved and not overwritten.
+
+The reviewed legacy publication command is:
+
+```sh
+npx tsx scripts/migrate-offers.ts --publish-reviewed-legacy --keep-existing-conflicts
+```
+
+It saved an ignored private backup, then published only the 48 reviewed legacy IDs: 46 newly published, 2 already published, 0 failures. It updates `status` and `updatedAt` for newly published drafts only, leaving already-published records and their `firstPublishedAt` values unchanged. It does not alter availability, prices, variants, badges, images or unrelated drafts.
+
+The activation marker was then written with:
+
+```sh
+npx tsx scripts/migrate-offers.ts --finalize-public --keep-existing-conflicts
+```
+
+Vercel Preview was configured for branch `codex/catalog-migration-schema-safety` only:
+
+| Key | Target | Branch | Value |
+| --- | --- | --- | --- |
+| `PUBLIC_OFFERS_SOURCE` | Preview | `codex/catalog-migration-schema-safety` | `firestore` |
+
+Production remains unchanged. Subsequent saved content edits should be visible on new public requests without another deployment, because the public reader is dynamic and admin writes revalidate the public paths.
+
 ## Recovery
 
 Every apply run writes a separate incremental `.verification/migration-created-*.json` manifest. If interrupted, retain that manifest and the private pre-write backup. Review only that run's created IDs and verify nobody has edited/reused them before any rollback deletion. Never delete skipped/conflicting records. Recover any prior records from the private export only through a separately reviewed operation; preserve Firestore Timestamp types when restoring serialized timestamp fields. Restoring `PUBLIC_OFFERS_SOURCE=local` restores the pre-switch catalogue without altering Firestore. No rollback is run automatically.

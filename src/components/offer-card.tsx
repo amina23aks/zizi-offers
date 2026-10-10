@@ -53,42 +53,44 @@ export function OfferCard({
 
   return (
     <article className="offer-card">
-      {asset && onImageOpen ? (
-        <button
-          type="button"
-          className="offer-card-media image-view-trigger"
-          style={mediaStyle}
-          onClick={(event) => onImageOpen?.(event.currentTarget)}
-          aria-label="عرض الصورة وتكبيرها"
-        >
-          <Image
-            src={asset.publicPath}
-            alt={image?.alt ?? `غلاف ${offer.title}`}
-            unoptimized={Boolean(image?.src.startsWith("https://"))}
-            width={asset.width}
-            height={asset.height}
-            className="asset-image-contain"
-            sizes="(max-width: 768px) 88vw, 280px"
-          />
-          <span className="image-expand-affordance" aria-hidden="true">
-            <MagnifyingGlassPlus size={18} weight="bold" />
-          </span>
-        </button>
-      ) : asset ? (
-        <div className="offer-card-media" style={mediaStyle}>
-          <Image
-            src={asset.publicPath}
-            alt={image?.alt ?? `غلاف ${offer.title}`}
-            unoptimized={Boolean(image?.src.startsWith("https://"))}
-            width={asset.width}
-            height={asset.height}
-            className="asset-image-contain"
-            sizes="(max-width: 768px) 88vw, 280px"
-          />
-        </div>
-      ) : null}
-      <div className="offer-card-body">
+      {asset || offer.badge ? <div className="offer-card-media-wrap">
+        {asset && onImageOpen ? (
+          <button
+            type="button"
+            className="offer-card-media image-view-trigger"
+            style={mediaStyle}
+            onClick={(event) => onImageOpen?.(event.currentTarget)}
+            aria-label="عرض الصورة وتكبيرها"
+          >
+            <Image
+              src={asset.publicPath}
+              alt={image?.alt ?? `غلاف ${offer.title}`}
+              unoptimized={Boolean(image?.src.startsWith("https://"))}
+              width={asset.width}
+              height={asset.height}
+              className="asset-image-contain"
+              sizes="(max-width: 768px) 88vw, 280px"
+            />
+            <span className="image-expand-affordance" aria-hidden="true">
+              <MagnifyingGlassPlus size={18} weight="bold" />
+            </span>
+          </button>
+        ) : asset ? (
+          <div className="offer-card-media" style={mediaStyle}>
+            <Image
+              src={asset.publicPath}
+              alt={image?.alt ?? `غلاف ${offer.title}`}
+              unoptimized={Boolean(image?.src.startsWith("https://"))}
+              width={asset.width}
+              height={asset.height}
+              className="asset-image-contain"
+              sizes="(max-width: 768px) 88vw, 280px"
+            />
+          </div>
+        ) : null}
         {offer.badge ? <span className="offer-promo-badge">{offer.badge}</span> : null}
+      </div> : null}
+      <div className="offer-card-body">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <p className="eyebrow">{offer.category === "programs" ? "برمجة" : formatLabel(offer.format)}</p>
           {displayAvailability ? (

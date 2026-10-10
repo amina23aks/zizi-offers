@@ -45,6 +45,7 @@ export const adminOfferSchema = z.object({
   capacity: z.string().max(160).refine((value) => !/^[-+]?\d+(?:\.\d+)?$/.test(value) || (Number.isSafeInteger(Number(value)) && Number(value) > 0), "عدد المشاركين يجب أن يكون عددًا صحيحًا موجبًا.").default(""),
   displayOrder: z.number().int().min(0).max(100000),
   status: z.enum(["draft", "published"]),
+  legacyImported: z.boolean().optional(),
 }).superRefine((offer, ctx) => {
   if (new Set(offer.variants.map((v) => v.id)).size !== offer.variants.length) ctx.addIssue({ code: "custom", path: ["variants"], message: "خيارات العرض مكررة." });
   if (offer.delivery) {
