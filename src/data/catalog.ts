@@ -363,6 +363,7 @@ export const homeSections = [
     cards: [
       {
         id: "codes-home",
+        offerId: "codes-abcd",
         title: "اختبار الأكواد الدماغية ABCD",
         href: "/tests#codes",
         priceLabel: "12$",
@@ -371,6 +372,7 @@ export const homeSections = [
       },
       {
         id: "etho-home",
+        offerId: "etho",
         title: "اختبار الإيثو",
         href: "/tests#etho",
         priceLabel: "12$",
@@ -379,6 +381,7 @@ export const homeSections = [
       },
       {
         id: "mindsets-home",
+        offerId: "mindsets",
         title: "اختبار العقليات",
         href: "/tests#mindsets",
         priceLabel: "12$",
@@ -387,13 +390,14 @@ export const homeSections = [
       },
       {
         id: "spectra-home",
+        offerId: "geometric-spectra",
         title: "اختبار الطيف",
         href: "/tests#spectra",
         priceLabel: "12$",
         availabilityLabel: "متاح",
         summary: "اختبار يساعدك على فهم تناسق استجاباتك المختلفة خلال الأشهر الأخيرة.",
       },
-      { id: "triad-home", title: "الاختبارات النفسية للميولات السلوكية", href: "/tests#behavioral-inclinations", priceLabel: "حسب الاختبار", availabilityLabel: "متاح", summary: "مثلث الدراما، الأدوار الأربعة، والسلوك النفسي." },
+      { id: "triad-home", offerId: "triple-test", title: "الاختبارات النفسية للميولات السلوكية", href: "/tests#behavioral-inclinations", priceLabel: "حسب الاختبار", availabilityLabel: "متاح", summary: "مثلث الدراما، الأدوار الأربعة، والسلوك النفسي." },
     ],
   },
   {

@@ -13,7 +13,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import { OfferCardCollection } from "@/components/offer-card-collection";
 import { ZoomableImage } from "@/components/zoomable-image";
-import { getAsset, homeSections, publicCategories, ziziAbout } from "@/data/catalog";
+import { formatAvailability, getAsset, homeSections, publicCategories, ziziAbout } from "@/data/catalog";
 import { getPublicOffers } from "@/lib/public-offers";
 import { ziziIdentityAssetIds } from "@/data/assets";
 
@@ -37,6 +37,7 @@ const bookingContacts = [
 export default async function Home() {
   const savedOffers = await getPublicOffers();
   const connected = process.env.PUBLIC_OFFERS_SOURCE === "firestore";
+  const savedOfferById = new Map(savedOffers.map((offer) => [offer.id, offer]));
   const identityAsset = getAsset(ziziIdentityAssetIds.avatar ?? ziziIdentityAssetIds.groupLogo);
 
   return (
@@ -117,7 +118,29 @@ export default async function Home() {
               </Link>
             </div>
             <div className="home-carousel-row" tabIndex={0} aria-label={`عروض ${section.title}`}>
-              {(connected && section.id !== "fingerprints") || "offers" in section
+              {section.id === "tests"
+                ? section.cards.map((card) => {
+                    const saved = savedOfferById.get(card.offerId);
+                    const availabilityLabel = saved?.availabilityLabel ?? ("availabilityLabel" in card ? card.availabilityLabel : null);
+                    const priceLabel = card.offerId === "triple-test"
+                      ? ("priceLabel" in card ? card.priceLabel : null)
+                      : saved?.priceLabel ?? ("priceLabel" in card ? card.priceLabel : null);
+                    const priceClarification = saved?.priceClarification ?? ("priceClarification" in card ? card.priceClarification : null);
+                    return (
+                      <Link key={card.id} href={card.href} className="home-overview-card">
+                        <strong>{card.title}</strong>
+                        {"summary" in card && card.summary ? <span>{card.summary}</span> : null}
+                        <div className="mini-meta">
+                          {availabilityLabel ? (
+                            <em className={saved ? `status-${saved.availability}` : undefined}>{availabilityLabel}</em>
+                          ) : saved ? formatAvailability(saved.availability) : null}
+                          {priceLabel ? <b dir="ltr">{priceLabel}</b> : null}
+                        </div>
+                        {priceClarification ? <small>{String(priceClarification)}</small> : null}
+                      </Link>
+                    );
+                  })
+                : ((connected && section.id !== "fingerprints" && section.id !== "compass") || "offers" in section)
                 ? (
                     <OfferCardCollection
                       offers={savedOffers.filter((offer) => offer.category === section.id)}
@@ -146,10 +169,10 @@ export default async function Home() {
                         />
                       ) : null}
                       <strong>{card.title}</strong>
-                      {"summary" in card && card.summary ? <span>{card.summary}</span> : null}
+                      {"summary" in card && typeof card.summary === "string" && card.summary ? <span>{card.summary}</span> : null}
                       <div className="mini-meta">
-                        {"availabilityLabel" in card && card.availabilityLabel ? <em>{card.availabilityLabel}</em> : null}
-                        {"priceLabel" in card && card.priceLabel ? <b dir="ltr">{card.priceLabel}</b> : null}
+                        {"availabilityLabel" in card && typeof card.availabilityLabel === "string" && card.availabilityLabel ? <em>{card.availabilityLabel}</em> : null}
+                        {"priceLabel" in card && typeof card.priceLabel === "string" && card.priceLabel ? <b dir="ltr">{card.priceLabel}</b> : null}
                       </div>
                       {"priceClarification" in card && card.priceClarification ? <small>{String(card.priceClarification)}</small> : null}
                     </Link>

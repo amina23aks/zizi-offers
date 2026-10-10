@@ -13,6 +13,7 @@ import { ZoomableImage } from "@/components/zoomable-image";
 import {
   codeCards,
   ethoAnimals,
+  formatAvailability,
   formatPrice,
   getOffer,
   mindsets,
@@ -20,7 +21,6 @@ import {
   spectraAssets,
   triadAsset,
 } from "@/data/catalog";
-import { OfferCardCollection } from "./offer-card-collection";
 import type { DisplayOffer } from "@/data/catalog";
 import { cn } from "@/lib/utils";
 
@@ -37,8 +37,18 @@ const tripleOffer = getOffer("triple-test");
 const tripleVariants = tripleOffer && "variants" in tripleOffer ? tripleOffer.variants : [];
 
 export function TestsExperience({ savedOffers }: { savedOffers?: readonly DisplayOffer[] }) {
-  const familyIds = ["codes-abcd", "etho", "mindsets", "geometric-spectra", "triple-test"];
-  const meta = (id: string) => savedOffers ? <OfferCardCollection offers={savedOffers.filter((o) => o.id === id)} /> : <TestMeta price="12$" />;
+  const meta = (id: string, fallback?: TestMetaProps) => {
+    const saved = savedOffers?.find((offer) => offer.id === id);
+    if (!saved) return <TestMeta {...(fallback ?? { price: "12$" })} />;
+    return (
+      <TestMeta
+        price={saved.priceLabel}
+        clarification={saved.priceClarification ?? undefined}
+        availability={saved.availabilityLabel}
+        availabilityStatus={saved.availability}
+      />
+    );
+  };
   const present = (id: string) => !savedOffers || savedOffers.some((o) => o.id === id);
   const orderedCodes = useMemo(
     () => codeLayout.map((code) => codeCards.find((card) => card.code === code)!),
@@ -47,7 +57,6 @@ export function TestsExperience({ savedOffers }: { savedOffers?: readonly Displa
 
   return (
     <div className="tests-page">
-      {savedOffers && <div className="offer-grid dense"><OfferCardCollection offers={savedOffers.filter((o) => !familyIds.includes(o.id))} /></div>}
       <nav className="tests-sticky-nav" aria-label="أقسام صفحة الاختبارات">
         {testsNav.map((item) => (
           <a key={item.href} href={item.href}>
@@ -121,21 +130,34 @@ export function TestsExperience({ savedOffers }: { savedOffers?: readonly Displa
         <span id="triple" className="anchor-compat" aria-hidden="true" />
         <SectionHeading title="الاختبارات النفسية للميولات السلوكية" />
         <div className="triple-panel">
-          {savedOffers ? meta("triple-test") : <>
-          <div className="triple-meta test-meta-row">
-            <span className="status-badge">متاح</span>
-            {tripleVariants.map((variant) => (
-              <span key={variant.id} className="price-badge" dir="ltr">
-                {formatPrice(variant.price).label}
-              </span>
-            ))}
-          </div>
+          {savedOffers ? (
+            <div className="triple-meta test-meta-row">
+              {savedOffers.find((offer) => offer.id === "triple-test")?.availabilityLabel ? (
+                <span className="status-badge status-available">
+                  {savedOffers.find((offer) => offer.id === "triple-test")?.availabilityLabel}
+                </span>
+              ) : null}
+              {(savedOffers.find((offer) => offer.id === "triple-test")?.variants ?? tripleVariants).map((variant) => (
+                <span key={variant.id} className="price-badge" dir="ltr">
+                  {formatPrice(variant.price).label}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <div className="triple-meta test-meta-row">
+              <span className="status-badge">متاح</span>
+              {tripleVariants.map((variant) => (
+                <span key={variant.id} className="price-badge" dir="ltr">
+                  {formatPrice(variant.price).label}
+                </span>
+              ))}
+            </div>
+          )}
           <ZoomableImage
             asset={triadAsset}
             alt="الاختبارات النفسية للميولات السلوكية"
             className="triple-image-frame"
           />
-          </>}
         </div>
       </section>
       </>}
@@ -286,10 +308,18 @@ function MindsetSlider() {
   );
 }
 
-function TestMeta({ price, clarification }: { price: string; clarification?: string }) {
+type TestMetaProps = {
+  price: string;
+  clarification?: string;
+  availability?: string | null;
+  availabilityStatus?: DisplayOffer["availability"];
+};
+
+function TestMeta({ price, clarification, availability = "متاح", availabilityStatus = "available" }: TestMetaProps) {
+  const status = availability ?? formatAvailability(availabilityStatus);
   return (
     <div className="test-meta-row">
-      <span className="status-badge">متاح</span>
+      {status ? <span className={cn("status-badge", `status-${availabilityStatus}`)}>{status}</span> : null}
       <span className="price-badge" dir="ltr">{price}</span>
       {clarification ? <small>{clarification}</small> : null}
     </div>
