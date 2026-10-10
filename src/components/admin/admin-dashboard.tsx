@@ -78,12 +78,13 @@ export function AdminDashboard() {
     dirty.current = false; setSelected(structuredClone(offer)); setEditorVersion((v) => v + 1); setMessage("");
   }
 
-  async function save(offer: AdminOffer) {
+  async function save(offer: AdminOffer, options: { unpublish?: boolean } = {}) {
     if (!user || saveLock.current) throw new Error("تعذر الحفظ الآن.");
     saveLock.current = true; setSaving(true); setMessage("");
     try {
       const exists = offers.some((item) => item.id === offer.id);
-      const response = await authorizedFetch(user, exists ? `/api/admin/offers/${encodeURIComponent(offer.id)}` : "/api/admin/offers", { method: exists ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(offer) });
+      const updateUrl = `/api/admin/offers/${encodeURIComponent(offer.id)}${options.unpublish ? "?unpublish=true" : ""}`;
+      const response = await authorizedFetch(user, exists ? updateUrl : "/api/admin/offers", { method: exists ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(offer) });
       const body = await response.json();
       if (!response.ok) throw new Error(body.error || "فشل الحفظ. بقيت التعديلات في النموذج.");
       const saved = adminOfferSchema.parse(body.offer);

@@ -17,6 +17,7 @@ import { getPublicOffers } from "../src/lib/public-offers";
 import { legacyInventory, importPlan } from "../src/lib/legacy-import";
 import type { AdminOffer } from "../src/lib/admin-offer";
 import { blankOffer, newVariant } from "../src/lib/offer-editor";
+import { invalidatePublicOffers, publicOfferPaths } from "../src/lib/invalidate-public-offers";
 import { matchesDelivery, publicOffer } from "../src/lib/public-offer-model";
 import { POST } from "../src/app/api/admin/offers/route";
 import { PUT } from "../src/app/api/admin/offers/[id]/route";
@@ -58,11 +59,21 @@ describe("one published catalogue with reviewed migration", () => {
     offer = { ...offer, delivery: "individual", variants: [offer.variants[0]] }; expect((await update(offer)).status).toBe(200);
     const changed = (await getPublicOffers()).find((o) => o.id === offer.id)!; expect(matchesDelivery(changed, "group")).toBe(false); expect(matchesDelivery(changed, "individual")).toBe(true);
     offer = { ...offer, status: "draft", badge: "" }; expect((await update(offer)).status).toBe(200);
+    expect((await getPublicOffers()).some((o) => o.id === offer.id)).toBe(true);
+    const unpublishRequest = new Request(`http://localhost/api/admin/offers/${offer.id}?unpublish=true`, { method: "PUT", headers: { Authorization: "Bearer admin", "Content-Type": "application/json" }, body: JSON.stringify(offer) });
+    expect((await PUT(unpublishRequest, { params: Promise.resolve({ id: offer.id }) })).status).toBe(200);
     expect((await getPublicOffers()).some((o) => o.id === offer.id)).toBe(false); expect(state.records.has(offer.id)).toBe(true);
     offer = { ...offer, status: "published" }; expect((await update(offer)).status).toBe(200); expect(state.records.get(offer.id)!.firstPublishedAt).toEqual(first);
     publicRecords = await getPublicOffers(); expect(publicRecords.filter((o) => o.id === offer.id)).toHaveLength(1);
     expect(state.queries.every((q) => JSON.stringify(q) === JSON.stringify(["status", "==", "published"]))).toBe(true);
     expect(state.invalidations).toContain("/"); expect(state.invalidations).toContain("/courses"); expect(state.invalidations).toContain("/coaching");
+  });
+  it("invalidates old and new public paths when a saved offer moves category or detail slug", () => {
+    const oldOffer = { ...blankOffer(0), id: "emotional-communication", slug: "old-slug", category: "coaching" as const };
+    const newOffer = { ...oldOffer, slug: "new-slug", category: "courses" as const };
+    expect(publicOfferPaths(oldOffer, newOffer)).toEqual(["/", "/coaching", "/offers/emotional-communication", "/offers/old-slug", "/courses", "/offers/new-slug"]);
+    invalidatePublicOffers(oldOffer, newOffer);
+    expect(state.invalidations).toEqual(["/", "/coaching", "/offers/emotional-communication", "/offers/old-slug", "/courses", "/offers/new-slug"]);
   });
   it.each(["individual", "group", "both", "general"] as const)("filters %s by delivery regardless of unavailable status", (delivery) => {
     const ids = delivery === "both" ? ["individual", "group"] : [delivery];

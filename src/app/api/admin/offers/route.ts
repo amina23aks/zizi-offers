@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     const ref = getFirebaseAdmin().db.collection("offers").doc(parsed.data.id);
     if ((await ref.get()).exists) return Response.json({ error: "معرّف العرض مستخدم بالفعل." }, { status: 409 });
     await ref.create({ ...parsed.data, createdAt: FieldValue.serverTimestamp(), updatedAt: FieldValue.serverTimestamp(), ...(parsed.data.status === "published" ? { firstPublishedAt: FieldValue.serverTimestamp() } : {}) });
-    invalidatePublicOffers();
+    invalidatePublicOffers(parsed.data);
     return Response.json({ offer: (await ref.get()).data() }, { status: 201 });
   } catch (error) { return safeAdminError(error); }
 }

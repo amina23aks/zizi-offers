@@ -40,6 +40,15 @@ describe("admin offer API", () => {
     expect((await PUT(request("admin", { ...data, title: "تعديل" }), { params: Promise.resolve({ id: data.id }) })).status).toBe(200);
     expect(store.get(data.id)).toMatchObject({ title: "تعديل", status: "draft", legacyMetadata: "retain me", slug: "reviewed-offer", source: "approved source", availability: "available", price: { status: "variant", amountUsd: null }, variants: data.variants });
   });
+  it("preserves a published offer on update unless unpublish is explicit", async () => {
+    const data = { ...blankOffer(4), title: "منشور", status: "published" as const };
+    expect((await POST(request("admin", data))).status).toBe(201);
+    expect((await PUT(request("admin", { ...data, title: "تعديل", status: "draft" }), { params: Promise.resolve({ id: data.id }) })).status).toBe(200);
+    expect(store.get(data.id)).toMatchObject({ title: "تعديل", status: "published" });
+    const explicit = new Request(`http://localhost/api/admin/offers/${data.id}?unpublish=true`, { method: "PUT", headers: { Authorization: "Bearer admin", "Content-Type": "application/json" }, body: JSON.stringify({ ...data, title: "مسودة", status: "draft" }) });
+    expect((await PUT(explicit, { params: Promise.resolve({ id: data.id }) })).status).toBe(200);
+    expect(store.get(data.id)).toMatchObject({ title: "مسودة", status: "draft" });
+  });
   it("rejects duplicate creation, invalid price and ID changes", async () => {
     const data = { ...blankOffer(0), title: "عرض" };
     await POST(request("admin", data));
