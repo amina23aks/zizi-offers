@@ -174,3 +174,12 @@ Customer accounts, calendar, payments, private feedback, start dates, compass PD
 - Added immutable first-publication ordering, explicit route invalidation, saved delivery-mode filtering, optional card badges and wider dashboard list wrapping. Removed the numeric ordering input while retaining legacy order internally.
 - Prepared a read-only dry-run and private export/missing-only importer with conflict reporting, per-run recovery manifests and guarded activation. Inventory contains 48 local offers (8 tests, 10 coaching, 14 programs, 8 courses, 6 sessions, 2 compass pricing records); supporting illustrations/fingerprints are not paid products. Database counts/conflicts remain unknown because server credentials are absent. No bulk import ran.
 - Verification: 35 local fixture tests and 11 actual Firestore emulator tests passed; lint/typecheck/build and desktop/mobile published-fixture RTL checks passed. Live backend and two-tab persistence checks remain pending credentials and reviewed activation. See docs/published-catalog.md for commands and limitations.
+
+## 10 October Cloudinary catalog migration preparation
+
+- Verified that the earlier catalog work is already merged at checkout HEAD e6e9f72; preserved the existing application and public design.
+- Added a read-only comparison and guarded original-image upload/draft-only importer, reusing the current mapper and schema. Added stable hash asset IDs, path mapping, full editable-field/different-ID match checks, private backups and atomic create-only import manifests.
+- Local inventory verified: 48 candidate records, 58 price options, 103 original images, 51 supporting Etho animals, no missing/unregistered files. Live counts and remote asset reuse remain unknown because no Firebase Admin/Cloudinary credentials are available.
+- Documented supporting-content editors, metadata preservation and empty-catalog handling needed before activation. No live writes, uploads, source switch, push or deployment occurred.
+- Lint, typecheck, build, 39 local tests and production HTTP content checks passed. Rules suite did not execute: emulator artifact download was rejected with network HTTP 403. Saved reusable cloud setup/start instructions and configuration requirements for review; live setup and publication remain pending.
+- See docs/catalog-migration-review.md and docs/catalog-migration-inventory.json for the concrete review and later commands.
