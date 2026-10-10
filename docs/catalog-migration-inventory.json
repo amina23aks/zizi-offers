@@ -1,0 +1,4231 @@
+{
+  "version": "catalog-cloudinary-v1",
+  "inventory": [
+    {
+      "record": {
+        "id": "codes-abcd",
+        "title": "الأكواد ABCD",
+        "category": "tests",
+        "description": "اختبار يستكشف ميولك بين الموضوعية والمنطق، التنفيذ والإنجاز، المشاعر والأحاسيس، والإبداع والابتكار ضمن نموذج زيزي.",
+        "topics": [],
+        "image": {
+          "kind": "none",
+          "alt": "الأكواد ABCD"
+        },
+        "catalogDetails": {
+          "format": "test",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 12,
+              "status": "known"
+            },
+            "availability": "available"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 0,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "codes-abcd",
+        "slug": "codes-abcd",
+        "title": "الأكواد ABCD",
+        "category": "tests",
+        "format": "test",
+        "price": {
+          "amountUsd": 12,
+          "status": "known"
+        },
+        "availability": "available",
+        "summary": "اختبار يستكشف ميولك بين الموضوعية والمنطق، التنفيذ والإنجاز، المشاعر والأحاسيس، والإبداع والابتكار ضمن نموذج زيزي.",
+        "source": "docs/zizi-website-reference.md",
+        "internalNotes": "Approved tests order: codes first. Uses code card backs A/B/C/D from public/assets/codes."
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "etho",
+        "title": "الإيثو",
+        "category": "tests",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "none",
+          "alt": "الإيثو"
+        },
+        "catalogDetails": {
+          "format": "test",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 12,
+              "status": "known"
+            },
+            "availability": "available"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 1,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "etho",
+        "slug": "etho",
+        "title": "الإيثو",
+        "category": "tests",
+        "format": "test",
+        "price": {
+          "amountUsd": 12,
+          "status": "known"
+        },
+        "availability": "available",
+        "source": "docs/zizi-website-reference.md",
+        "internalNotes": "51 animal images are patterns inside one test, not separate paid products."
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "mindsets",
+        "title": "العقليات",
+        "category": "tests",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "none",
+          "alt": "العقليات"
+        },
+        "catalogDetails": {
+          "format": "test",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 12,
+              "status": "known"
+            },
+            "availability": "available"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 2,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "mindsets",
+        "slug": "mindsets",
+        "title": "العقليات",
+        "category": "tests",
+        "format": "test",
+        "price": {
+          "amountUsd": 12,
+          "status": "known"
+        },
+        "availability": "available",
+        "source": "docs/zizi-website-reference.md",
+        "internalNotes": "Individual images are optional; text tabs may be used for الصواب، الفوز، المرتاح، المحبوب."
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "geometric-spectra",
+        "title": "اختبار الطيف",
+        "category": "tests",
+        "description": "اختبار يساعدك على فهم تناسق استجاباتك المختلفة خلال الأشهر الأخيرة.",
+        "topics": [],
+        "image": {
+          "kind": "none",
+          "alt": "اختبار الطيف"
+        },
+        "catalogDetails": {
+          "format": "test",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 12,
+              "status": "known"
+            },
+            "availability": "available"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 3,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "geometric-spectra",
+        "slug": "geometric-spectra",
+        "title": "اختبار الطيف",
+        "category": "tests",
+        "format": "test",
+        "price": {
+          "amountUsd": 12,
+          "status": "known"
+        },
+        "availability": "available",
+        "summary": "اختبار يساعدك على فهم تناسق استجاباتك المختلفة خلال الأشهر الأخيرة.",
+        "source": "docs/zizi-website-reference.md"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "triple-test",
+        "title": "الاختبار الثلاثي",
+        "category": "tests",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "triad:الميولات-السوكيه",
+          "alt": "الاختبار الثلاثي"
+        },
+        "catalogDetails": {
+          "format": "test",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "drama-triangle",
+            "title": "مثلث الدراما",
+            "price": {
+              "amountUsd": 30,
+              "status": "known"
+            },
+            "availability": "unknown",
+            "note": "المضطهد، المنقذ، الضحية"
+          },
+          {
+            "id": "four-roles",
+            "title": "تشخيص الأدوار الأربعة",
+            "price": {
+              "amountUsd": 30,
+              "status": "known"
+            },
+            "availability": "unknown",
+            "note": "سلبي، عدواني، متلاعب، معتد بنفسه"
+          },
+          {
+            "id": "psychological-behavior",
+            "title": "السلوك النفسي",
+            "price": {
+              "amountUsd": 60,
+              "status": "known"
+            },
+            "availability": "unknown",
+            "note": "النفس الطفل، النفس المراهق، النفس الأبوية"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 4,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "triple-test",
+        "slug": "triple-test",
+        "title": "الاختبار الثلاثي",
+        "category": "tests",
+        "format": "test",
+        "price": {
+          "amountUsd": null,
+          "status": "variant"
+        },
+        "availability": "available",
+        "assetId": "triad:الميولات-السوكيه",
+        "variants": [
+          {
+            "id": "drama-triangle",
+            "title": "مثلث الدراما",
+            "price": {
+              "amountUsd": 30,
+              "status": "known"
+            },
+            "note": "المضطهد، المنقذ، الضحية"
+          },
+          {
+            "id": "four-roles",
+            "title": "تشخيص الأدوار الأربعة",
+            "price": {
+              "amountUsd": 30,
+              "status": "known"
+            },
+            "note": "سلبي، عدواني، متلاعب، معتد بنفسه"
+          },
+          {
+            "id": "psychological-behavior",
+            "title": "السلوك النفسي",
+            "price": {
+              "amountUsd": 60,
+              "status": "known"
+            },
+            "note": "النفس الطفل، النفس المراهق، النفس الأبوية"
+          }
+        ],
+        "source": "docs/zizi-website-reference.md",
+        "internalNotes": "Current UI displays full image and available badge only; no added explanatory text."
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "professional-communication-team-10",
+        "title": "التواصل الاحترافي",
+        "category": "coaching",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "coaching:خطه-التواصل",
+          "alt": "التواصل الاحترافي"
+        },
+        "catalogDetails": {
+          "format": "coaching",
+          "durationKind": "program"
+        },
+        "delivery": "both",
+        "variants": [
+          {
+            "id": "individual",
+            "title": "فردي",
+            "price": {
+              "amountUsd": 1000,
+              "status": "known"
+            },
+            "availability": "available"
+          },
+          {
+            "id": "group",
+            "title": "جماعي",
+            "price": {
+              "amountUsd": 100,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          }
+        ],
+        "duration": "شهر واحد",
+        "sessionDuration": "ساعتان",
+        "capacity": "10 مشاركين",
+        "displayOrder": 5,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "professional-communication-team-10",
+        "slug": "professional-communication-team-10",
+        "title": "التواصل الاحترافي",
+        "category": "coaching",
+        "format": "coaching",
+        "price": {
+          "amountUsd": null,
+          "status": "variant"
+        },
+        "availability": "available",
+        "assetId": "coaching:خطه-التواصل",
+        "variants": [
+          {
+            "id": "individual",
+            "title": "فردي",
+            "price": {
+              "amountUsd": 1000,
+              "status": "known"
+            },
+            "availability": "available"
+          },
+          {
+            "id": "group",
+            "title": "جماعي",
+            "price": {
+              "amountUsd": 100,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          }
+        ],
+        "programDuration": "شهر واحد",
+        "sessionDuration": "ساعتان",
+        "capacity": "10 مشاركين",
+        "source": "docs/zizi-website-reference.md"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "professional-communication-level-2",
+        "title": "التواصل الاحترافي - المستوى الثاني",
+        "category": "coaching",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "coaching:خطه-التواصل",
+          "alt": "التواصل الاحترافي - المستوى الثاني"
+        },
+        "catalogDetails": {
+          "format": "coaching",
+          "durationKind": "program"
+        },
+        "delivery": "both",
+        "variants": [
+          {
+            "id": "individual",
+            "title": "فردي",
+            "price": {
+              "amountUsd": 1000,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          },
+          {
+            "id": "group",
+            "title": "جماعي",
+            "price": {
+              "amountUsd": 100,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          }
+        ],
+        "duration": "شهر واحد",
+        "sessionDuration": "ساعتان",
+        "capacity": "",
+        "displayOrder": 6,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "professional-communication-level-2",
+        "slug": "professional-communication-level-2",
+        "title": "التواصل الاحترافي - المستوى الثاني",
+        "category": "coaching",
+        "format": "coaching",
+        "price": {
+          "amountUsd": null,
+          "status": "variant"
+        },
+        "availability": "unavailable",
+        "assetId": "coaching:خطه-التواصل",
+        "variants": [
+          {
+            "id": "individual",
+            "title": "فردي",
+            "price": {
+              "amountUsd": 1000,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          },
+          {
+            "id": "group",
+            "title": "جماعي",
+            "price": {
+              "amountUsd": 100,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          }
+        ],
+        "programDuration": "شهر واحد",
+        "sessionDuration": "ساعتان",
+        "source": "docs/zizi-website-reference.md",
+        "internalNotes": "Reference says group price wording is ambiguous; do not publish a resolved per-seat price."
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "values-coaching",
+        "title": "القيم",
+        "category": "coaching",
+        "description": "",
+        "topics": [
+          "استكشاف القيم الأساسية",
+          "ربط القيم بالقرارات والعلاقات"
+        ],
+        "image": {
+          "kind": "local",
+          "assetId": "coaching:القيم",
+          "alt": "القيم"
+        },
+        "catalogDetails": {
+          "format": "coaching",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 100,
+              "status": "known"
+            },
+            "availability": "unknown"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 7,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "values-coaching",
+        "slug": "values-coaching",
+        "title": "القيم",
+        "category": "coaching",
+        "format": "coaching",
+        "price": {
+          "amountUsd": 100,
+          "status": "known"
+        },
+        "availability": "unknown",
+        "assetId": "coaching:القيم",
+        "bullets": [
+          "استكشاف القيم الأساسية",
+          "ربط القيم بالقرارات والعلاقات"
+        ],
+        "source": "docs/zizi-website-reference.md",
+        "internalNotes": "Price still marked as needing confirmation in the reference."
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "emotional-communication",
+        "title": "التواصل العاطفي",
+        "category": "coaching",
+        "description": "",
+        "topics": [
+          "إدارة الضغوط",
+          "إدارة النزاعات",
+          "الحدود الصحية",
+          "الحدود العاطفية"
+        ],
+        "image": {
+          "kind": "local",
+          "assetId": "coaching:التواصل-العاطفي",
+          "alt": "التواصل العاطفي"
+        },
+        "catalogDetails": {
+          "format": "coaching",
+          "durationKind": "program",
+          "priceBasis": "لكل مقعد"
+        },
+        "delivery": "group",
+        "variants": [
+          {
+            "id": "group",
+            "title": "جماعي",
+            "price": {
+              "amountUsd": 100,
+              "status": "known"
+            },
+            "availability": "available"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "10 مشاركين",
+        "displayOrder": 8,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "emotional-communication",
+        "slug": "emotional-communication",
+        "title": "التواصل العاطفي",
+        "category": "coaching",
+        "format": "coaching",
+        "price": {
+          "amountUsd": 100,
+          "status": "known"
+        },
+        "availability": "available",
+        "assetId": "coaching:التواصل-العاطفي",
+        "bullets": [
+          "إدارة الضغوط",
+          "إدارة النزاعات",
+          "الحدود الصحية",
+          "الحدود العاطفية"
+        ],
+        "capacity": "10 مشاركين",
+        "priceBasis": "لكل مقعد",
+        "source": "docs/zizi-website-reference.md"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "body-language-basics-coaching",
+        "title": "أساسيات لغة الجسد",
+        "category": "coaching",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "coaching:خطه-الجسد",
+          "alt": "أساسيات لغة الجسد"
+        },
+        "catalogDetails": {
+          "format": "coaching",
+          "durationKind": "training"
+        },
+        "delivery": "both",
+        "variants": [
+          {
+            "id": "individual",
+            "title": "فردي",
+            "price": {
+              "amountUsd": 1000,
+              "status": "known"
+            },
+            "availability": "available"
+          },
+          {
+            "id": "group",
+            "title": "جماعي",
+            "price": {
+              "amountUsd": 100,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          }
+        ],
+        "duration": "8 ساعات غير متواصلة",
+        "sessionDuration": "",
+        "capacity": "10 مشاركين",
+        "displayOrder": 9,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "body-language-basics-coaching",
+        "slug": "body-language-basics-coaching",
+        "title": "أساسيات لغة الجسد",
+        "category": "coaching",
+        "format": "coaching",
+        "price": {
+          "amountUsd": null,
+          "status": "variant"
+        },
+        "availability": "unknown",
+        "assetId": "coaching:خطه-الجسد",
+        "variants": [
+          {
+            "id": "individual",
+            "title": "فردي",
+            "price": {
+              "amountUsd": 1000,
+              "status": "known"
+            },
+            "availability": "available"
+          },
+          {
+            "id": "group",
+            "title": "جماعي",
+            "price": {
+              "amountUsd": 100,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          }
+        ],
+        "totalTrainingDuration": "8 ساعات غير متواصلة",
+        "capacity": "10 مشاركين",
+        "source": "docs/zizi-website-reference.md"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "release-coaching",
+        "title": "الكوتشينغ التفريغي",
+        "category": "coaching",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "coaching:التفريغي",
+          "alt": "الكوتشينغ التفريغي"
+        },
+        "catalogDetails": {
+          "format": "coaching",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": null,
+              "status": "unknown"
+            },
+            "availability": "unknown"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 10,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "release-coaching",
+        "slug": "release-coaching",
+        "title": "الكوتشينغ التفريغي",
+        "category": "coaching",
+        "format": "coaching",
+        "price": {
+          "amountUsd": null,
+          "status": "unknown",
+          "displayWhenUnknown": "00",
+          "clarification": "السعر غير محدد"
+        },
+        "availability": "unknown",
+        "assetId": "coaching:التفريغي",
+        "source": "docs/zizi-website-reference.md"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "life-coaching",
+        "title": "لايف كوتشينغ",
+        "category": "coaching",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "coaching:خطه-life",
+          "alt": "لايف كوتشينغ"
+        },
+        "catalogDetails": {
+          "format": "coaching",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "two-months",
+            "title": "شهران",
+            "price": {
+              "amountUsd": 4000,
+              "status": "known"
+            },
+            "availability": "unknown"
+          },
+          {
+            "id": "four-months",
+            "title": "أربعة أشهر",
+            "price": {
+              "amountUsd": 6000,
+              "status": "known"
+            },
+            "availability": "unknown"
+          },
+          {
+            "id": "six-months",
+            "title": "ستة أشهر",
+            "price": {
+              "amountUsd": 8000,
+              "status": "known"
+            },
+            "availability": "unknown"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "ساعتان",
+        "capacity": "",
+        "displayOrder": 11,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "life-coaching",
+        "slug": "life-coaching",
+        "title": "لايف كوتشينغ",
+        "category": "coaching",
+        "format": "coaching",
+        "price": {
+          "amountUsd": null,
+          "status": "variant"
+        },
+        "availability": "unknown",
+        "assetId": "coaching:خطه-life",
+        "variants": [
+          {
+            "id": "two-months",
+            "title": "شهران",
+            "price": {
+              "amountUsd": 4000,
+              "status": "known"
+            }
+          },
+          {
+            "id": "four-months",
+            "title": "أربعة أشهر",
+            "price": {
+              "amountUsd": 6000,
+              "status": "known"
+            }
+          },
+          {
+            "id": "six-months",
+            "title": "ستة أشهر",
+            "price": {
+              "amountUsd": 8000,
+              "status": "known"
+            }
+          }
+        ],
+        "sessionDuration": "ساعتان",
+        "source": "latest owner corrections"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "business-coaching",
+        "title": "كوتشينغ بزنس",
+        "category": "coaching",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "coaching:خطه-بزنس",
+          "alt": "كوتشينغ بزنس"
+        },
+        "catalogDetails": {
+          "format": "coaching",
+          "durationKind": "program"
+        },
+        "delivery": "both",
+        "variants": [
+          {
+            "id": "individual-one-month",
+            "title": "فردي - شهر",
+            "price": {
+              "amountUsd": 1000,
+              "status": "known"
+            },
+            "availability": "available"
+          },
+          {
+            "id": "individual-two-months",
+            "title": "فردي - شهران",
+            "price": {
+              "amountUsd": 2000,
+              "status": "known"
+            },
+            "availability": "available"
+          },
+          {
+            "id": "group-one-month",
+            "title": "جماعي - شهر",
+            "price": {
+              "amountUsd": 100,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          },
+          {
+            "id": "group-two-months",
+            "title": "جماعي - شهران",
+            "price": {
+              "amountUsd": 200,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "ساعتان",
+        "capacity": "10 مشاركين",
+        "displayOrder": 12,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "business-coaching",
+        "slug": "business-coaching",
+        "title": "كوتشينغ بزنس",
+        "category": "coaching",
+        "format": "coaching",
+        "price": {
+          "amountUsd": null,
+          "status": "variant"
+        },
+        "availability": "unknown",
+        "assetId": "coaching:خطه-بزنس",
+        "variants": [
+          {
+            "id": "individual-one-month",
+            "title": "فردي - شهر",
+            "price": {
+              "amountUsd": 1000,
+              "status": "known"
+            },
+            "availability": "available"
+          },
+          {
+            "id": "individual-two-months",
+            "title": "فردي - شهران",
+            "price": {
+              "amountUsd": 2000,
+              "status": "known"
+            },
+            "availability": "available"
+          },
+          {
+            "id": "group-one-month",
+            "title": "جماعي - شهر",
+            "price": {
+              "amountUsd": 100,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          },
+          {
+            "id": "group-two-months",
+            "title": "جماعي - شهران",
+            "price": {
+              "amountUsd": 200,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          }
+        ],
+        "sessionDuration": "ساعتان",
+        "capacity": "10 مشاركين",
+        "source": "latest owner corrections"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "work-field-entry",
+        "title": "الولوج لميدان العمل",
+        "category": "coaching",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "coaching:خطه-العمل",
+          "alt": "الولوج لميدان العمل"
+        },
+        "catalogDetails": {
+          "format": "coaching",
+          "durationKind": "program"
+        },
+        "delivery": "individual",
+        "variants": [
+          {
+            "id": "individual",
+            "title": "فردي",
+            "price": {
+              "amountUsd": null,
+              "status": "unknown"
+            },
+            "availability": "unknown"
+          }
+        ],
+        "duration": "شهر واحد",
+        "sessionDuration": "ساعتان",
+        "capacity": "",
+        "displayOrder": 13,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "work-field-entry",
+        "slug": "work-field-entry",
+        "title": "الولوج لميدان العمل",
+        "category": "coaching",
+        "format": "coaching",
+        "price": {
+          "amountUsd": null,
+          "status": "unknown",
+          "displayWhenUnknown": "00",
+          "clarification": "السعر غير محدد بعد"
+        },
+        "availability": "unknown",
+        "assetId": "coaching:خطه-العمل",
+        "variants": [
+          {
+            "id": "individual",
+            "title": "فردي",
+            "price": {
+              "amountUsd": null,
+              "status": "unknown",
+              "displayWhenUnknown": "00",
+              "clarification": "السعر غير محدد بعد"
+            }
+          }
+        ],
+        "programDuration": "شهر واحد",
+        "sessionDuration": "ساعتان",
+        "source": "latest owner corrections"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "under-12-coaching",
+        "title": "كوتشينغ أقل من 12 سنة",
+        "category": "coaching",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "none",
+          "alt": "كوتشينغ أقل من 12 سنة"
+        },
+        "catalogDetails": {
+          "format": "coaching",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 313,
+              "status": "known"
+            },
+            "availability": "unknown"
+          }
+        ],
+        "duration": "شهر واحد",
+        "sessionDuration": "ساعتان",
+        "capacity": "",
+        "displayOrder": 14,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "under-12-coaching",
+        "slug": "under-12-coaching",
+        "title": "كوتشينغ أقل من 12 سنة",
+        "category": "coaching",
+        "format": "coaching",
+        "price": {
+          "amountUsd": 313,
+          "status": "known"
+        },
+        "availability": "unknown",
+        "programDuration": "شهر واحد",
+        "sessionDuration": "ساعتان",
+        "source": "latest owner corrections"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "arrow-program",
+        "title": "السهم",
+        "category": "programs",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "programs:السهم",
+          "alt": "السهم"
+        },
+        "catalogDetails": {
+          "format": "program",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 63,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 15,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "arrow-program",
+        "slug": "arrow-program",
+        "title": "السهم",
+        "category": "programs",
+        "format": "program",
+        "price": {
+          "amountUsd": 63,
+          "status": "known"
+        },
+        "availability": "unavailable",
+        "assetId": "programs:السهم",
+        "source": "docs/zizi-website-reference.md"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "subconscious-program",
+        "title": "اللاوعي",
+        "category": "programs",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "programs:لاواعي",
+          "alt": "اللاوعي"
+        },
+        "catalogDetails": {
+          "format": "program",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 63,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 16,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "subconscious-program",
+        "slug": "subconscious-program",
+        "title": "اللاوعي",
+        "category": "programs",
+        "format": "program",
+        "price": {
+          "amountUsd": 63,
+          "status": "known"
+        },
+        "availability": "unavailable",
+        "assetId": "programs:لاواعي",
+        "source": "docs/zizi-website-reference.md"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "body-language-program-team-2",
+        "title": "لغة الجسد - تيم 2",
+        "category": "programs",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "programs:برمجه-الجسد",
+          "alt": "لغة الجسد - تيم 2"
+        },
+        "catalogDetails": {
+          "format": "program",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 63,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 17,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "body-language-program-team-2",
+        "slug": "body-language-program-team-2",
+        "title": "لغة الجسد - تيم 2",
+        "category": "programs",
+        "format": "program",
+        "price": {
+          "amountUsd": 63,
+          "status": "known"
+        },
+        "availability": "unavailable",
+        "assetId": "programs:برمجه-الجسد",
+        "source": "docs/zizi-website-reference.md"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "inner-child-2",
+        "title": "الطفل الداخلي 2",
+        "category": "programs",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "programs:الطفل",
+          "alt": "الطفل الداخلي 2"
+        },
+        "catalogDetails": {
+          "format": "program",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 33,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 18,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "inner-child-2",
+        "slug": "inner-child-2",
+        "title": "الطفل الداخلي 2",
+        "category": "programs",
+        "format": "program",
+        "price": {
+          "amountUsd": 33,
+          "status": "known"
+        },
+        "availability": "unavailable",
+        "assetId": "programs:الطفل",
+        "source": "docs/zizi-website-reference.md"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "nervousness-program",
+        "title": "العصبية",
+        "category": "programs",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "programs:العصبية",
+          "alt": "العصبية"
+        },
+        "catalogDetails": {
+          "format": "program",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 40,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 19,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "nervousness-program",
+        "slug": "nervousness-program",
+        "title": "العصبية",
+        "category": "programs",
+        "format": "program",
+        "price": {
+          "amountUsd": 40,
+          "status": "known"
+        },
+        "availability": "unavailable",
+        "assetId": "programs:العصبية",
+        "source": "docs/zizi-website-reference.md"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "psychological-program",
+        "title": "النفسية",
+        "category": "programs",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "programs:النفسيه",
+          "alt": "النفسية"
+        },
+        "catalogDetails": {
+          "format": "program",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 51,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 20,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "psychological-program",
+        "slug": "psychological-program",
+        "title": "النفسية",
+        "category": "programs",
+        "format": "program",
+        "price": {
+          "amountUsd": 51,
+          "status": "known"
+        },
+        "availability": "unavailable",
+        "assetId": "programs:النفسيه",
+        "source": "docs/zizi-website-reference.md"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "spy-2024",
+        "title": "اسباي 2024",
+        "category": "programs",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "programs:spa",
+          "alt": "اسباي 2024"
+        },
+        "catalogDetails": {
+          "format": "program",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 63,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 21,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "spy-2024",
+        "slug": "spy-2024",
+        "title": "اسباي 2024",
+        "category": "programs",
+        "format": "program",
+        "price": {
+          "amountUsd": 63,
+          "status": "known"
+        },
+        "availability": "unavailable",
+        "assetId": "programs:spa",
+        "source": "docs/zizi-website-reference.md",
+        "internalNotes": "Name and relationship to SPA/SPi still need confirmation."
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "body-language-program-team-1",
+        "title": "لغة الجسد - تيم 1",
+        "category": "programs",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "programs:برمجه-الجسد",
+          "alt": "لغة الجسد - تيم 1"
+        },
+        "catalogDetails": {
+          "format": "program",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 63,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 22,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "body-language-program-team-1",
+        "slug": "body-language-program-team-1",
+        "title": "لغة الجسد - تيم 1",
+        "category": "programs",
+        "format": "program",
+        "price": {
+          "amountUsd": 63,
+          "status": "known"
+        },
+        "availability": "unavailable",
+        "assetId": "programs:برمجه-الجسد",
+        "source": "docs/zizi-website-reference.md"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "spa-2",
+        "title": "اسبا 2",
+        "category": "programs",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "programs:spa",
+          "alt": "اسبا 2"
+        },
+        "catalogDetails": {
+          "format": "program",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 63,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 23,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "spa-2",
+        "slug": "spa-2",
+        "title": "اسبا 2",
+        "category": "programs",
+        "format": "program",
+        "price": {
+          "amountUsd": 63,
+          "status": "known"
+        },
+        "availability": "unavailable",
+        "assetId": "programs:spa",
+        "source": "docs/zizi-website-reference.md"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "inner-child-1",
+        "title": "الطفل الداخلي 1",
+        "category": "programs",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "programs:الطفل",
+          "alt": "الطفل الداخلي 1"
+        },
+        "catalogDetails": {
+          "format": "program",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 33,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 24,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "inner-child-1",
+        "slug": "inner-child-1",
+        "title": "الطفل الداخلي 1",
+        "category": "programs",
+        "format": "program",
+        "price": {
+          "amountUsd": 33,
+          "status": "known"
+        },
+        "availability": "unavailable",
+        "assetId": "programs:الطفل",
+        "source": "docs/zizi-website-reference.md"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "linguistic-program-team-1",
+        "title": "اللغوية - تيم 1",
+        "category": "programs",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "programs:اللغويه",
+          "alt": "اللغوية - تيم 1"
+        },
+        "catalogDetails": {
+          "format": "program",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 63,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 25,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "linguistic-program-team-1",
+        "slug": "linguistic-program-team-1",
+        "title": "اللغوية - تيم 1",
+        "category": "programs",
+        "format": "program",
+        "price": {
+          "amountUsd": 63,
+          "status": "known"
+        },
+        "availability": "unavailable",
+        "assetId": "programs:اللغويه",
+        "source": "docs/zizi-website-reference.md"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "teen-psychology-team-1",
+        "title": "سيكولوجية المراهق - تيم 1",
+        "category": "programs",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "programs:المراهق",
+          "alt": "سيكولوجية المراهق - تيم 1"
+        },
+        "catalogDetails": {
+          "format": "program",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 50,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 26,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "teen-psychology-team-1",
+        "slug": "teen-psychology-team-1",
+        "title": "سيكولوجية المراهق - تيم 1",
+        "category": "programs",
+        "format": "program",
+        "price": {
+          "amountUsd": 50,
+          "status": "known"
+        },
+        "availability": "unavailable",
+        "assetId": "programs:المراهق",
+        "source": "docs/zizi-website-reference.md"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "spi-1",
+        "title": "SPi 1",
+        "category": "programs",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "programs:spi-avtar",
+          "alt": "SPi 1"
+        },
+        "catalogDetails": {
+          "format": "program",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 63,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 27,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "spi-1",
+        "slug": "spi-1",
+        "title": "SPi 1",
+        "category": "programs",
+        "format": "program",
+        "price": {
+          "amountUsd": 63,
+          "status": "known"
+        },
+        "availability": "unavailable",
+        "assetId": "programs:spi-avtar",
+        "source": "docs/zizi-website-reference.md"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "religious-program",
+        "title": "الدينية",
+        "category": "programs",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "programs:الدينيه",
+          "alt": "الدينية"
+        },
+        "catalogDetails": {
+          "format": "program",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 29,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 28,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "religious-program",
+        "slug": "religious-program",
+        "title": "الدينية",
+        "category": "programs",
+        "format": "program",
+        "price": {
+          "amountUsd": 29,
+          "status": "known"
+        },
+        "availability": "unavailable",
+        "assetId": "programs:الدينيه",
+        "source": "docs/zizi-website-reference.md"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "body-language-course",
+        "title": "دورة تعلم تحليل لغة الجسد مستوى 1",
+        "category": "courses",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "courses:دورة-الجسد",
+          "alt": "دورة تعلم تحليل لغة الجسد مستوى 1"
+        },
+        "catalogDetails": {
+          "format": "course",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 20,
+              "status": "known"
+            },
+            "availability": "available"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 29,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "body-language-course",
+        "slug": "body-language-course",
+        "title": "دورة تعلم تحليل لغة الجسد مستوى 1",
+        "category": "courses",
+        "format": "course",
+        "price": {
+          "amountUsd": 20,
+          "status": "known"
+        },
+        "availability": "available",
+        "assetId": "courses:دورة-الجسد",
+        "source": "docs/zizi-website-reference.md"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "handwriting-analysis",
+        "title": "دورة تعلم تحليل الخط (علم الجرافولوجي)",
+        "category": "courses",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "courses:الخط",
+          "alt": "دورة تعلم تحليل الخط (علم الجرافولوجي)"
+        },
+        "catalogDetails": {
+          "format": "course",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 20,
+              "status": "known"
+            },
+            "availability": "available"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 30,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "handwriting-analysis",
+        "slug": "handwriting-analysis",
+        "title": "دورة تعلم تحليل الخط (علم الجرافولوجي)",
+        "category": "courses",
+        "format": "course",
+        "price": {
+          "amountUsd": 20,
+          "status": "known"
+        },
+        "availability": "available",
+        "assetId": "courses:الخط",
+        "source": "docs/zizi-website-reference.md"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "marriage-intro",
+        "title": "مقدمة عن الزواج",
+        "category": "courses",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "courses:مقدمة-الزواج",
+          "alt": "مقدمة عن الزواج"
+        },
+        "catalogDetails": {
+          "format": "course",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 20,
+              "status": "known"
+            },
+            "availability": "available"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 31,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "marriage-intro",
+        "slug": "marriage-intro",
+        "title": "مقدمة عن الزواج",
+        "category": "courses",
+        "format": "course",
+        "price": {
+          "amountUsd": 20,
+          "status": "known"
+        },
+        "availability": "available",
+        "assetId": "courses:مقدمة-الزواج",
+        "source": "docs/zizi-website-reference.md"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "major-selection",
+        "title": "دورة اختيار التخصص",
+        "category": "courses",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "courses:التخصص",
+          "alt": "دورة اختيار التخصص"
+        },
+        "catalogDetails": {
+          "format": "course",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 20,
+              "status": "known"
+            },
+            "availability": "available"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 32,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "major-selection",
+        "slug": "major-selection",
+        "title": "دورة اختيار التخصص",
+        "category": "courses",
+        "format": "course",
+        "price": {
+          "amountUsd": 20,
+          "status": "known"
+        },
+        "availability": "available",
+        "assetId": "courses:التخصص",
+        "source": "docs/zizi-website-reference.md"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "right-question",
+        "title": "السؤال الصح في الوقت الصح",
+        "category": "courses",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "courses:السؤال-الصح",
+          "alt": "السؤال الصح في الوقت الصح"
+        },
+        "catalogDetails": {
+          "format": "course",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 20,
+              "status": "known"
+            },
+            "availability": "available"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 33,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "right-question",
+        "slug": "right-question",
+        "title": "السؤال الصح في الوقت الصح",
+        "category": "courses",
+        "format": "course",
+        "price": {
+          "amountUsd": 20,
+          "status": "known"
+        },
+        "availability": "available",
+        "assetId": "courses:السؤال-الصح",
+        "source": "docs/zizi-website-reference.md"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "psynutri",
+        "title": "PsyNutri - التغذية النفسية",
+        "category": "courses",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "courses:التغذية",
+          "alt": "PsyNutri - التغذية النفسية"
+        },
+        "catalogDetails": {
+          "format": "course",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 20,
+              "status": "known"
+            },
+            "availability": "unknown"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 34,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "psynutri",
+        "slug": "psynutri",
+        "title": "PsyNutri - التغذية النفسية",
+        "category": "courses",
+        "format": "course",
+        "price": {
+          "amountUsd": 20,
+          "status": "known"
+        },
+        "availability": "unknown",
+        "assetId": "courses:التغذية",
+        "source": "docs/zizi-website-reference.md"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "getting-to-know",
+        "title": "دورة تعرف كيف تتعارف 0",
+        "category": "courses",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "courses:التعرف",
+          "alt": "دورة تعرف كيف تتعارف 0"
+        },
+        "catalogDetails": {
+          "format": "course",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 20,
+              "status": "known"
+            },
+            "availability": "available"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 35,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "getting-to-know",
+        "slug": "getting-to-know",
+        "title": "دورة تعرف كيف تتعارف 0",
+        "category": "courses",
+        "format": "course",
+        "price": {
+          "amountUsd": 20,
+          "status": "known"
+        },
+        "availability": "available",
+        "assetId": "courses:التعرف",
+        "source": "docs/zizi-website-reference.md"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "compatibility-or-separation",
+        "title": "دورة التوافق أو التفارق -1",
+        "category": "courses",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "local",
+          "assetId": "courses:التوافق",
+          "alt": "دورة التوافق أو التفارق -1"
+        },
+        "catalogDetails": {
+          "format": "course",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 20,
+              "status": "known"
+            },
+            "availability": "unknown"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 36,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "compatibility-or-separation",
+        "slug": "compatibility-or-separation",
+        "title": "دورة التوافق أو التفارق -1",
+        "category": "courses",
+        "format": "course",
+        "price": {
+          "amountUsd": 20,
+          "status": "known"
+        },
+        "availability": "unknown",
+        "assetId": "courses:التوافق",
+        "source": "docs/zizi-website-reference.md"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "diagnostic-session",
+        "title": "جلسة تشخيص",
+        "category": "sessions",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "none",
+          "alt": "جلسة تشخيص"
+        },
+        "catalogDetails": {
+          "format": "session",
+          "durationKind": "program",
+          "availableThroughoutYear": true
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 95,
+              "status": "known"
+            },
+            "availability": "available"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 37,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "diagnostic-session",
+        "slug": "diagnostic-session",
+        "title": "جلسة تشخيص",
+        "category": "sessions",
+        "format": "session",
+        "price": {
+          "amountUsd": 95,
+          "status": "known"
+        },
+        "availability": "available",
+        "availableThroughoutYear": true,
+        "source": "Stage 2 supplied sessions price list"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "therapeutic-session",
+        "title": "جلسة علاجية",
+        "category": "sessions",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "none",
+          "alt": "جلسة علاجية"
+        },
+        "catalogDetails": {
+          "format": "session",
+          "durationKind": "program",
+          "availableThroughoutYear": true
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 95,
+              "status": "known"
+            },
+            "availability": "available"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 38,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "therapeutic-session",
+        "slug": "therapeutic-session",
+        "title": "جلسة علاجية",
+        "category": "sessions",
+        "format": "session",
+        "price": {
+          "amountUsd": 95,
+          "status": "known"
+        },
+        "availability": "available",
+        "availableThroughoutYear": true,
+        "source": "Stage 2 supplied sessions price list"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "self-reconciliation-program",
+        "title": "برنامج التصالح مع الذات",
+        "category": "sessions",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "none",
+          "alt": "برنامج التصالح مع الذات"
+        },
+        "catalogDetails": {
+          "format": "program",
+          "durationKind": "program",
+          "availableThroughoutYear": true
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 475,
+              "status": "known"
+            },
+            "availability": "available"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 39,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "self-reconciliation-program",
+        "slug": "self-reconciliation-program",
+        "title": "برنامج التصالح مع الذات",
+        "category": "sessions",
+        "format": "program",
+        "price": {
+          "amountUsd": 475,
+          "status": "known"
+        },
+        "availability": "available",
+        "availableThroughoutYear": true,
+        "source": "Stage 2 supplied sessions price list",
+        "internalNotes": "Program-format offer inside the sessions/consultations catalogue."
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "consultation-session",
+        "title": "جلسة استشارية",
+        "category": "sessions",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "none",
+          "alt": "جلسة استشارية"
+        },
+        "catalogDetails": {
+          "format": "consultation",
+          "durationKind": "program",
+          "availableThroughoutYear": true
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 40,
+              "status": "known"
+            },
+            "availability": "unavailable"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 40,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "consultation-session",
+        "slug": "consultation-session",
+        "title": "جلسة استشارية",
+        "category": "sessions",
+        "format": "consultation",
+        "price": {
+          "amountUsd": 40,
+          "status": "known"
+        },
+        "availability": "unavailable",
+        "availableThroughoutYear": true,
+        "source": "Stage 2 supplied sessions price list"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "negative-emotions-release-session",
+        "title": "جلسة طرد المشاعر السلبية (تمرين تنظيفي)",
+        "category": "sessions",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "none",
+          "alt": "جلسة طرد المشاعر السلبية (تمرين تنظيفي)"
+        },
+        "catalogDetails": {
+          "format": "session",
+          "durationKind": "program",
+          "availableThroughoutYear": true
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 95,
+              "status": "known"
+            },
+            "availability": "available"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 41,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "negative-emotions-release-session",
+        "slug": "negative-emotions-release-session",
+        "title": "جلسة طرد المشاعر السلبية (تمرين تنظيفي)",
+        "category": "sessions",
+        "format": "session",
+        "price": {
+          "amountUsd": 95,
+          "status": "known"
+        },
+        "availability": "available",
+        "availableThroughoutYear": true,
+        "source": "Stage 2 supplied sessions price list",
+        "internalNotes": "Subtitle from source: تمرين تنظيفي."
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "energy-renewal-session",
+        "title": "جلسة تجديد طاقة (تنويم)",
+        "category": "sessions",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "none",
+          "alt": "جلسة تجديد طاقة (تنويم)"
+        },
+        "catalogDetails": {
+          "format": "session",
+          "durationKind": "program",
+          "availableThroughoutYear": true
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 150,
+              "status": "known"
+            },
+            "availability": "available"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 42,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "energy-renewal-session",
+        "slug": "energy-renewal-session",
+        "title": "جلسة تجديد طاقة (تنويم)",
+        "category": "sessions",
+        "format": "session",
+        "price": {
+          "amountUsd": 150,
+          "status": "known"
+        },
+        "availability": "available",
+        "availableThroughoutYear": true,
+        "source": "Stage 2 supplied sessions price list",
+        "internalNotes": "Subtitle from source: تنويم."
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "multiple-intelligences",
+        "title": "أنواع الذكاءات",
+        "category": "tests",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "none",
+          "alt": "أنواع الذكاءات"
+        },
+        "catalogDetails": {
+          "format": "test",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 0,
+              "status": "free"
+            },
+            "availability": "available"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 43,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "multiple-intelligences",
+        "title": "أنواع الذكاءات",
+        "price": {
+          "amountUsd": 0,
+          "status": "free"
+        },
+        "availability": "available",
+        "slug": "multiple-intelligences",
+        "category": "tests",
+        "format": "test",
+        "source": "additionalTestOffers"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "colors-test",
+        "title": "اختبار الألوان",
+        "category": "tests",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "none",
+          "alt": "اختبار الألوان"
+        },
+        "catalogDetails": {
+          "format": "test",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 0,
+              "status": "free"
+            },
+            "availability": "available"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 44,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "colors-test",
+        "title": "اختبار الألوان",
+        "price": {
+          "amountUsd": 0,
+          "status": "free"
+        },
+        "availability": "available",
+        "slug": "colors-test",
+        "category": "tests",
+        "format": "test",
+        "source": "additionalTestOffers"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "formative-geometry-test",
+        "title": "اختبار هندسات تشكيلية",
+        "category": "tests",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "none",
+          "alt": "اختبار هندسات تشكيلية"
+        },
+        "catalogDetails": {
+          "format": "test",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 0,
+              "status": "free"
+            },
+            "availability": "available"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 45,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "formative-geometry-test",
+        "title": "اختبار هندسات تشكيلية",
+        "price": {
+          "amountUsd": 0,
+          "status": "free"
+        },
+        "availability": "available",
+        "slug": "formative-geometry-test",
+        "category": "tests",
+        "format": "test",
+        "source": "additionalTestOffers"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "compass-element",
+        "title": "كل عنصر منفرد",
+        "category": "compass",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "none",
+          "alt": "كل عنصر منفرد"
+        },
+        "catalogDetails": {
+          "format": "package",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 500,
+              "status": "known"
+            },
+            "availability": "available"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 46,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "compass-element",
+        "slug": "compass-element",
+        "title": "كل عنصر منفرد",
+        "category": "compass",
+        "format": "package",
+        "price": {
+          "status": "known",
+          "amountUsd": 500
+        },
+        "availability": "available",
+        "source": "compassPricing"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    },
+    {
+      "record": {
+        "id": "compass-package",
+        "title": "الباقة الكاملة",
+        "category": "compass",
+        "description": "",
+        "topics": [],
+        "image": {
+          "kind": "none",
+          "alt": "الباقة الكاملة"
+        },
+        "catalogDetails": {
+          "format": "package",
+          "durationKind": "program"
+        },
+        "delivery": "general",
+        "variants": [
+          {
+            "id": "general",
+            "title": "السعر",
+            "price": {
+              "amountUsd": 2500,
+              "status": "known"
+            },
+            "availability": "available"
+          }
+        ],
+        "duration": "",
+        "sessionDuration": "",
+        "capacity": "",
+        "displayOrder": 47,
+        "status": "draft"
+      },
+      "approvedSource": {
+        "id": "compass-package",
+        "slug": "compass-package",
+        "title": "الباقة الكاملة",
+        "category": "compass",
+        "format": "package",
+        "price": {
+          "status": "known",
+          "amountUsd": 2500
+        },
+        "availability": "available",
+        "source": "compassPricing"
+      },
+      "migrationVersion": "catalog-cloudinary-v1"
+    }
+  ],
+  "supportingContent": {
+    "codeCards": [
+      {
+        "code": "A",
+        "title": "الموضوعية والمنطق",
+        "summary": "نمط يركّز على التحليل وفهم الأسباب وتقييم المعلومات والنتائج.",
+        "study": "الدراسة بالفروع العقلية وتشكيل النظريات والتلخيص والأمثلة؛ العمل بالتحليل والتقييم والأرقام والحقائق والبيانات.",
+        "accent": "code-a",
+        "asset": {
+          "id": "codes:A",
+          "section": "codes",
+          "fileName": "A.jpg",
+          "stem": "A",
+          "extension": ".jpg",
+          "width": 578,
+          "height": 815,
+          "bytes": 76817,
+          "publicPath": "/assets/codes/A.jpg?v=1123e5179aec",
+          "purpose": "code-card-back",
+          "status": "available",
+          "notes": null
+        }
+      },
+      {
+        "code": "B",
+        "title": "التنفيذ والإنجاز",
+        "summary": "نمط يميل إلى التنظيم والخطوات العملية والتخطيط والاهتمام بالتفاصيل.",
+        "study": "الحفظ والمراجعة بعد الدرس والمناقشة الجماعية؛ التنظيم والانضباط والتنفيذ والإجراءات والدقة.",
+        "accent": "code-b",
+        "asset": {
+          "id": "codes:B",
+          "section": "codes",
+          "fileName": "B.jpg",
+          "stem": "B",
+          "extension": ".jpg",
+          "width": 578,
+          "height": 816,
+          "bytes": 94557,
+          "publicPath": "/assets/codes/B.jpg?v=9863a09ef46f",
+          "purpose": "code-card-back",
+          "status": "available",
+          "notes": null
+        }
+      },
+      {
+        "code": "C",
+        "title": "المشاعر والأحاسيس",
+        "summary": "نمط يهتم بالعلاقات والمعاني الإنسانية والتفاعل مع الآخرين.",
+        "study": "المذاكرة بصوت عال والمناقشة وشرح الدرس لشخص آخر والارتباط العاطفي بالموضوع؛ الرعاية والتعليم والإرشاد.",
+        "accent": "code-c",
+        "asset": {
+          "id": "codes:C",
+          "section": "codes",
+          "fileName": "C.jpg",
+          "stem": "C",
+          "extension": ".jpg",
+          "width": 578,
+          "height": 816,
+          "bytes": 82026,
+          "publicPath": "/assets/codes/C.jpg?v=8a93f786179f",
+          "purpose": "code-card-back",
+          "status": "available",
+          "notes": null
+        }
+      },
+      {
+        "code": "D",
+        "title": "الإبداع والابتكار",
+        "summary": "نمط يستكشف الأفكار والاحتمالات ويربطها برؤية واسعة للمستقبل.",
+        "study": "الأقلام والخطاطات الملونة والعروض والفيديوهات؛ التفكير الاستراتيجي والنظرة الكلية والتجارب والخيارات والتغيير.",
+        "accent": "code-d",
+        "asset": {
+          "id": "codes:D",
+          "section": "codes",
+          "fileName": "D.jpg",
+          "stem": "D",
+          "extension": ".jpg",
+          "width": 578,
+          "height": 817,
+          "bytes": 93218,
+          "publicPath": "/assets/codes/D.jpg?v=d4526d67c868",
+          "purpose": "code-card-back",
+          "status": "available",
+          "notes": null
+        }
+      }
+    ],
+    "ethoAnimals": [
+      {
+        "asset": {
+          "id": "etho:اخطبوط",
+          "section": "etho",
+          "fileName": "اخطبوط.jpg",
+          "stem": "اخطبوط",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 882734,
+          "publicPath": "/assets/etho/اخطبوط.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "أخطبوط",
+        "aliases": [
+          "اخطبوط",
+          "أخطبوط",
+          "الاخطبوط"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:ارنب",
+          "section": "etho",
+          "fileName": "ارنب.jpg",
+          "stem": "ارنب",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 689917,
+          "publicPath": "/assets/etho/ارنب.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "أرنب",
+        "aliases": [
+          "ارنب",
+          "أرنب",
+          "الارنب"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:اسد",
+          "section": "etho",
+          "fileName": "اسد.jpg",
+          "stem": "اسد",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 976803,
+          "publicPath": "/assets/etho/اسد.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "أسد",
+        "aliases": [
+          "اسد",
+          "أسد",
+          "الاسد"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:افعى",
+          "section": "etho",
+          "fileName": "افعى.jpg",
+          "stem": "افعى",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 1552196,
+          "publicPath": "/assets/etho/افعى.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "أفعى",
+        "aliases": [
+          "افعى",
+          "أفعى",
+          "الافعى"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:باندا",
+          "section": "etho",
+          "fileName": "باندا.jpg",
+          "stem": "باندا",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 514055,
+          "publicPath": "/assets/etho/باندا.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "باندا",
+        "aliases": [
+          "باندا",
+          "باندا",
+          "الباندا"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:بطة",
+          "section": "etho",
+          "fileName": "بطة.jpg",
+          "stem": "بطة",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 879594,
+          "publicPath": "/assets/etho/بطة.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "بطة",
+        "aliases": [
+          "بطة",
+          "بطة",
+          "البطة"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:بطريق",
+          "section": "etho",
+          "fileName": "بطريق.jpg",
+          "stem": "بطريق",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 692908,
+          "publicPath": "/assets/etho/بطريق.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "بطريق",
+        "aliases": [
+          "بطريق",
+          "بطريق",
+          "البطريق"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:بقره",
+          "section": "etho",
+          "fileName": "بقره.jpg",
+          "stem": "بقره",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 690562,
+          "publicPath": "/assets/etho/بقره.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "بقرة",
+        "aliases": [
+          "بقره",
+          "بقرة",
+          "البقره"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:تمساح",
+          "section": "etho",
+          "fileName": "تمساح.jpg",
+          "stem": "تمساح",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 2188285,
+          "publicPath": "/assets/etho/تمساح.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "تمساح",
+        "aliases": [
+          "تمساح",
+          "تمساح",
+          "التمساح"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:ثعلب",
+          "section": "etho",
+          "fileName": "ثعلب.jpg",
+          "stem": "ثعلب",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 1456783,
+          "publicPath": "/assets/etho/ثعلب.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "ثعلب",
+        "aliases": [
+          "ثعلب",
+          "ثعلب",
+          "الثعلب"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:ثور",
+          "section": "etho",
+          "fileName": "ثور.jpg",
+          "stem": "ثور",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 656320,
+          "publicPath": "/assets/etho/ثور.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "ثور",
+        "aliases": [
+          "ثور",
+          "ثور",
+          "الثور"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:جمل",
+          "section": "etho",
+          "fileName": "جمل.jpg",
+          "stem": "جمل",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 815077,
+          "publicPath": "/assets/etho/جمل.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "جمل",
+        "aliases": [
+          "جمل",
+          "جمل",
+          "الجمل"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:حصان",
+          "section": "etho",
+          "fileName": "حصان.jpg",
+          "stem": "حصان",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 1087584,
+          "publicPath": "/assets/etho/حصان.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "حصان",
+        "aliases": [
+          "حصان",
+          "حصان",
+          "الحصان"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:حلزون",
+          "section": "etho",
+          "fileName": "حلزون.jpg",
+          "stem": "حلزون",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 508257,
+          "publicPath": "/assets/etho/حلزون.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "حلزون",
+        "aliases": [
+          "حلزون",
+          "حلزون",
+          "الحلزون"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:حمامه",
+          "section": "etho",
+          "fileName": "حمامه.jpg",
+          "stem": "حمامه",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 691773,
+          "publicPath": "/assets/etho/حمامه.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "حمامة",
+        "aliases": [
+          "حمامه",
+          "حمامة",
+          "الحمامه"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:حوت",
+          "section": "etho",
+          "fileName": "حوت.jpg",
+          "stem": "حوت",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 907058,
+          "publicPath": "/assets/etho/حوت.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "حوت",
+        "aliases": [
+          "حوت",
+          "حوت",
+          "الحوت"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:خروف",
+          "section": "etho",
+          "fileName": "خروف.jpg",
+          "stem": "خروف",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 601551,
+          "publicPath": "/assets/etho/خروف.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "خروف",
+        "aliases": [
+          "خروف",
+          "خروف",
+          "الخروف"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:خفاش",
+          "section": "etho",
+          "fileName": "خفاش.jpg",
+          "stem": "خفاش",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 521932,
+          "publicPath": "/assets/etho/خفاش.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "خفاش",
+        "aliases": [
+          "خفاش",
+          "خفاش",
+          "الخفاش"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:دب قطبي",
+          "section": "etho",
+          "fileName": "دب قطبي.jpg",
+          "stem": "دب قطبي",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 478831,
+          "publicPath": "/assets/etho/دب قطبي.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "دب قطبي",
+        "aliases": [
+          "دب قطبي",
+          "دب قطبي",
+          "الدب قطبي"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:دلفين",
+          "section": "etho",
+          "fileName": "دلفين.jpg",
+          "stem": "دلفين",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 787001,
+          "publicPath": "/assets/etho/دلفين.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "دلفين",
+        "aliases": [
+          "دلفين",
+          "دلفين",
+          "الدلفين"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:ديك",
+          "section": "etho",
+          "fileName": "ديك.jpg",
+          "stem": "ديك",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 936296,
+          "publicPath": "/assets/etho/ديك.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "ديك",
+        "aliases": [
+          "ديك",
+          "ديك",
+          "الديك"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:ذبابه",
+          "section": "etho",
+          "fileName": "ذبابه.jpg",
+          "stem": "ذبابه",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 809906,
+          "publicPath": "/assets/etho/ذبابه.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "ذبابة",
+        "aliases": [
+          "ذبابه",
+          "ذبابة",
+          "الذبابه"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:ذيب",
+          "section": "etho",
+          "fileName": "ذيب.jpg",
+          "stem": "ذيب",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 973962,
+          "publicPath": "/assets/etho/ذيب.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "ذئب",
+        "aliases": [
+          "ذيب",
+          "ذئب",
+          "الذيب",
+          "ذيب",
+          "الذيب",
+          "ذئب",
+          "الذئب",
+          "ديب",
+          "الديب"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:زرافه",
+          "section": "etho",
+          "fileName": "زرافه.jpg",
+          "stem": "زرافه",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 1034745,
+          "publicPath": "/assets/etho/زرافه.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "زرافة",
+        "aliases": [
+          "زرافه",
+          "زرافة",
+          "الزرافه"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:سلحفاه",
+          "section": "etho",
+          "fileName": "سلحفاه.jpg",
+          "stem": "سلحفاه",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 823877,
+          "publicPath": "/assets/etho/سلحفاه.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "سلحفاة",
+        "aliases": [
+          "سلحفاه",
+          "سلحفاة",
+          "السلحفاه"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:سمكة",
+          "section": "etho",
+          "fileName": "سمكة.jpg",
+          "stem": "سمكة",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 1132659,
+          "publicPath": "/assets/etho/سمكة.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "سمكة",
+        "aliases": [
+          "سمكة",
+          "سمكة",
+          "السمكة"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:سنجاب",
+          "section": "etho",
+          "fileName": "سنجاب.jpg",
+          "stem": "سنجاب",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 677648,
+          "publicPath": "/assets/etho/سنجاب.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "سنجاب",
+        "aliases": [
+          "سنجاب",
+          "سنجاب",
+          "السنجاب"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:شمبانزي",
+          "section": "etho",
+          "fileName": "شمبانزي.jpg",
+          "stem": "شمبانزي",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 972673,
+          "publicPath": "/assets/etho/شمبانزي.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "شمبانزي",
+        "aliases": [
+          "شمبانزي",
+          "شمبانزي",
+          "الشمبانزي"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:صقر",
+          "section": "etho",
+          "fileName": "صقر.jpg",
+          "stem": "صقر",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 966111,
+          "publicPath": "/assets/etho/صقر.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "صقر",
+        "aliases": [
+          "صقر",
+          "صقر",
+          "الصقر"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:ضفدع",
+          "section": "etho",
+          "fileName": "ضفدع.jpg",
+          "stem": "ضفدع",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 609038,
+          "publicPath": "/assets/etho/ضفدع.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "ضفدع",
+        "aliases": [
+          "ضفدع",
+          "ضفدع",
+          "الضفدع"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:طاووس",
+          "section": "etho",
+          "fileName": "طاووس.jpg",
+          "stem": "طاووس",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 1021616,
+          "publicPath": "/assets/etho/طاووس.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "طاووس",
+        "aliases": [
+          "طاووس",
+          "طاووس",
+          "الطاووس"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:عصفور",
+          "section": "etho",
+          "fileName": "عصفور.jpg",
+          "stem": "عصفور",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 603159,
+          "publicPath": "/assets/etho/عصفور.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "عصفور",
+        "aliases": [
+          "عصفور",
+          "عصفور",
+          "العصفور"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:عقرب",
+          "section": "etho",
+          "fileName": "عقرب.jpg",
+          "stem": "عقرب",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 692021,
+          "publicPath": "/assets/etho/عقرب.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "عقرب",
+        "aliases": [
+          "عقرب",
+          "عقرب",
+          "العقرب"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:عنكبوت",
+          "section": "etho",
+          "fileName": "عنكبوت.jpg",
+          "stem": "عنكبوت",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 1199965,
+          "publicPath": "/assets/etho/عنكبوت.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "عنكبوت",
+        "aliases": [
+          "عنكبوت",
+          "عنكبوت",
+          "العنكبوت"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:غراب",
+          "section": "etho",
+          "fileName": "غراب.jpg",
+          "stem": "غراب",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2230,
+          "bytes": 715745,
+          "publicPath": "/assets/etho/غراب.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "غراب",
+        "aliases": [
+          "غراب",
+          "غراب",
+          "الغراب"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:غزاله",
+          "section": "etho",
+          "fileName": "غزاله.jpg",
+          "stem": "غزاله",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 1449976,
+          "publicPath": "/assets/etho/غزاله.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "غزالة",
+        "aliases": [
+          "غزاله",
+          "غزالة",
+          "الغزاله"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:فراشه",
+          "section": "etho",
+          "fileName": "فراشه.jpg",
+          "stem": "فراشه",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 901872,
+          "publicPath": "/assets/etho/فراشه.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "فراشة",
+        "aliases": [
+          "فراشه",
+          "فراشة",
+          "الفراشه"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:فقمه",
+          "section": "etho",
+          "fileName": "فقمه.jpg",
+          "stem": "فقمه",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 1204649,
+          "publicPath": "/assets/etho/فقمه.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "فقمة",
+        "aliases": [
+          "فقمه",
+          "فقمة",
+          "الفقمه"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:فيل",
+          "section": "etho",
+          "fileName": "فيل.jpg",
+          "stem": "فيل",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 1176688,
+          "publicPath": "/assets/etho/فيل.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "فيل",
+        "aliases": [
+          "فيل",
+          "فيل",
+          "الفيل"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:قرش",
+          "section": "etho",
+          "fileName": "قرش.jpg",
+          "stem": "قرش",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 751720,
+          "publicPath": "/assets/etho/قرش.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "قرش",
+        "aliases": [
+          "قرش",
+          "قرش",
+          "القرش"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:قط",
+          "section": "etho",
+          "fileName": "قط.jpg",
+          "stem": "قط",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 1331578,
+          "publicPath": "/assets/etho/قط.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "قط",
+        "aliases": [
+          "قط",
+          "قط",
+          "القط"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:قنديل",
+          "section": "etho",
+          "fileName": "قنديل.jpg",
+          "stem": "قنديل",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 820717,
+          "publicPath": "/assets/etho/قنديل.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "قنديل",
+        "aliases": [
+          "قنديل",
+          "قنديل",
+          "القنديل"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:كلب",
+          "section": "etho",
+          "fileName": "كلب.jpg",
+          "stem": "كلب",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 870832,
+          "publicPath": "/assets/etho/كلب.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "كلب",
+        "aliases": [
+          "كلب",
+          "كلب",
+          "الكلب"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:كنغر",
+          "section": "etho",
+          "fileName": "كنغر.jpg",
+          "stem": "كنغر",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 564956,
+          "publicPath": "/assets/etho/كنغر.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "كنغر",
+        "aliases": [
+          "كنغر",
+          "كنغر",
+          "الكنغر"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:كوكاتو",
+          "section": "etho",
+          "fileName": "كوكاتو.jpg",
+          "stem": "كوكاتو",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 750735,
+          "publicPath": "/assets/etho/كوكاتو.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "كوكاتو",
+        "aliases": [
+          "كوكاتو",
+          "كوكاتو",
+          "الكوكاتو"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:نحله",
+          "section": "etho",
+          "fileName": "نحله.jpg",
+          "stem": "نحله",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 845900,
+          "publicPath": "/assets/etho/نحله.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "نحلة",
+        "aliases": [
+          "نحله",
+          "نحلة",
+          "النحله"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:نعامه",
+          "section": "etho",
+          "fileName": "نعامه.jpg",
+          "stem": "نعامه",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 909543,
+          "publicPath": "/assets/etho/نعامه.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "نعامة",
+        "aliases": [
+          "نعامه",
+          "نعامة",
+          "النعامه"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:نمر",
+          "section": "etho",
+          "fileName": "نمر.jpg",
+          "stem": "نمر",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 660220,
+          "publicPath": "/assets/etho/نمر.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "نمر",
+        "aliases": [
+          "نمر",
+          "نمر",
+          "النمر"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:نمله",
+          "section": "etho",
+          "fileName": "نمله.jpg",
+          "stem": "نمله",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 988245,
+          "publicPath": "/assets/etho/نمله.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "نملة",
+        "aliases": [
+          "نمله",
+          "نملة",
+          "النمله"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:هامستر",
+          "section": "etho",
+          "fileName": "هامستر.jpg",
+          "stem": "هامستر",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2206,
+          "bytes": 887756,
+          "publicPath": "/assets/etho/هامستر.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "هامستر",
+        "aliases": [
+          "هامستر",
+          "هامستر",
+          "الهامستر"
+        ]
+      },
+      {
+        "asset": {
+          "id": "etho:هدهد",
+          "section": "etho",
+          "fileName": "هدهد.jpg",
+          "stem": "هدهد",
+          "extension": ".jpg",
+          "width": 1240,
+          "height": 2200,
+          "bytes": 752508,
+          "publicPath": "/assets/etho/هدهد.jpg",
+          "purpose": "etho-animal-card",
+          "status": "available",
+          "notes": null
+        },
+        "name": "هدهد",
+        "aliases": [
+          "هدهد",
+          "هدهد",
+          "الهدهد"
+        ]
+      }
+    ],
+    "mindsets": [
+      {
+        "id": "comfort",
+        "label": "عقليه المرتاح :",
+        "body": "المرتاح يحسون انهم الاذكى\nهم اللي يعرفوا يعيشوا الحلوه والمره بطريقه متوازنه\nيعني لما يمروا بصدمة نفسية عقلهم يخفف الصدمه مايزيدها\n\nالمرتاح يسوي الشيء اللي مقتنع فيه ( هذولا صعب تقنعوهمم الا لما يشوفوك مرتاح زيهم ومتصالح مع نفسك )\n\nبالتعامل مره كويسين / عقليه مايجيك منهم اذى / يتميزون بنقطه مهمه اللي تحسي انك اعرف منهم اصح منهم واخر شيء يسوي اللي مرتاح له / تصالح جيد مع عقله\n\nالسلبيات : البطىء بأنجاز الاولويات بالحياة، (بالدراسه والزواج بالانجاب )"
+      },
+      {
+        "id": "right",
+        "label": "عقليه الصواب :",
+        "body": "يشوفون نفسهم انهم اذكياء ويعيشوا بمحيط يمدحوا ذكائهم، يشوفوا بطريقه ما انهم عبد لرغبات اهلهم وكذلك يثقون بكلام المحيط الخارجي بدل من الداخلي\n(يستشيرون الغريب ولا يستشيرون القريب )\n\nالايجابيات: الانجاز، منجزين ومايتحلطمون لما ينجزون"
+      },
+      {
+        "id": "win",
+        "label": "عقليه الفوز :",
+        "body": "لازم ينتبه من ضميره بشكل كبير لانه ممكن بدون مايحس يقوم بأفعال بعيده عن مبادئه ( احتاطوا من الضمير والمبادئ)\n+تخزين اشياء مو بحاجتها\n\nايجابيات : الشجاعه، يعرفوا يتكلمون يعني متواصلين جيدين ( يعرفوا كيف يقنعوا )"
+      },
+      {
+        "id": "loved",
+        "label": "عقلية المحبوب :",
+        "body": "اسهل التلاعب به، ع قد ما هو يشوف نفسه ذكي على قد ما ان طاح ع انسان محتال بيقضي عليه بتوجيهات خاطئه جدا، و هذا يكون نوعا ما من الطفوله، مايناسب يكون ليدر مع انه يقدر يتقدم عادي.\nاللي عنده عقليه محبوب ، ينتبه من الشله اللي يصاحبهم ، انت و حظك لو طحت مع شخص جيد ف رح يقودك و يوجهك لمنافع جيده ، ان طحت مع شخص مايوجهك بطريقه كويس بتضيع اكثر\n\nالشخص اللي عنده هذه العقليه، بدون قصد بسبب مشااكل خارجيه و يعيش ماقبل المشكله و مابعدها و يكون عنده ميول لسلوك الضحية\n\nالايجابيات : الكرم و المسامحة"
+      }
+    ],
+    "spectraAssets": [
+      {
+        "id": "spectra:اسطوانة",
+        "section": "spectra",
+        "fileName": "اسطوانة.jpg",
+        "stem": "اسطوانة",
+        "extension": ".jpg",
+        "width": 1060,
+        "height": 1280,
+        "bytes": 76831,
+        "publicPath": "/assets/spectra/اسطوانة.jpg",
+        "purpose": "spectra-shape-card",
+        "status": "available",
+        "notes": null
+      },
+      {
+        "id": "spectra:النجمة",
+        "section": "spectra",
+        "fileName": "النجمة.jpg",
+        "stem": "النجمة",
+        "extension": ".jpg",
+        "width": 1064,
+        "height": 1280,
+        "bytes": 64224,
+        "publicPath": "/assets/spectra/النجمة.jpg",
+        "purpose": "spectra-shape-card",
+        "status": "available",
+        "notes": null
+      },
+      {
+        "id": "spectra:دائرة",
+        "section": "spectra",
+        "fileName": "دائرة.jpg",
+        "stem": "دائرة",
+        "extension": ".jpg",
+        "width": 1021,
+        "height": 1280,
+        "bytes": 87271,
+        "publicPath": "/assets/spectra/دائرة.jpg",
+        "purpose": "spectra-shape-card",
+        "status": "available",
+        "notes": null
+      },
+      {
+        "id": "spectra:دونات",
+        "section": "spectra",
+        "fileName": "دونات.jpg",
+        "stem": "دونات",
+        "extension": ".jpg",
+        "width": 1025,
+        "height": 1280,
+        "bytes": 55552,
+        "publicPath": "/assets/spectra/دونات.jpg",
+        "purpose": "spectra-shape-card",
+        "status": "available",
+        "notes": null
+      },
+      {
+        "id": "spectra:سداسي",
+        "section": "spectra",
+        "fileName": "سداسي.jpg",
+        "stem": "سداسي",
+        "extension": ".jpg",
+        "width": 1078,
+        "height": 1322,
+        "bytes": 62221,
+        "publicPath": "/assets/spectra/سداسي.jpg",
+        "purpose": "spectra-shape-card",
+        "status": "available",
+        "notes": null
+      },
+      {
+        "id": "spectra:سهم",
+        "section": "spectra",
+        "fileName": "سهم.jpg",
+        "stem": "سهم",
+        "extension": ".jpg",
+        "width": 1080,
+        "height": 1342,
+        "bytes": 143890,
+        "publicPath": "/assets/spectra/سهم.jpg",
+        "purpose": "spectra-shape-card",
+        "status": "available",
+        "notes": null
+      },
+      {
+        "id": "spectra:متوازي-اضلاع",
+        "section": "spectra",
+        "fileName": "متوازي-اضلاع.jpg",
+        "stem": "متوازي-اضلاع",
+        "extension": ".jpg",
+        "width": 1033,
+        "height": 1280,
+        "bytes": 64249,
+        "publicPath": "/assets/spectra/متوازي-اضلاع.jpg",
+        "purpose": "spectra-shape-card",
+        "status": "available",
+        "notes": null
+      },
+      {
+        "id": "spectra:مثلث",
+        "section": "spectra",
+        "fileName": "مثلث.jpg",
+        "stem": "مثلث",
+        "extension": ".jpg",
+        "width": 1080,
+        "height": 1326,
+        "bytes": 62135,
+        "publicPath": "/assets/spectra/مثلث.jpg",
+        "purpose": "spectra-shape-card",
+        "status": "available",
+        "notes": null
+      },
+      {
+        "id": "spectra:مخروط",
+        "section": "spectra",
+        "fileName": "مخروط.jpg",
+        "stem": "مخروط",
+        "extension": ".jpg",
+        "width": 487,
+        "height": 707,
+        "bytes": 20977,
+        "publicPath": "/assets/spectra/مخروط.jpg",
+        "purpose": "spectra-shape-card",
+        "status": "available",
+        "notes": null
+      },
+      {
+        "id": "spectra:مربع",
+        "section": "spectra",
+        "fileName": "مربع.jpg",
+        "stem": "مربع",
+        "extension": ".jpg",
+        "width": 1078,
+        "height": 1312,
+        "bytes": 45402,
+        "publicPath": "/assets/spectra/مربع.jpg",
+        "purpose": "spectra-shape-card",
+        "status": "available",
+        "notes": null
+      },
+      {
+        "id": "spectra:مستطيل",
+        "section": "spectra",
+        "fileName": "مستطيل.jpg",
+        "stem": "مستطيل",
+        "extension": ".jpg",
+        "width": 1080,
+        "height": 1335,
+        "bytes": 61095,
+        "publicPath": "/assets/spectra/مستطيل.jpg",
+        "purpose": "spectra-shape-card",
+        "status": "available",
+        "notes": null
+      },
+      {
+        "id": "spectra:مكعب",
+        "section": "spectra",
+        "fileName": "مكعب.jpg",
+        "stem": "مكعب",
+        "extension": ".jpg",
+        "width": 1080,
+        "height": 1287,
+        "bytes": 101920,
+        "publicPath": "/assets/spectra/مكعب.jpg",
+        "purpose": "spectra-shape-card",
+        "status": "available",
+        "notes": null
+      }
+    ],
+    "compassCards": [
+      {
+        "id": "curiosity",
+        "title": "الفضول",
+        "assetId": "compass:الفضول",
+        "asset": {
+          "id": "compass:الفضول",
+          "section": "compass",
+          "fileName": "الفضول.jpg",
+          "stem": "الفضول",
+          "extension": ".jpg",
+          "width": 905,
+          "height": 1280,
+          "bytes": 70449,
+          "publicPath": "/assets/compass/الفضول.jpg",
+          "purpose": "compass-card",
+          "status": "available",
+          "notes": null
+        }
+      },
+      {
+        "id": "stillness",
+        "title": "السكينة",
+        "assetId": "compass:السكينة",
+        "asset": {
+          "id": "compass:السكينة",
+          "section": "compass",
+          "fileName": "السكينة.jpg",
+          "stem": "السكينة",
+          "extension": ".jpg",
+          "width": 905,
+          "height": 1280,
+          "bytes": 70816,
+          "publicPath": "/assets/compass/السكينة.jpg",
+          "purpose": "compass-card",
+          "status": "available",
+          "notes": null
+        }
+      },
+      {
+        "id": "care",
+        "title": "الرعاية",
+        "assetId": "compass:الرعاية",
+        "asset": {
+          "id": "compass:الرعاية",
+          "section": "compass",
+          "fileName": "الرعاية.jpg",
+          "stem": "الرعاية",
+          "extension": ".jpg",
+          "width": 905,
+          "height": 1280,
+          "bytes": 70445,
+          "publicPath": "/assets/compass/الرعاية.jpg",
+          "purpose": "compass-card",
+          "status": "available",
+          "notes": null
+        }
+      },
+      {
+        "id": "choice",
+        "title": "الاختيار",
+        "assetId": "compass:الاختيار",
+        "asset": {
+          "id": "compass:الاختيار",
+          "section": "compass",
+          "fileName": "الاختيار.jpg",
+          "stem": "الاختيار",
+          "extension": ".jpg",
+          "width": 905,
+          "height": 1280,
+          "bytes": 70816,
+          "publicPath": "/assets/compass/الاختيار.jpg",
+          "purpose": "compass-card",
+          "status": "available",
+          "notes": null
+        }
+      },
+      {
+        "id": "panic",
+        "title": "الذعر",
+        "assetId": "compass:الذعر",
+        "asset": {
+          "id": "compass:الذعر",
+          "section": "compass",
+          "fileName": "الذعر.jpg",
+          "stem": "الذعر",
+          "extension": ".jpg",
+          "width": 905,
+          "height": 1280,
+          "bytes": 68928,
+          "publicPath": "/assets/compass/الذعر.jpg",
+          "purpose": "compass-card",
+          "status": "available",
+          "notes": null
+        }
+      }
+    ],
+    "compassLaunchAsset": {
+      "id": "compass:الانطلاق",
+      "section": "compass",
+      "fileName": "الانطلاق.jpg",
+      "stem": "الانطلاق",
+      "extension": ".jpg",
+      "width": 905,
+      "height": 1280,
+      "bytes": 76843,
+      "publicPath": "/assets/compass/الانطلاق.jpg",
+      "purpose": "compass-launch-cover",
+      "status": "available",
+      "notes": null
+    },
+    "fingerprintNames": [
+      "الأذن",
+      "الوجه",
+      "الحرارية",
+      "الكهربائية",
+      "الاسم",
+      "التجاعيد",
+      "الساعد",
+      "المودرا",
+      "الأكل",
+      "الأسنان",
+      "الرجل",
+      "الصوت",
+      "الأظافر",
+      "الدهون المخزنة"
+    ]
+  }
+}
