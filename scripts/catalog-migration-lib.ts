@@ -53,8 +53,13 @@ export function reconcile(existing: Record<string, unknown>[] | null, migratedIm
   for (const offer of offers) {
     if (offer.image.kind === "local" && migratedImages[offer.image.assetId]) offer.image = { ...migratedImages[offer.image.assetId], alt: offer.image.alt };
     const exact = existing.find((r) => r.id === offer.id);
-    const matches = existing.filter((r) => r.id !== offer.id && (r.slug === offer.id || (typeof r.title === "string" && normalizeArabic(r.title) === normalizeArabic(offer.title))));
-    if (matches.length) { conflicts.push({ id: offer.id, matches: matches.map((r) => String(r.id)), reasons: ["Potential title/slug match; never auto-merge"] }); continue; }
+    const matches = existing.filter((r) => r.id !== offer.id && (
+      r.slug === offer.slug ||
+      r.slug === offer.id ||
+      (typeof r.source === "string" && r.source === offer.source && (r.id === offer.slug || r.slug === offer.slug || (typeof r.title === "string" && normalizeArabic(r.title) === normalizeArabic(offer.title)))) ||
+      (typeof r.title === "string" && normalizeArabic(r.title) === normalizeArabic(offer.title))
+    ));
+    if (matches.length) { conflicts.push({ id: offer.id, matches: matches.map((r) => String(r.id)), reasons: ["Potential source identity, title or slug match; never auto-merge"] }); continue; }
     if (!exact) { create.push(offer.id); continue; }
     const fields = Object.keys(offer).filter((key) => key !== "status" && key !== "displayOrder");
     const changed = fields.filter((key) => !isDeepStrictEqual(exact[key], offer[key as keyof typeof offer]));

@@ -1,17 +1,30 @@
 import { z } from "zod";
 
 const availability = z.enum(["available", "unavailable", "completed", "unknown"]);
-const price = z.object({
+const priceFields = z.object({
   amountUsd: z.number().min(0).nullable(),
   status: z.enum(["known", "unknown", "free"]),
-}).superRefine((value, ctx) => {
+  displayWhenUnknown: z.literal("00").optional(),
+  clarification: z.string().trim().max(160).optional(),
+});
+const price = priceFields.superRefine((value, ctx) => {
   if (value.status === "unknown" && value.amountUsd !== null) ctx.addIssue({ code: "custom", message: "السعر المجهول يجب أن يكون null" });
   if (value.status === "free" && value.amountUsd !== 0) ctx.addIssue({ code: "custom", message: "السعر المجاني يجب أن يكون 0" });
   if (value.status === "known" && value.amountUsd === null) ctx.addIssue({ code: "custom", message: "السعر المدفوع مطلوب" });
+  if (value.status !== "unknown" && (value.displayWhenUnknown || value.clarification)) ctx.addIssue({ code: "custom", message: "توضيح السعر المجهول يستخدم فقط مع السعر غير المحدد" });
+});
+const offerPrice = priceFields.extend({ status: z.enum(["known", "unknown", "free", "variant"]) }).superRefine((value, ctx) => {
+  if (value.status === "unknown" && value.amountUsd !== null) ctx.addIssue({ code: "custom", message: "السعر المجهول يجب أن يكون null" });
+  if (value.status === "free" && value.amountUsd !== 0) ctx.addIssue({ code: "custom", message: "السعر المجاني يجب أن يكون 0" });
+  if (value.status === "known" && value.amountUsd === null) ctx.addIssue({ code: "custom", message: "السعر المدفوع مطلوب" });
+  if (value.status === "variant" && value.amountUsd !== null) ctx.addIssue({ code: "custom", message: "السعر المركب يجب أن يكون null" });
+  if (value.status !== "unknown" && (value.displayWhenUnknown || value.clarification)) ctx.addIssue({ code: "custom", message: "توضيح السعر المجهول يستخدم فقط مع السعر غير المحدد" });
 });
 
 export const adminOfferSchema = z.object({
   id: z.string().regex(/^[a-z0-9][a-z0-9-]{1,79}$/),
+  slug: z.string().regex(/^[a-z0-9][a-z0-9-]{1,79}$/).optional(),
+  source: z.string().trim().max(300).optional(),
   title: z.string().trim().min(1, "اسم العرض مطلوب.").max(160, "اسم العرض طويل جدًا."),
   category: z.enum(["tests", "coaching", "programs", "courses", "sessions", "compass"]),
   description: z.string().max(5000).default(""),
@@ -23,6 +36,8 @@ export const adminOfferSchema = z.object({
   ]),
   badge: z.string().trim().max(20, "شارة البطاقة لا تتجاوز 20 حرفًا.").optional(),
   catalogDetails: z.object({ format: z.enum(["test", "course", "coaching", "program", "session", "consultation", "package"]).optional(), durationKind: z.enum(["program", "training"]).optional(), priceBasis: z.string().max(160).optional(), availableThroughoutYear: z.boolean().optional() }).optional(),
+  price: offerPrice.optional(),
+  availability: availability.optional(),
   delivery: z.enum(["individual", "group", "both", "general"]).optional(),
   variants: z.array(z.object({ id: z.string().min(1).max(80), title: z.string().trim().min(1, "اسم الخيار مطلوب.").max(160), price, availability, note: z.string().max(300).optional() })).min(1, "أضيفي خيار سعر واحدًا على الأقل.").max(30),
   duration: z.string().max(160).refine(validDuration, "المدة يجب أن تكون موجبة.").default(""),

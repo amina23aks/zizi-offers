@@ -4,13 +4,26 @@ service cloud.firestore {
     function isAdmin() {
       return request.auth != null && request.auth.token.admin == true;
     }
-    function validPrice(price) {
+    function validVariantPrice(price) {
       return price is map
-        && price.keys().hasOnly(['amountUsd', 'status'])
+        && price.keys().hasOnly(['amountUsd', 'status', 'displayWhenUnknown', 'clarification'])
         && price.status in ['known', 'unknown', 'free']
         && ((price.status == 'unknown' && price.amountUsd == null)
           || (price.status == 'free' && price.amountUsd == 0)
-          || (price.status == 'known' && price.amountUsd is number && price.amountUsd >= 0));
+          || (price.status == 'known' && price.amountUsd is number && price.amountUsd >= 0))
+        && (!('displayWhenUnknown' in price) || (price.status == 'unknown' && price.displayWhenUnknown == '00'))
+        && (!('clarification' in price) || (price.status == 'unknown' && price.clarification is string && price.clarification.size() <= 160));
+    }
+    function validOfferPrice(price) {
+      return price is map
+        && price.keys().hasOnly(['amountUsd', 'status', 'displayWhenUnknown', 'clarification'])
+        && price.status in ['known', 'unknown', 'free', 'variant']
+        && ((price.status == 'unknown' && price.amountUsd == null)
+          || (price.status == 'variant' && price.amountUsd == null)
+          || (price.status == 'free' && price.amountUsd == 0)
+          || (price.status == 'known' && price.amountUsd is number && price.amountUsd >= 0))
+        && (!('displayWhenUnknown' in price) || (price.status == 'unknown' && price.displayWhenUnknown == '00'))
+        && (!('clarification' in price) || (price.status == 'unknown' && price.clarification is string && price.clarification.size() <= 160));
     }
     function validVariant(variant) {
       return variant is map
@@ -18,7 +31,7 @@ service cloud.firestore {
         && variant.id is string && variant.id.size() > 0 && variant.id.size() <= 80
         && variant.title is string && variant.title.size() > 0 && variant.title.size() <= 160
         && (!('note' in variant) || (variant.note is string && variant.note.size() <= 300))
-        && validPrice(variant.price)
+        && validVariantPrice(variant.price)
         && variant.availability in ['available', 'unavailable', 'completed', 'unknown'];
     }
     function validImage(image) {
@@ -33,11 +46,13 @@ service cloud.firestore {
     }
     function validOffer(data, id) {
       return data.keys().hasOnly([
-          'id', 'title', 'category', 'description', 'topics', 'image', 'variants',
+          'id', 'slug', 'source', 'title', 'category', 'description', 'topics', 'image', 'variants',
           'duration', 'sessionDuration', 'capacity', 'displayOrder', 'status', 'delivery',
-          'createdAt', 'updatedAt', 'badge', 'catalogDetails', 'firstPublishedAt', 'legacyImported'
+          'createdAt', 'updatedAt', 'badge', 'catalogDetails', 'price', 'availability', 'firstPublishedAt', 'legacyImported'
         ])
         && data.id == id && data.id is string && data.id.size() > 0 && data.id.size() <= 80
+        && (!('slug' in data) || (data.slug is string && data.slug.size() > 0 && data.slug.size() <= 80))
+        && (!('source' in data) || (data.source is string && data.source.size() <= 300))
         && data.title is string && data.title.size() > 0 && data.title.size() <= 160
         && data.category in ['tests', 'coaching', 'programs', 'courses', 'sessions', 'compass']
         && data.description is string && data.description.size() <= 5000
@@ -46,6 +61,8 @@ service cloud.firestore {
         && (!('badge' in data) || (data.badge is string && data.badge.size() <= 20))
         && (!('firstPublishedAt' in data) ? (request.method == "create" || !('firstPublishedAt' in resource.data)) : (data.firstPublishedAt is timestamp && (request.method == "create" || !('firstPublishedAt' in resource.data) ? data.firstPublishedAt == request.time : data.firstPublishedAt == resource.data.firstPublishedAt)))
         && validImage(data.image)
+        && (!('price' in data) || validOfferPrice(data.price))
+        && (!('availability' in data) || data.availability in ['available', 'unavailable', 'completed', 'unknown'])
         && (!('delivery' in data) || data.delivery in ['individual', 'group', 'both', 'general'])
         && data.variants is list && data.variants.size() >= 1 && data.variants.size() <= 2
         && (data.variants.size() <= 0 || validVariant(data.variants[0]))

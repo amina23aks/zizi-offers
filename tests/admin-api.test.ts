@@ -32,13 +32,13 @@ describe("admin offer API", () => {
     expect(offers).toHaveLength(2); expect(offers[0]).toMatchObject({ id: "legacy-offer", displayOrder: 0 });
   });
   it("creates, reloads and updates a draft retaining all package variants and extra persisted metadata", async () => {
-    const data = { ...blankOffer(3), title: "عرض", delivery: "general", variants: [{ ...newVariant("general"), price: { status: "free", amountUsd: 0 } }, { ...newVariant("general"), id: "two-months", title: "شهران", price: { status: "known", amountUsd: 500 } }] };
+    const data = { ...blankOffer(3), title: "عرض", slug: "reviewed-offer", source: "approved source", availability: "available" as const, price: { status: "variant" as const, amountUsd: null }, delivery: "general", variants: [{ ...newVariant("general"), price: { status: "free" as const, amountUsd: 0 } }, { ...newVariant("general"), id: "two-months", title: "شهران", price: { status: "known" as const, amountUsd: 500 } }] };
     expect((await POST(request("admin", data))).status).toBe(201);
     expect((await GET(request("admin"))).status).toBe(200);
     expect((await (await GET(request("admin"))).json()).offers[0].variants).toEqual(data.variants);
     store.set(data.id, { ...store.get(data.id), legacyMetadata: "retain me" });
     expect((await PUT(request("admin", { ...data, title: "تعديل" }), { params: Promise.resolve({ id: data.id }) })).status).toBe(200);
-    expect(store.get(data.id)).toMatchObject({ title: "تعديل", status: "draft", legacyMetadata: "retain me", variants: data.variants });
+    expect(store.get(data.id)).toMatchObject({ title: "تعديل", status: "draft", legacyMetadata: "retain me", slug: "reviewed-offer", source: "approved source", availability: "available", price: { status: "variant", amountUsd: null }, variants: data.variants });
   });
   it("rejects duplicate creation, invalid price and ID changes", async () => {
     const data = { ...blankOffer(0), title: "عرض" };
