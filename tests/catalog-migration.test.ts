@@ -8,6 +8,7 @@ describe("catalog migration safety", () => {
     const result = reconcile([{ ...offer, id: "dashboard-created" }]);
     expect(result.create).not.toContain(offer.id);
     expect(result.reconcile?.[0].matches).toEqual(["dashboard-created"]);
+    expect(reconcile([{ ...offer, id: "source-created", title: "عنوان مختلف", slug: offer.slug, source: offer.source }]).reconcile?.[0].matches).toEqual(["source-created"]);
   });
   it("retains existing edits, drafts and ordering", () => {
     const offer = legacyInventory()[0];
@@ -20,6 +21,8 @@ describe("catalog migration safety", () => {
     expect(inventory).toHaveLength(48);
     expect(inventory.find((o) => o.record.id === "business-coaching")?.record.variants.map((v) => v.price.amountUsd)).toEqual([1000, 2000, 100, 200]);
     expect(inventory.find((o) => o.record.id === "work-field-entry")?.approvedSource.price.amountUsd).toBeNull();
+    expect(inventory.find((o) => o.record.id === "work-field-entry")?.record.variants[0].price.clarification).toBe("السعر غير محدد بعد");
+    expect(inventory.find((o) => o.record.id === "triple-test")?.record).toMatchObject({ availability: "available", price: { status: "variant" }, source: "docs/zizi-website-reference.md" });
     expect(inventory.filter((o) => o.record.variants.some((v) => v.price.status === "free"))).toHaveLength(3);
   });
   it("resolves cache-busted URLs to originals and hashes every registered file", async () => {

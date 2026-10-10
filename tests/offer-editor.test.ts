@@ -41,6 +41,24 @@ describe("offer editor persistence and public preview", () => {
     const preview = editorPreview(record);
     expect(preview.variants).toEqual([]); expect(preview.availabilityLabel).toBe("متاح"); expect(preview.priceClarification).toBe("السعر غير محدد");
   });
+  it("preserves offer-level availability, combined price metadata, slug, source and custom unknown wording", () => {
+    const record = {
+      ...offer(),
+      title: "مركب",
+      slug: "custom-slug",
+      source: "reviewed source",
+      availability: "available" as const,
+      price: { status: "variant" as const, amountUsd: null },
+      variants: [{ ...newVariant("individual"), price: { status: "unknown" as const, amountUsd: null, displayWhenUnknown: "00" as const, clarification: "السعر غير محدد بعد" } }],
+    };
+    const saved = adminOfferSchema.parse(record);
+    const preview = editorPreview(saved);
+    expect(saved).toMatchObject({ slug: "custom-slug", source: "reviewed source", availability: "available", price: { status: "variant" } });
+    expect(saved.variants[0].price.clarification).toBe("السعر غير محدد بعد");
+    expect(preview.slug).toBe("custom-slug");
+    expect(preview.availabilityLabel).toBe("متاح");
+    expect(preview.price.status).toBe("variant");
+  });
   it("distinguishes free, unknown and valid specified prices", () => {
     for (const price of [{ status: "free" as const, amountUsd: 0 }, { status: "unknown" as const, amountUsd: null }, { status: "known" as const, amountUsd: 12.5 }]) {
       expect(adminOfferSchema.safeParse({ ...offer(), title: "عرض", variants: [{ ...newVariant("individual"), price }] }).success).toBe(true);
