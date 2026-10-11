@@ -56,8 +56,108 @@ export const adminOfferSchema = z.object({
 });
 
 export type AdminOffer = z.infer<typeof adminOfferSchema>;
+export type AdminOfferDiagnostic = {
+  id: string;
+  fieldPath: string;
+  expected: string;
+  actual: string;
+  message: string;
+};
+
+export function parseAdminOfferRecord(record: Record<string, unknown>, fallback: { id: string; displayOrder?: number }) {
+  const candidate = normalizeLegacyOffer({ ...record, id: fallback.id, displayOrder: record.displayOrder ?? fallback.displayOrder ?? 0 });
+  const parsed = adminOfferSchema.safeParse(candidate.data);
+  if (parsed.success) return { offer: parsed.data, diagnostics: candidate.diagnostics };
+  return { offer: null, diagnostics: parsed.error.issues.map((issue) => diagnostic(fallback.id, issue, candidate.data)) };
+}
 
 function validDuration(value: string) {
   const match = /^(-?\d+(?:\.\d+)?) (ساعة|يوم|أسبوع|شهر)$/.exec(value);
   return !match || Number(match[1]) > 0;
+}
+
+function normalizeLegacyOffer(input: Record<string, unknown>) {
+  const data = { ...input };
+  const diagnostics: AdminOfferDiagnostic[] = [];
+  const title = typeof data.title === "string" ? data.title : "";
+  if (data.image === undefined || data.image === null) data.image = { kind: "none", alt: title };
+  if (data.topics === undefined || data.topics === null) data.topics = [];
+  for (const key of ["description", "duration", "sessionDuration", "capacity"] as const) {
+    if (data[key] === undefined || data[key] === null) data[key] = "";
+  }
+  for (const key of ["slug", "source", "badge", "catalogDetails", "price", "availability", "delivery", "legacyImported"] as const) {
+    if (data[key] === null || data[key] === "") delete data[key];
+  }
+  if (!Array.isArray(data.variants) || data.variants.length === 0) {
+    data.variants = [{
+      id: "general",
+      title: "السعر",
+      price: normalizePrice(data.price, ["price"], diagnostics, String(data.id ?? "")),
+      availability: typeof data.availability === "string" ? data.availability : "unknown",
+    }];
+  } else {
+    data.variants = data.variants.map((variant, index) => {
+      if (!variant || typeof variant !== "object" || Array.isArray(variant)) return variant;
+      const value = { ...variant } as Record<string, unknown>;
+      value.price = normalizePrice(value.price, ["variants", index, "price"], diagnostics, String(data.id ?? ""), data.price);
+      if (value.availability === undefined || value.availability === null || value.availability === "") value.availability = typeof data.availability === "string" ? data.availability : "unknown";
+      if (value.title === undefined || value.title === null || value.title === "") value.title = value.id === "general" ? "السعر" : String(value.id ?? "الخيار");
+      return value;
+    });
+  }
+  return { data, diagnostics };
+}
+
+function normalizePrice(value: unknown, path: (string | number)[], diagnostics: AdminOfferDiagnostic[], id: string, offerPrice?: unknown) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return { status: "unknown", amountUsd: null, displayWhenUnknown: "00", clarification: "السعر غير محدد" };
+  const priceValue = { ...value } as Record<string, unknown>;
+  if (priceValue.status === "published" && typeof priceValue.amountUsd === "number") {
+    priceValue.status = "known";
+    diagnostics.push({
+      id,
+      fieldPath: [...path, "status"].join("."),
+      expected: 'price status "known" | "unknown" | "free"',
+      actual: 'string "published"',
+      message: "تمت قراءة السعر كسعر محدد لأن المبلغ محفوظ، لكن السجل يحتاج إصلاحًا ضيقًا ليعود حقله إلى known.",
+    });
+  }
+  if (priceValue.status === undefined && offerPrice && typeof offerPrice === "object" && !Array.isArray(offerPrice)) {
+    const fallback = offerPrice as Record<string, unknown>;
+    if (["known", "unknown", "free"].includes(String(fallback.status))) priceValue.status = fallback.status;
+  }
+  if (priceValue.status === "unknown") {
+    if (priceValue.amountUsd === undefined) priceValue.amountUsd = null;
+    if (priceValue.displayWhenUnknown === undefined) priceValue.displayWhenUnknown = "00";
+    if (priceValue.clarification === undefined) priceValue.clarification = "السعر غير محدد";
+  }
+  return priceValue;
+}
+
+function diagnostic(id: string, issue: z.core.$ZodIssue, candidate: Record<string, unknown>): AdminOfferDiagnostic {
+  const value = issue.path.reduce<unknown>((current, key) => (current && typeof current === "object" ? (current as Record<string, unknown>)[String(key)] : undefined), candidate);
+  return {
+    id,
+    fieldPath: issue.path.join(".") || "(root)",
+    expected: expectedFor(issue.path),
+    actual: describe(value),
+    message: issue.message,
+  };
+}
+
+function expectedFor(path: PropertyKey[]) {
+  const joined = path.join(".");
+  if (joined.endsWith("price.status")) return 'price status "known" | "unknown" | "free"';
+  if (joined === "status") return 'publication status "draft" | "published"';
+  if (joined.endsWith("availability")) return 'availability "available" | "unavailable" | "completed" | "unknown"';
+  if (joined === "image") return "image object with kind none, local, or cloudinary";
+  if (joined === "variants") return "non-empty array of pricing variants";
+  return "current admin offer schema";
+}
+
+function describe(value: unknown): string {
+  if (value === undefined) return "undefined";
+  if (value === null) return "null";
+  if (Array.isArray(value)) return `array(length=${value.length})`;
+  if (typeof value === "object") return `object(keys=${Object.keys(value).slice(0, 8).join(",")})`;
+  return `${typeof value} ${JSON.stringify(value)}`;
 }

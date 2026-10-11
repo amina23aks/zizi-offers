@@ -33,11 +33,30 @@ describe("admin offer API", () => {
     expect(store.get(data.id)).toMatchObject({ status: "published" });
   });
   it("lists drafts and old documents without displayOrder using document IDs", async () => {
-    store.set("legacy-offer", { title: "قديم", status: "draft" });
-    store.set("new-offer", { title: "جديد", status: "published", displayOrder: 2 });
+    const legacy = { ...blankOffer(0), id: "legacy-offer", title: "قديم", status: "draft" };
+    delete (legacy as Partial<typeof legacy>).displayOrder;
+    store.set("legacy-offer", legacy);
+    store.set("new-offer", { ...blankOffer(2), id: "new-offer", title: "جديد", status: "published", displayOrder: 2 });
     const response = await GET(request("admin"));
     const { offers } = await response.json();
     expect(offers).toHaveLength(2); expect(offers[0]).toMatchObject({ id: "legacy-offer", displayOrder: 0 });
+  });
+  it("loads valid offers with private diagnostics for compatible legacy price fields", async () => {
+    const data = { ...blankOffer(0), id: "codes-abcd", title: "الأكواد", status: "draft" as const, price: { status: "known" as const, amountUsd: 12 }, delivery: "general" as const, variants: [{ ...newVariant("general"), price: { status: "published", amountUsd: 12 } }] };
+    store.set(data.id, data);
+    const response = await GET(request("admin"));
+    const body = await response.json();
+    expect(body.offers).toHaveLength(1);
+    expect(body.offers[0].variants[0].price).toMatchObject({ status: "known", amountUsd: 12 });
+    expect(body.diagnostics[0]).toMatchObject({ id: "codes-abcd", fieldPath: "variants.0.price.status" });
+  });
+  it("isolates unsupported malformed records while keeping valid records readable", async () => {
+    store.set("valid-offer", { ...blankOffer(0), id: "valid-offer", title: "صالح" });
+    store.set("bad-offer", { ...blankOffer(1), id: "bad-offer", title: "سيئ", category: "unknown-section" });
+    const response = await GET(request("admin"));
+    const body = await response.json();
+    expect(body.offers.map((offer: { id: string }) => offer.id)).toEqual(["valid-offer"]);
+    expect(body.diagnostics.some((item: { id: string; fieldPath: string }) => item.id === "bad-offer" && item.fieldPath === "category")).toBe(true);
   });
   it("creates, reloads and updates a draft retaining all package variants and extra persisted metadata", async () => {
     const data = { ...blankOffer(3), title: "عرض", slug: "reviewed-offer", source: "approved source", availability: "available" as const, price: { status: "variant" as const, amountUsd: null }, delivery: "general", variants: [{ ...newVariant("general"), price: { status: "free" as const, amountUsd: 0 } }, { ...newVariant("general"), id: "two-months", title: "شهران", price: { status: "known" as const, amountUsd: 500 } }] };

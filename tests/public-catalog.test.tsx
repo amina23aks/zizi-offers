@@ -73,6 +73,15 @@ describe("one published catalogue with reviewed migration", () => {
     expect((await POST(request(offer))).status).toBe(201);
     expect(renderToStaticMarkup(await Home())).toContain("عنصر بوصلة جديد");
   });
+  it("normalizes compatible legacy records and skips unsupported public records without resurrecting drafts", async () => {
+    state.records.clear();
+    state.records.set("compatible-offer", { ...blankOffer(1), id: "compatible-offer", title: "متوافق", status: "published", price: { status: "known", amountUsd: 12 }, delivery: "general", variants: [{ ...newVariant("general"), price: { status: "published", amountUsd: 12 } }] });
+    state.records.set("unsupported-offer", { ...blankOffer(2), id: "unsupported-offer", title: "غير صالح", status: "published", category: "bad-section" });
+    state.records.set("draft-offer", { ...blankOffer(3), id: "draft-offer", title: "مسودة", status: "draft" });
+    const offers = await getPublicOffers();
+    expect(offers.map((offer) => offer.id)).toEqual(["compatible-offer"]);
+    expect(offers[0].priceLabel).toBe("12$");
+  });
   it("invalidates old and new public paths when a saved offer moves category or detail slug", () => {
     const oldOffer = { ...blankOffer(0), id: "emotional-communication", slug: "old-slug", category: "coaching" as const };
     const newOffer = { ...oldOffer, slug: "new-slug", category: "courses" as const };

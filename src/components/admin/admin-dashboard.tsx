@@ -11,6 +11,7 @@ import { authorizedFetch } from "@/lib/admin-fetch";
 import { OfferForm } from "./offer-form";
 
 type AuthState = "checking" | "authorized" | "signed-out" | "denied" | "error";
+type Diagnostic = { id: string; fieldPath: string; expected: string; actual: string; message: string };
 
 export function AdminDashboard() {
   const router = useRouter();
@@ -22,6 +23,7 @@ export function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [listError, setListError] = useState("");
   const [saving, setSaving] = useState(false);
+  const [diagnostics, setDiagnostics] = useState<Diagnostic[]>([]);
   const saveLock = useRef(false);
   const dirty = useRef(false);
   const [message, setMessage] = useState("");
@@ -34,6 +36,7 @@ export function AdminDashboard() {
     setSelected(null);
     setSearch("");
     setFilter("");
+    setDiagnostics([]);
     dirty.current = false;
   }, []);
 
@@ -45,10 +48,10 @@ export function AdminDashboard() {
       if (response.status === 403) { clearAdminData(); setAuthState("denied"); return; }
       const body = await response.json();
       if (!response.ok) throw new Error(body.error || "تعذر تحميل العروض.");
-      // Refuse a partial list: counters must describe the whole collection.
       const parsed = adminOfferSchema.array().safeParse(body.offers);
       if (!parsed.success) throw new Error("تعذر قراءة بعض العروض القديمة. راجعي بياناتها قبل المتابعة؛ لم تُحذف أي بيانات.");
       setOffers(parsed.data);
+      setDiagnostics(Array.isArray(body.diagnostics) ? body.diagnostics : []);
     } catch (caught) { setOffers([]); setSelected(null); setListError(caught instanceof Error ? caught.message : "تعذر تحميل العروض."); }
     finally { setLoading(false); }
   }, [clearAdminData, router]);
@@ -146,6 +149,7 @@ export function AdminDashboard() {
   return <div className="admin-dashboard">
     <header className="admin-topbar"><div><p className="admin-kicker">لوحة إدارة عروض زيزي</p><h1>العروض</h1></div><nav aria-label="تنقل الإدارة"><a href="#offers-list">العروض</a><Link href="/">عرض الموقع</Link><button className="admin-secondary" disabled={saving} onClick={async () => { if (!canLeave()) return; clearAdminData(); await signOut(getFirebaseAuth()); router.replace("/admin/login"); }}>تسجيل الخروج</button></nav></header>
     {listError && <div role="alert" className="admin-error"><p>{listError}</p>{user && <button type="button" className="admin-secondary" onClick={() => void load(user)}>إعادة المحاولة</button>}</div>}
+    {diagnostics.length > 0 && <div role="status" className="admin-warning"><p>تمت قراءة العروض مع ملاحظات توافق تحتاج مراجعة:</p><ul>{diagnostics.map((item) => <li key={`${item.id}-${item.fieldPath}`}>{item.id}: {item.fieldPath} — المتوقع {item.expected}، المحفوظ {item.actual}. {item.message}</li>)}</ul></div>}
     {message && <p role="status" className="admin-success">{message}</p>}
     <section className="admin-stats" aria-label="ملخص المحتوى">{[[offers.length, "إجمالي العروض"], [published, "منشور"], [offers.length - published, "مسودة"]].map(([count, label]) => <article key={label}><strong>{loading || listError ? "—" : count}</strong><span>{label}</span></article>)}</section>
     <div className="admin-columns">
