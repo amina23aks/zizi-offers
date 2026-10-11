@@ -39,7 +39,7 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
         : parsed.data;
       expectedStatus = nextOffer.status as AdminOffer["status"];
       const firstPublication = previousOffer.status !== "published" && nextOffer.status === "published" && !previous.firstPublishedAt && !previous.legacyImported;
-      tx.set(ref, { ...nextOffer, updatedAt: FieldValue.serverTimestamp(), ...(firstPublication ? { firstPublishedAt: FieldValue.serverTimestamp() } : {}) }, { merge: true });
+      tx.update(ref, { ...nextOffer, updatedAt: FieldValue.serverTimestamp(), ...(firstPublication ? { firstPublishedAt: FieldValue.serverTimestamp() } : {}) });
     });
     const saved = await readSavedOffer(id);
     if (expectedStatus && saved.status !== expectedStatus) throw new Error("Saved offer publication state did not match the submitted form.");
