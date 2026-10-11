@@ -4,7 +4,7 @@ import { connection } from "next/server";
 import { offers as localOffers, type Offer } from "@/data/offers";
 import { toDisplayOffer } from "@/data/catalog";
 import { getFirebaseAdmin } from "./firebase/admin";
-import { adminOfferSchema } from "./admin-offer";
+import { parseAdminOfferRecord } from "./admin-offer";
 import { publicOffer, sortPublished } from "./public-offer-model";
 import { legacyInventory, legacyInventoryHash } from "./legacy-import";
 
@@ -19,6 +19,11 @@ export const getPublicOffers = cache(async () => {
   const snapshot = await db.collection("offers").where("status", "==", "published").get();
   if (snapshot.empty && activation.allowEmptyPublishedCatalog !== true) throw new Error("Public Firestore catalogue is unexpectedly empty after activation.");
   const legacyOrder = new Map(legacyInventory().map((o) => [o.id, o.displayOrder]));
-  const records = snapshot.docs.map((doc) => ({ ...adminOfferSchema.parse({ ...doc.data(), id: doc.id, displayOrder: doc.data().displayOrder ?? legacyOrder.get(doc.id) ?? 100000 }), firstPublishedAt: doc.data().firstPublishedAt }));
+  const records = snapshot.docs.flatMap((doc) => {
+    const displayOrder = (doc.data().displayOrder as number | undefined) ?? legacyOrder.get(doc.id) ?? 100000;
+    const parsed = parseAdminOfferRecord(doc.data(), { id: doc.id, displayOrder });
+    return parsed.offer ? [{ ...parsed.offer, firstPublishedAt: doc.data().firstPublishedAt }] : [];
+  });
+  if (!records.length && activation.allowEmptyPublishedCatalog !== true) throw new Error("Public Firestore catalogue has no readable published offers.");
   return sortPublished(records).map(publicOffer);
 });

@@ -1,7 +1,7 @@
 import { invalidatePublicOffers } from "@/lib/invalidate-public-offers";
 import { FieldValue } from "firebase-admin/firestore";
 import { requireAdmin, safeAdminError } from "@/lib/admin-auth";
-import { adminOfferSchema, type AdminOffer } from "@/lib/admin-offer";
+import { adminOfferSchema, parseAdminOfferRecord, type AdminOffer } from "@/lib/admin-offer";
 import { getFirebaseAdmin } from "@/lib/firebase/admin";
 
 export const runtime = "nodejs";
@@ -9,7 +9,9 @@ export const runtime = "nodejs";
 async function readSavedOffer(id: string) {
   const snapshot = await getFirebaseAdmin().db.collection("offers").doc(id).get();
   if (!snapshot.exists) throw new Error("Saved offer was not found after write.");
-  return adminOfferSchema.parse({ ...snapshot.data(), id, displayOrder: snapshot.data()?.displayOrder ?? 0 });
+  const parsed = parseAdminOfferRecord(snapshot.data() ?? {}, { id, displayOrder: snapshot.data()?.displayOrder as number | undefined });
+  if (!parsed.offer) throw new Error("Saved offer could not be read after write.");
+  return parsed.offer;
 }
 
 export async function PUT(request: Request, context: { params: Promise<{ id: string }> }) {
@@ -29,7 +31,9 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
       const current = await tx.get(ref);
       if (!current.exists) throw new Error("Offer missing");
       const previous = current.data()!;
-      previousOffer = adminOfferSchema.parse({ ...previous, id, displayOrder: previous.displayOrder ?? parsed.data.displayOrder });
+      const previousParsed = parseAdminOfferRecord(previous, { id, displayOrder: (previous.displayOrder as number | undefined) ?? parsed.data.displayOrder });
+      if (!previousParsed.offer) throw new Error("Existing offer has unsupported saved data.");
+      previousOffer = previousParsed.offer;
       const nextOffer = previousOffer.status === "published" && parsed.data.status === "draft" && !explicitUnpublish
         ? { ...parsed.data, status: "published" }
         : parsed.data;

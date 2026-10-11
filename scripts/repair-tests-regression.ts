@@ -59,10 +59,15 @@ function requireCredentials() {
 }
 
 function variantsWithGeneralPrice(record: MutableRecord, price: { amountUsd: number; status: "known" }) {
+  if (price.status !== "known") throw new Error("Test repair price must use a price status, not a publication status.");
   if (!Array.isArray(record.variants)) return record.variants;
   return record.variants.map((variant) => {
     if (!variant || typeof variant !== "object") return variant;
     const current = variant as Record<string, unknown>;
+    const currentPrice = current.price as Record<string, unknown> | undefined;
+    if (currentPrice?.status === "published" || currentPrice?.status === "draft") {
+      throw new Error(`Refusing to overwrite ${String(record.id ?? "test")} variant ${String(current.id ?? "unknown")} because price.status contains a publication status.`);
+    }
     return current.id === "general" ? { ...current, price } : current;
   });
 }

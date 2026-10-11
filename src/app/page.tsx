@@ -13,7 +13,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import { OfferCardCollection } from "@/components/offer-card-collection";
 import { ZoomableImage } from "@/components/zoomable-image";
-import { formatAvailability, getAsset, homeSections, publicCategories, ziziAbout } from "@/data/catalog";
+import { compassPricing, formatAvailability, getAsset, homeSections, publicCategories, ziziAbout } from "@/data/catalog";
 import { getPublicOffers } from "@/lib/public-offers";
 import { ziziIdentityAssetIds } from "@/data/assets";
 
@@ -106,10 +106,11 @@ export default async function Home() {
               <div>
                 <h2 id={`${section.id}-title`}>{section.title}</h2>
                 {section.intro ? <p>{section.intro}</p> : null}
-                {section.id === "compass" && !connected ? (
+                {section.id === "compass" ? (
                   <p className="section-note compass-price-note">
-                    <span>كل عنصر منفرد: <b dir="ltr">500$</b></span>
-                    <span>الباقة الكاملة: <b dir="ltr">2500$</b></span>
+                    {compassPricing.map((item) => (
+                      <span key={item.title}>{item.title}: <b dir="ltr">{item.price}</b></span>
+                    ))}
                   </p>
                 ) : null}
               </div>
@@ -121,6 +122,8 @@ export default async function Home() {
               {section.id === "tests"
                 ? section.cards.map((card) => {
                     const saved = savedOfferById.get(card.offerId);
+                    const title = saved?.title ?? card.title;
+                    const summary = saved?.summary ?? ("summary" in card ? card.summary : null);
                     const availabilityLabel = saved?.availabilityLabel ?? ("availabilityLabel" in card ? card.availabilityLabel : null);
                     const priceLabel = card.offerId === "triple-test"
                       ? ("priceLabel" in card ? card.priceLabel : null)
@@ -128,8 +131,22 @@ export default async function Home() {
                     const priceClarification = saved?.priceClarification ?? ("priceClarification" in card ? card.priceClarification : null);
                     return (
                       <Link key={card.id} href={card.href} className="home-overview-card">
-                        <strong>{card.title}</strong>
-                        {"summary" in card && card.summary ? <span>{card.summary}</span> : null}
+                        {saved?.image ? (
+                          <span className="offer-card-media-wrap home-test-media-wrap">
+                            <Image
+                              src={saved.image.src}
+                              alt={saved.image.alt}
+                              width={saved.image.width}
+                              height={saved.image.height}
+                              unoptimized={saved.image.src.startsWith("https://")}
+                              className="home-overview-image asset-image-contain"
+                              sizes="180px"
+                            />
+                            {saved.badge ? <em className="offer-promo-badge">{saved.badge}</em> : null}
+                          </span>
+                        ) : saved?.badge ? <em className="offer-promo-badge">{saved.badge}</em> : null}
+                        <strong>{title}</strong>
+                        {summary ? <span>{summary}</span> : null}
                         <div className="mini-meta">
                           {availabilityLabel ? (
                             <em className={saved ? `status-${saved.availability}` : undefined}>{availabilityLabel}</em>
@@ -140,7 +157,7 @@ export default async function Home() {
                       </Link>
                     );
                   })
-                : ((connected && section.id !== "fingerprints") || "offers" in section)
+                : ((connected && !["fingerprints", "compass"].includes(section.id)) || "offers" in section)
                 ? (
                     <OfferCardCollection
                       offers={savedOffers.filter((offer) => offer.category === section.id)}

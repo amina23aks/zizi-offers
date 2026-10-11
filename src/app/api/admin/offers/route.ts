@@ -1,7 +1,7 @@
 import { invalidatePublicOffers } from "@/lib/invalidate-public-offers";
 import { FieldValue } from "firebase-admin/firestore";
 import { requireAdmin, safeAdminError } from "@/lib/admin-auth";
-import { adminOfferSchema } from "@/lib/admin-offer";
+import { adminOfferSchema, parseAdminOfferRecord } from "@/lib/admin-offer";
 import { getFirebaseAdmin } from "@/lib/firebase/admin";
 
 export const runtime = "nodejs";
@@ -9,7 +9,9 @@ export const runtime = "nodejs";
 async function readSavedOffer(id: string) {
   const snapshot = await getFirebaseAdmin().db.collection("offers").doc(id).get();
   if (!snapshot.exists) throw new Error("Saved offer was not found after write.");
-  return adminOfferSchema.parse({ ...snapshot.data(), id, displayOrder: snapshot.data()?.displayOrder ?? 0 });
+  const parsed = parseAdminOfferRecord(snapshot.data() ?? {}, { id, displayOrder: snapshot.data()?.displayOrder as number | undefined });
+  if (!parsed.offer) throw new Error("Saved offer could not be read after write.");
+  return parsed.offer;
 }
 
 export async function GET(request: Request) {
@@ -17,9 +19,11 @@ export async function GET(request: Request) {
     await requireAdmin(request);
     // orderBy excludes older documents that do not have displayOrder.
     const snapshot = await getFirebaseAdmin().db.collection("offers").get();
-    const offers = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id, displayOrder: doc.data().displayOrder ?? 0 }));
+    const parsed = snapshot.docs.map((doc) => parseAdminOfferRecord(doc.data(), { id: doc.id, displayOrder: doc.data().displayOrder as number | undefined }));
+    const diagnostics = parsed.flatMap((item) => item.diagnostics);
+    const offers = parsed.flatMap((item) => item.offer ? [item.offer] : []);
     offers.sort((a, b) => a.displayOrder - b.displayOrder || a.id.localeCompare(b.id));
-    return Response.json({ offers });
+    return Response.json({ offers, diagnostics });
   } catch (error) { return safeAdminError(error); }
 }
 
