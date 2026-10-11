@@ -1,3 +1,4 @@
+import { verifySavedOffer } from "@/lib/verify-saved-offer";
 import { invalidatePublicOffers } from "@/lib/invalidate-public-offers";
 import { FieldValue } from "firebase-admin/firestore";
 import { requireAdmin, safeAdminError } from "@/lib/admin-auth";
@@ -24,7 +25,7 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
     if (!(await ref.get()).exists) return Response.json({ error: "العرض غير موجود." }, { status: 404 });
     const db = getFirebaseAdmin().db;
     let previousOffer: AdminOffer | null = null;
-    let expectedStatus: AdminOffer["status"] | null = null;
+    let expectedOffer: AdminOffer | null = null;
     await db.runTransaction(async (tx) => {
       const current = await tx.get(ref);
       if (!current.exists) throw new Error("Offer missing");
@@ -33,12 +34,13 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
       const nextOffer = previousOffer.status === "published" && parsed.data.status === "draft" && !explicitUnpublish
         ? { ...parsed.data, status: "published" }
         : parsed.data;
-      expectedStatus = nextOffer.status as AdminOffer["status"];
+      expectedOffer = nextOffer as AdminOffer;
       const firstPublication = previousOffer.status !== "published" && nextOffer.status === "published" && !previous.firstPublishedAt && !previous.legacyImported;
       tx.set(ref, { ...nextOffer, updatedAt: FieldValue.serverTimestamp(), ...(firstPublication ? { firstPublishedAt: FieldValue.serverTimestamp() } : {}) }, { merge: true });
     });
     const saved = await readSavedOffer(id);
-    if (expectedStatus && saved.status !== expectedStatus) throw new Error("Saved offer publication state did not match the submitted form.");
+    if (!expectedOffer) throw new Error("Offer write was not completed.");
+    verifySavedOffer(saved, expectedOffer);
     invalidatePublicOffers(previousOffer, saved);
     return Response.json({ offer: saved });
   } catch (error) { return safeAdminError(error); }

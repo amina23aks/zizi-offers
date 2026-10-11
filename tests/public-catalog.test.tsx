@@ -22,6 +22,7 @@ import { matchesDelivery, publicOffer } from "../src/lib/public-offer-model";
 import { POST } from "../src/app/api/admin/offers/route";
 import { PUT } from "../src/app/api/admin/offers/[id]/route";
 import Home from "../src/app/page";
+import TestsPage from "../src/app/tests/page";
 import { CategoryPage } from "../src/components/category-page";
 import { OfferCard } from "../src/components/offer-card";
 
@@ -67,6 +68,20 @@ describe("one published catalogue with reviewed migration", () => {
     publicRecords = await getPublicOffers(); expect(publicRecords.filter((o) => o.id === offer.id)).toHaveLength(1);
     expect(state.queries.every((q) => JSON.stringify(q) === JSON.stringify(["status", "==", "published"]))).toBe(true);
     expect(state.invalidations).toContain("/"); expect(state.invalidations).toContain("/courses"); expect(state.invalidations).toContain("/coaching");
+  });
+  it("shows codes-abcd on both public surfaces only after publication and retains it after ordinary editing", async () => {
+    const original = state.records.get("codes-abcd")!;
+    state.records.set("codes-abcd", { ...original, status: "draft" });
+    expect(renderToStaticMarkup(await TestsPage())).not.toContain('id="codes"');
+    expect(renderToStaticMarkup(await Home())).not.toContain('href="/tests#codes"');
+    const offer = { ...original, title: "اختبار الأكواد الدماغية ABCDd", description: "اختبار aaa يساعدك", status: "published" } as AdminOffer;
+    expect((await update(offer)).status).toBe(200);
+    expect(renderToStaticMarkup(await Home())).toContain('href="/tests#codes"');
+    expect(renderToStaticMarkup(await TestsPage())).toContain('id="codes"');
+    expect((await update({ ...offer, status: "draft", description: "اختبار aaa يساعدك — تعديل" })).status).toBe(200);
+    expect(state.records.get("codes-abcd")!.status).toBe("published");
+    expect(renderToStaticMarkup(await Home())).toContain('href="/tests#codes"');
+    expect(renderToStaticMarkup(await TestsPage())).toContain('id="codes"');
   });
   it("shows newly published compass records on the Firestore-mode homepage", async () => {
     const offer: AdminOffer = { ...blankOffer(1000), title: "عنصر بوصلة جديد", category: "compass", status: "published" };

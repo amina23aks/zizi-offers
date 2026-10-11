@@ -1,12 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("../src/lib/invalidate-public-offers", () => ({ invalidatePublicOffers: vi.fn() }));
+const readback = vi.hoisted(() => ({ corrupt: false }));
 const store = vi.hoisted(() => new Map<string, Record<string, unknown>>());
 vi.mock("../src/lib/firebase/admin", () => ({ getFirebaseAdmin: () => ({
   auth: { verifyIdToken: async (token: string) => { if (token === "expired") throw new Error("expired"); return { uid: token, admin: token === "admin" }; } },
   db: { runTransaction: async (fn: (tx: unknown) => Promise<unknown>) => fn({ get: (ref: { get: () => unknown }) => ref.get(), set: (ref: { set: (data: unknown) => unknown }, data: unknown) => ref.set(data) }), collection: () => ({
     get: async () => ({ docs: [...store.entries()].map(([id, data]) => ({ id, data: () => data })) }),
-    doc: (id: string) => ({ get: async () => ({ exists: store.has(id), data: () => store.get(id) }), create: async (data: Record<string, unknown>) => { store.set(id, data); }, set: async (data: Record<string, unknown>) => { store.set(id, { ...store.get(id), ...data }); } }),
+    doc: (id: string) => ({ get: async () => ({ exists: store.has(id), data: () => readback.corrupt && store.has(id) ? { ...store.get(id), title: "Unexpected stale title" } : store.get(id) }), create: async (data: Record<string, unknown>) => { store.set(id, data); }, set: async (data: Record<string, unknown>) => { store.set(id, { ...store.get(id), ...data }); } }),
   }) },
 }) }));
 import { GET, POST } from "../src/app/api/admin/offers/route";
@@ -16,7 +17,7 @@ import { GET as session } from "../src/app/api/admin/session/route";
 import { blankOffer, newVariant } from "../src/lib/offer-editor";
 
 const request = (token?: string, data?: unknown) => new Request("http://localhost/api/admin/offers", { method: data ? "POST" : "GET", headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}), ...(data ? { "Content-Type": "application/json" } : {}) }, ...(data ? { body: JSON.stringify(data) } : {}) });
-beforeEach(() => store.clear());
+beforeEach(() => { store.clear(); readback.corrupt = false; });
 describe("admin offer API", () => {
   it.each([undefined, "member", "expired"])("blocks unauthorized %s list, save, update and upload", async (token) => {
     const data = { ...blankOffer(0), title: "عرض" };
@@ -56,6 +57,25 @@ describe("admin offer API", () => {
     const explicit = new Request(`http://localhost/api/admin/offers/${data.id}?unpublish=true`, { method: "PUT", headers: { Authorization: "Bearer admin", "Content-Type": "application/json" }, body: JSON.stringify({ ...data, title: "مسودة", status: "draft" }) });
     expect((await PUT(explicit, { params: Promise.resolve({ id: data.id }) })).status).toBe(200);
     expect(store.get(data.id)).toMatchObject({ title: "مسودة", status: "draft" });
+  });
+  it("publishes the current codes fields and keeps them published after a stale ordinary save", async () => {
+    const data = { ...blankOffer(0), id: "codes-abcd", slug: "codes-abcd", category: "tests" as const,
+      title: "اختبار الأكواد الدماغية ABCDd", description: "اختبار aaa يساعدك", availability: "available" as const,
+      image: { kind: "cloudinary" as const, publicId: "zizi-offers/admin/k3lufslgt2kczczwsnhv", secureUrl: "https://res.cloudinary.com/test/image/upload/codes.jpg", width: 300, height: 300, alt: "الأكواد" } };
+    await POST(request("admin", data));
+    const context = { params: Promise.resolve({ id: data.id }) };
+    const published = await PUT(request("admin", { ...data, status: "published" }), context);
+    expect(published.status).toBe(200);
+    expect((await published.json()).offer).toEqual({ ...data, status: "published" });
+    const edited = await PUT(request("admin", { ...data, description: "اختبار aaa يساعدك — تعديل" }), context);
+    expect(edited.status).toBe(200);
+    expect((await edited.json()).offer).toEqual({ ...data, description: "اختبار aaa يساعدك — تعديل", status: "published" });
+  });
+  it("does not report success when readback has the right status but wrong fields", async () => {
+    const data = { ...blankOffer(0), title: "Current title", status: "published" as const };
+    readback.corrupt = true;
+    expect((await POST(request("admin", data))).status).toBe(500);
+    expect((await PUT(request("admin", data), { params: Promise.resolve({ id: data.id }) })).status).toBe(500);
   });
   it("rejects duplicate creation, invalid price and ID changes", async () => {
     const data = { ...blankOffer(0), title: "عرض" };

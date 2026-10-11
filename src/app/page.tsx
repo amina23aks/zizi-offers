@@ -119,7 +119,7 @@ export default async function Home() {
             </div>
             <div className="home-carousel-row" tabIndex={0} aria-label={`عروض ${section.title}`}>
               {section.id === "tests"
-                ? section.cards.map((card) => {
+                ? section.cards.filter((card) => !connected || savedOfferById.has(card.offerId)).map((card) => {
                     const saved = savedOfferById.get(card.offerId);
                     const availabilityLabel = saved?.availabilityLabel ?? ("availabilityLabel" in card ? card.availabilityLabel : null);
                     const priceLabel = card.offerId === "triple-test"

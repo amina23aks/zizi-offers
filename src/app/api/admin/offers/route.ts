@@ -1,3 +1,4 @@
+import { verifySavedOffer } from "@/lib/verify-saved-offer";
 import { invalidatePublicOffers } from "@/lib/invalidate-public-offers";
 import { FieldValue } from "firebase-admin/firestore";
 import { requireAdmin, safeAdminError } from "@/lib/admin-auth";
@@ -32,7 +33,7 @@ export async function POST(request: Request) {
     if ((await ref.get()).exists) return Response.json({ error: "معرّف العرض مستخدم بالفعل." }, { status: 409 });
     await ref.create({ ...parsed.data, createdAt: FieldValue.serverTimestamp(), updatedAt: FieldValue.serverTimestamp(), ...(parsed.data.status === "published" ? { firstPublishedAt: FieldValue.serverTimestamp() } : {}) });
     const saved = await readSavedOffer(parsed.data.id);
-    if (saved.status !== parsed.data.status) throw new Error("Saved offer publication state did not match the submitted form.");
+    verifySavedOffer(saved, parsed.data);
     invalidatePublicOffers(saved);
     return Response.json({ offer: saved }, { status: 201 });
   } catch (error) { return safeAdminError(error); }
