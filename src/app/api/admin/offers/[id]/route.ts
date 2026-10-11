@@ -6,6 +6,12 @@ import { getFirebaseAdmin } from "@/lib/firebase/admin";
 
 export const runtime = "nodejs";
 
+async function readSavedOffer(id: string) {
+  const snapshot = await getFirebaseAdmin().db.collection("offers").doc(id).get();
+  if (!snapshot.exists) throw new Error("Saved offer was not found after write.");
+  return adminOfferSchema.parse({ ...snapshot.data(), id, displayOrder: snapshot.data()?.displayOrder ?? 0 });
+}
+
 export async function PUT(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
     await requireAdmin(request);
@@ -18,19 +24,22 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
     if (!(await ref.get()).exists) return Response.json({ error: "العرض غير موجود." }, { status: 404 });
     const db = getFirebaseAdmin().db;
     let previousOffer: AdminOffer | null = null;
-    let nextOffer: AdminOffer | null = null;
+    let expectedStatus: AdminOffer["status"] | null = null;
     await db.runTransaction(async (tx) => {
       const current = await tx.get(ref);
       if (!current.exists) throw new Error("Offer missing");
       const previous = current.data()!;
       previousOffer = adminOfferSchema.parse({ ...previous, id, displayOrder: previous.displayOrder ?? parsed.data.displayOrder });
-      nextOffer = previousOffer.status === "published" && parsed.data.status === "draft" && !explicitUnpublish
+      const nextOffer = previousOffer.status === "published" && parsed.data.status === "draft" && !explicitUnpublish
         ? { ...parsed.data, status: "published" }
         : parsed.data;
+      expectedStatus = nextOffer.status as AdminOffer["status"];
       const firstPublication = previousOffer.status !== "published" && nextOffer.status === "published" && !previous.firstPublishedAt && !previous.legacyImported;
       tx.set(ref, { ...nextOffer, updatedAt: FieldValue.serverTimestamp(), ...(firstPublication ? { firstPublishedAt: FieldValue.serverTimestamp() } : {}) }, { merge: true });
     });
-    invalidatePublicOffers(previousOffer, nextOffer);
-    return Response.json({ offer: (await ref.get()).data() });
+    const saved = await readSavedOffer(id);
+    if (expectedStatus && saved.status !== expectedStatus) throw new Error("Saved offer publication state did not match the submitted form.");
+    invalidatePublicOffers(previousOffer, saved);
+    return Response.json({ offer: saved });
   } catch (error) { return safeAdminError(error); }
 }

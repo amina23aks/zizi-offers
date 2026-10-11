@@ -4282,8 +4282,16 @@ body {
 .offer-grid:has(.offer-promo-badge) {
   padding-block-start: 0.8rem;
 }
-.offer-card-media-wrap:has(.offer-promo-badge):not(:has(.offer-card-media)) {
-  min-height: 1.2rem;
+.offer-card-badged-no-media {
+  padding-block-start: calc(1rem + 0.85rem);
+}
+.offer-card-badged-no-media .offer-card-media-wrap {
+  position: static;
+  min-height: 0;
+}
+.offer-card-badged-no-media .offer-promo-badge {
+  inset-block-start: -0.55rem;
+  inset-inline-start: 0.75rem;
 }
 .dark .offer-promo-badge { box-shadow: 0 10px 24px rgb(0 0 0 / .34); }
 .admin-columns { grid-template-columns: minmax(310px, .9fr) minmax(0, 2.4fr); }

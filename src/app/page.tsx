@@ -140,7 +140,7 @@ export default async function Home() {
                       </Link>
                     );
                   })
-                : ((connected && section.id !== "fingerprints" && section.id !== "compass") || "offers" in section)
+                : ((connected && section.id !== "fingerprints") || "offers" in section)
                 ? (
                     <OfferCardCollection
                       offers={savedOffers.filter((offer) => offer.category === section.id)}

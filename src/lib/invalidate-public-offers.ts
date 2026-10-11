@@ -16,7 +16,7 @@ export function publicOfferPaths(...offers: (Pick<AdminOffer, "id" | "category" 
   for (const offer of offers) {
     if (!offer) continue;
     paths.add(categoryPaths[offer.category]);
-    if (offer.id === "emotional-communication") paths.add("/offers/emotional-communication");
+    paths.add(`/offers/${offer.id}`);
     if (offer.slug && offer.slug !== offer.id) paths.add(`/offers/${offer.slug}`);
   }
   return [...paths];

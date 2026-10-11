@@ -68,6 +68,11 @@ describe("one published catalogue with reviewed migration", () => {
     expect(state.queries.every((q) => JSON.stringify(q) === JSON.stringify(["status", "==", "published"]))).toBe(true);
     expect(state.invalidations).toContain("/"); expect(state.invalidations).toContain("/courses"); expect(state.invalidations).toContain("/coaching");
   });
+  it("shows newly published compass records on the Firestore-mode homepage", async () => {
+    const offer: AdminOffer = { ...blankOffer(1000), title: "عنصر بوصلة جديد", category: "compass", status: "published" };
+    expect((await POST(request(offer))).status).toBe(201);
+    expect(renderToStaticMarkup(await Home())).toContain("عنصر بوصلة جديد");
+  });
   it("invalidates old and new public paths when a saved offer moves category or detail slug", () => {
     const oldOffer = { ...blankOffer(0), id: "emotional-communication", slug: "old-slug", category: "coaching" as const };
     const newOffer = { ...oldOffer, slug: "new-slug", category: "courses" as const };
@@ -93,5 +98,12 @@ describe("one published catalogue with reviewed migration", () => {
     expect((await POST(request(offer))).status).toBe(201);
     const saved = (await getPublicOffers()).find((o) => o.id === offer.id)!;
     expect(saved.badge).toBe(badge || undefined);
+  });
+  it("anchors badges on image-less cards without a media placeholder row", () => {
+    const offer = publicOffer({ ...blankOffer(0), title: "بطاقة بلا صورة", status: "published", badge: "جديد" });
+    const html = renderToStaticMarkup(<OfferCard offer={offer} />);
+    expect(html).toContain("offer-card-badged-no-media");
+    expect(html).toContain("offer-promo-badge");
+    expect(html).not.toContain("offer-card-media image-view-trigger");
   });
 });

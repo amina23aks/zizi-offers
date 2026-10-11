@@ -10,9 +10,12 @@ import { getFirebaseAuth } from "@/lib/firebase/client";
 import { authorizedFetch } from "@/lib/admin-fetch";
 import { OfferForm } from "./offer-form";
 
+type AuthState = "checking" | "authorized" | "signed-out" | "denied" | "error";
+
 export function AdminDashboard() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
+  const [authState, setAuthState] = useState<AuthState>("checking");
   const [offers, setOffers] = useState<AdminOffer[]>([]);
   const [selected, setSelected] = useState<AdminOffer | null>(null);
   const [editorVersion, setEditorVersion] = useState(0);
@@ -25,29 +28,62 @@ export function AdminDashboard() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("");
 
+  const clearAdminData = useCallback(() => {
+    setUser(null);
+    setOffers([]);
+    setSelected(null);
+    setSearch("");
+    setFilter("");
+    dirty.current = false;
+  }, []);
+
   const load = useCallback(async (currentUser: User) => {
     setLoading(true); setListError("");
     try {
       const response = await authorizedFetch(currentUser, "/api/admin/offers");
-      if (response.status === 401 || response.status === 403) { await signOut(getFirebaseAuth()); router.replace("/admin/login"); return; }
+      if (response.status === 401) { clearAdminData(); await signOut(getFirebaseAuth()); setAuthState("signed-out"); router.replace("/admin/login"); return; }
+      if (response.status === 403) { clearAdminData(); setAuthState("denied"); return; }
       const body = await response.json();
       if (!response.ok) throw new Error(body.error || "تعذر تحميل العروض.");
       // Refuse a partial list: counters must describe the whole collection.
       const parsed = adminOfferSchema.array().safeParse(body.offers);
       if (!parsed.success) throw new Error("تعذر قراءة بعض العروض القديمة. راجعي بياناتها قبل المتابعة؛ لم تُحذف أي بيانات.");
       setOffers(parsed.data);
-    } catch (caught) { setListError(caught instanceof Error ? caught.message : "تعذر تحميل العروض."); }
+    } catch (caught) { setOffers([]); setSelected(null); setListError(caught instanceof Error ? caught.message : "تعذر تحميل العروض."); }
     finally { setLoading(false); }
-  }, [router]);
+  }, [clearAdminData, router]);
 
   useEffect(() => {
     try {
       return onAuthStateChanged(getFirebaseAuth(), (current) => {
-        if (!current) { router.replace("/admin/login"); return; }
-        setUser(current); void load(current);
+        setAuthState("checking");
+        setLoading(true);
+        setListError("");
+        setMessage("");
+        clearAdminData();
+        if (!current) { setAuthState("signed-out"); setLoading(false); router.replace("/admin/login"); return; }
+        void (async () => {
+          try {
+            const response = await authorizedFetch(current, "/api/admin/session");
+            if (response.status === 401) { clearAdminData(); await signOut(getFirebaseAuth()); setAuthState("signed-out"); router.replace("/admin/login"); return; }
+            if (response.status === 403) { clearAdminData(); setAuthState("denied"); setLoading(false); return; }
+            if (!response.ok) {
+              const body = await response.json().catch(() => ({}));
+              throw new Error(body.error || "تعذر التحقق من صلاحية الإدارة.");
+            }
+            setUser(current);
+            setAuthState("authorized");
+            await load(current);
+          } catch (caught) {
+            clearAdminData();
+            setAuthState("error");
+            setListError(caught instanceof Error ? caught.message : "تعذر التحقق من صلاحية الإدارة.");
+            setLoading(false);
+          }
+        })();
       });
-    } catch { queueMicrotask(() => { setListError("إعدادات Firebase غير مكتملة. يلزم ضبط إعدادات الدخول لفتح لوحة الإدارة."); setLoading(false); }); }
-  }, [load, router]);
+    } catch { queueMicrotask(() => { clearAdminData(); setAuthState("error"); setListError("إعدادات Firebase غير مكتملة. يلزم ضبط إعدادات الدخول لفتح لوحة الإدارة."); setLoading(false); }); }
+  }, [clearAdminData, load, router]);
 
   useEffect(() => {
     const editorHref = window.location.href;
@@ -94,8 +130,21 @@ export function AdminDashboard() {
     } finally { saveLock.current = false; setSaving(false); }
   }
 
+  if (authState === "checking") {
+    return <section className="admin-panel" aria-busy="true"><p role="status">جارٍ التحقق من صلاحية الإدارة…</p></section>;
+  }
+  if (authState === "denied") {
+    return <section className="admin-login-card"><p className="admin-kicker">إدارة عروض زيزي</p><h1>لا تملكين صلاحية الإدارة</h1><p>الحساب مسجل الدخول، لكن لا يحمل صلاحية الإدارة المطلوبة.</p><button className="admin-secondary" onClick={async () => { clearAdminData(); await signOut(getFirebaseAuth()); router.replace("/admin/login"); }}>تسجيل الخروج</button></section>;
+  }
+  if (authState === "error") {
+    return <section className="admin-login-card"><p className="admin-kicker">إدارة عروض زيزي</p><h1>تعذر فتح لوحة الإدارة</h1><p role="alert" className="admin-error">{listError}</p></section>;
+  }
+  if (authState !== "authorized" || !user) {
+    return <section className="admin-panel" aria-busy="true"><p role="status">جارٍ فتح صفحة الدخول…</p></section>;
+  }
+
   return <div className="admin-dashboard">
-    <header className="admin-topbar"><div><p className="admin-kicker">لوحة إدارة عروض زيزي</p><h1>العروض</h1></div><nav aria-label="تنقل الإدارة"><a href="#offers-list">العروض</a><Link href="/">عرض الموقع</Link><button className="admin-secondary" disabled={saving} onClick={async () => { if (!canLeave()) return; await signOut(getFirebaseAuth()); router.replace("/admin/login"); }}>تسجيل الخروج</button></nav></header>
+    <header className="admin-topbar"><div><p className="admin-kicker">لوحة إدارة عروض زيزي</p><h1>العروض</h1></div><nav aria-label="تنقل الإدارة"><a href="#offers-list">العروض</a><Link href="/">عرض الموقع</Link><button className="admin-secondary" disabled={saving} onClick={async () => { if (!canLeave()) return; clearAdminData(); await signOut(getFirebaseAuth()); router.replace("/admin/login"); }}>تسجيل الخروج</button></nav></header>
     {listError && <div role="alert" className="admin-error"><p>{listError}</p>{user && <button type="button" className="admin-secondary" onClick={() => void load(user)}>إعادة المحاولة</button>}</div>}
     {message && <p role="status" className="admin-success">{message}</p>}
     <section className="admin-stats" aria-label="ملخص المحتوى">{[[offers.length, "إجمالي العروض"], [published, "منشور"], [offers.length - published, "مسودة"]].map(([count, label]) => <article key={label}><strong>{loading || listError ? "—" : count}</strong><span>{label}</span></article>)}</section>

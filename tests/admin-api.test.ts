@@ -12,6 +12,7 @@ vi.mock("../src/lib/firebase/admin", () => ({ getFirebaseAdmin: () => ({
 import { GET, POST } from "../src/app/api/admin/offers/route";
 import { PUT } from "../src/app/api/admin/offers/[id]/route";
 import { POST as upload } from "../src/app/api/admin/upload/route";
+import { GET as session } from "../src/app/api/admin/session/route";
 import { blankOffer, newVariant } from "../src/lib/offer-editor";
 
 const request = (token?: string, data?: unknown) => new Request("http://localhost/api/admin/offers", { method: data ? "POST" : "GET", headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}), ...(data ? { "Content-Type": "application/json" } : {}) }, ...(data ? { body: JSON.stringify(data) } : {}) });
@@ -19,10 +20,17 @@ beforeEach(() => store.clear());
 describe("admin offer API", () => {
   it.each([undefined, "member", "expired"])("blocks unauthorized %s list, save, update and upload", async (token) => {
     const data = { ...blankOffer(0), title: "عرض" };
-    for (const result of [await GET(request(token)), await POST(request(token, data)), await PUT(request(token, data), { params: Promise.resolve({ id: data.id }) }), await upload(request(token, data))]) {
+    for (const result of [await GET(request(token)), await POST(request(token, data)), await PUT(request(token, data), { params: Promise.resolve({ id: data.id }) }), await upload(request(token, data)), await session(request(token))]) {
       expect([401, 403]).toContain(result.status);
     }
     expect(store.size).toBe(0);
+  });
+  it("uses the submitted status when publishing a new offer", async () => {
+    const data = { ...blankOffer(7), title: "عرض منشور جديد", status: "published" as const };
+    const response = await POST(request("admin", data));
+    expect(response.status).toBe(201);
+    expect((await response.json()).offer).toMatchObject({ id: data.id, title: "عرض منشور جديد", status: "published" });
+    expect(store.get(data.id)).toMatchObject({ status: "published" });
   });
   it("lists drafts and old documents without displayOrder using document IDs", async () => {
     store.set("legacy-offer", { title: "قديم", status: "draft" });

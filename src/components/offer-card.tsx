@@ -52,7 +52,7 @@ export function OfferCard({
     : undefined;
 
   return (
-    <article className="offer-card">
+    <article className={cn("offer-card", offer.badge && !asset ? "offer-card-badged-no-media" : undefined)}>
       {asset || offer.badge ? <div className="offer-card-media-wrap">
         {asset && onImageOpen ? (
           <button
