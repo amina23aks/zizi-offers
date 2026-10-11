@@ -22,6 +22,7 @@ import { matchesDelivery, publicOffer } from "../src/lib/public-offer-model";
 import { POST } from "../src/app/api/admin/offers/route";
 import { PUT } from "../src/app/api/admin/offers/[id]/route";
 import Home from "../src/app/page";
+import CompassPage from "../src/app/compass/page";
 import { CategoryPage } from "../src/components/category-page";
 import { OfferCard } from "../src/components/offer-card";
 
@@ -68,10 +69,36 @@ describe("one published catalogue with reviewed migration", () => {
     expect(state.queries.every((q) => JSON.stringify(q) === JSON.stringify(["status", "==", "published"]))).toBe(true);
     expect(state.invalidations).toContain("/"); expect(state.invalidations).toContain("/courses"); expect(state.invalidations).toContain("/coaching");
   });
-  it("shows newly published compass records on the Firestore-mode homepage", async () => {
+  it("uses saved homepage test-card data without changing the specialized tests page", async () => {
+    const current = state.records.get("codes-abcd")!;
+    state.records.set("codes-abcd", {
+      ...current,
+      status: "published",
+      title: "اختبار الأكواد المنشور",
+      description: "وصف محفوظ من لوحة الإدارة",
+      badge: "جديد",
+      image: { kind: "cloudinary", secureUrl: "https://res.cloudinary.com/test/image/upload/codes.png", publicId: "test/codes", width: 640, height: 640, alt: "غلاف محفوظ" },
+      price: { status: "known", amountUsd: 12 },
+      variants: [{ ...newVariant("general"), price: { status: "known", amountUsd: 12 }, availability: "available" }],
+    });
+    const home = renderToStaticMarkup(await Home());
+    expect(home).toContain("اختبار الأكواد المنشور");
+    expect(home).toContain("وصف محفوظ من لوحة الإدارة");
+    expect(home).toContain("جديد");
+    expect(home).toContain("codes.png");
+  });
+  it("keeps compass pricing records out of the approved homepage and compass image galleries", async () => {
     const offer: AdminOffer = { ...blankOffer(1000), title: "عنصر بوصلة جديد", category: "compass", status: "published" };
     expect((await POST(request(offer))).status).toBe(201);
-    expect(renderToStaticMarkup(await Home())).toContain("عنصر بوصلة جديد");
+    const home = renderToStaticMarkup(await Home());
+    const compass = renderToStaticMarkup(await CompassPage());
+    expect(home).not.toContain("عنصر بوصلة جديد");
+    expect(compass).not.toContain("عنصر بوصلة جديد");
+    expect(home).toContain("مسار الانطلاق");
+    expect(home).toContain("بطاقة الفضول");
+    expect(compass).toContain("مسار الانطلاق");
+    expect(compass).toContain("بطاقة الفضول");
+    expect(home).toContain("الباقة الكاملة");
   });
   it("normalizes compatible legacy records and skips unsupported public records without resurrecting drafts", async () => {
     state.records.clear();

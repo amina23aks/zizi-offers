@@ -50,6 +50,14 @@ describe("admin offer API", () => {
     expect(body.offers[0].variants[0].price).toMatchObject({ status: "known", amountUsd: 12 });
     expect(body.diagnostics[0]).toMatchObject({ id: "codes-abcd", fieldPath: "variants.0.price.status" });
   });
+  it("saves a normalized repaired offer without recreating an invalid price status", async () => {
+    const data = { ...blankOffer(0), id: "codes-abcd", title: "الأكواد", status: "published" as const, price: { status: "known" as const, amountUsd: 12 }, delivery: "general" as const, variants: [{ ...newVariant("general"), price: { status: "published", amountUsd: 12 } }] };
+    store.set(data.id, data);
+    const listed = await (await GET(request("admin"))).json();
+    const normalized = { ...listed.offers[0], title: "الأكواد بعد الحفظ" };
+    expect((await PUT(request("admin", normalized), { params: Promise.resolve({ id: data.id }) })).status).toBe(200);
+    expect(store.get(data.id)).toMatchObject({ status: "published", variants: [{ price: { status: "known", amountUsd: 12 } }] });
+  });
   it("isolates unsupported malformed records while keeping valid records readable", async () => {
     store.set("valid-offer", { ...blankOffer(0), id: "valid-offer", title: "صالح" });
     store.set("bad-offer", { ...blankOffer(1), id: "bad-offer", title: "سيئ", category: "unknown-section" });
