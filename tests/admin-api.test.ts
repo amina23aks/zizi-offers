@@ -4,9 +4,9 @@ vi.mock("../src/lib/invalidate-public-offers", () => ({ invalidatePublicOffers: 
 const store = vi.hoisted(() => new Map<string, Record<string, unknown>>());
 vi.mock("../src/lib/firebase/admin", () => ({ getFirebaseAdmin: () => ({
   auth: { verifyIdToken: async (token: string) => { if (token === "expired") throw new Error("expired"); return { uid: token, admin: token === "admin" }; } },
-  db: { runTransaction: async (fn: (tx: unknown) => Promise<unknown>) => fn({ get: (ref: { get: () => unknown }) => ref.get(), set: (ref: { set: (data: unknown) => unknown }, data: unknown) => ref.set(data) }), collection: () => ({
+  db: { runTransaction: async (fn: (tx: unknown) => Promise<unknown>) => fn({ get: (ref: { get: () => unknown }) => ref.get(), set: (ref: { set: (data: unknown) => unknown }, data: unknown) => ref.set(data), update: (ref: { update: (data: unknown) => unknown }, data: unknown) => ref.update(data) }), collection: () => ({
     get: async () => ({ docs: [...store.entries()].map(([id, data]) => ({ id, data: () => data })) }),
-    doc: (id: string) => ({ get: async () => ({ exists: store.has(id), data: () => store.get(id) }), create: async (data: Record<string, unknown>) => { store.set(id, data); }, set: async (data: Record<string, unknown>) => { store.set(id, { ...store.get(id), ...data }); } }),
+    doc: (id: string) => ({ get: async () => ({ exists: store.has(id), data: () => store.get(id) }), create: async (data: Record<string, unknown>) => { store.set(id, data); }, set: async (data: Record<string, unknown>) => { store.set(id, { ...store.get(id), ...data }); }, update: async (data: Record<string, unknown>) => { store.set(id, { ...store.get(id), ...data }); } }),
   }) },
 }) }));
 import { GET, POST } from "../src/app/api/admin/offers/route";
@@ -57,6 +57,13 @@ describe("admin offer API", () => {
     const normalized = { ...listed.offers[0], title: "الأكواد بعد الحفظ" };
     expect((await PUT(request("admin", normalized), { params: Promise.resolve({ id: data.id }) })).status).toBe(200);
     expect(store.get(data.id)).toMatchObject({ status: "published", variants: [{ price: { status: "known", amountUsd: 12 } }] });
+  });
+  it("replaces the saved image map so stale Cloudinary fields cannot survive under kind none", async () => {
+    const data = { ...blankOffer(1), id: "image-offer", title: "صورة", image: { kind: "cloudinary" as const, secureUrl: "https://res.cloudinary.com/demo/image/upload/offer.jpg", publicId: "demo/offer", width: 640, height: 640, alt: "صورة" } };
+    store.set(data.id, data);
+    const next = { ...data, image: { kind: "none" as const, alt: "صورة" } };
+    expect((await PUT(request("admin", next), { params: Promise.resolve({ id: data.id }) })).status).toBe(200);
+    expect(store.get(data.id)?.image).toEqual({ kind: "none", alt: "صورة" });
   });
   it("isolates unsupported malformed records while keeping valid records readable", async () => {
     store.set("valid-offer", { ...blankOffer(0), id: "valid-offer", title: "صالح" });
