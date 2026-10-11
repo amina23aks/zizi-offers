@@ -1,10 +1,16 @@
 import { invalidatePublicOffers } from "@/lib/invalidate-public-offers";
 import { FieldValue } from "firebase-admin/firestore";
 import { requireAdmin, safeAdminError } from "@/lib/admin-auth";
-import { adminOfferSchema } from "@/lib/admin-offer";
+import { adminOfferSchema, type AdminOffer } from "@/lib/admin-offer";
 import { getFirebaseAdmin } from "@/lib/firebase/admin";
 
 export const runtime = "nodejs";
+
+async function readSavedOffer(id: string) {
+  const snapshot = await getFirebaseAdmin().db.collection("offers").doc(id).get();
+  if (!snapshot.exists) throw new Error("Saved offer was not found after write.");
+  return adminOfferSchema.parse({ ...snapshot.data(), id, displayOrder: snapshot.data()?.displayOrder ?? 0 });
+}
 
 export async function PUT(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
@@ -13,17 +19,27 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
     const parsed = adminOfferSchema.safeParse(await request.json());
     if (!parsed.success) return Response.json({ error: "راجعي الحقول المطلوبة والقيم المدخلة.", fields: parsed.error.flatten().fieldErrors }, { status: 400 });
     if (parsed.data.id !== id) return Response.json({ error: "المعرّف غير صالح." }, { status: 400 });
+    const explicitUnpublish = new URL(request.url).searchParams.get("unpublish") === "true";
     const ref = getFirebaseAdmin().db.collection("offers").doc(id);
     if (!(await ref.get()).exists) return Response.json({ error: "العرض غير موجود." }, { status: 404 });
     const db = getFirebaseAdmin().db;
+    let previousOffer: AdminOffer | null = null;
+    let expectedStatus: AdminOffer["status"] | null = null;
     await db.runTransaction(async (tx) => {
       const current = await tx.get(ref);
       if (!current.exists) throw new Error("Offer missing");
       const previous = current.data()!;
-      const firstPublication = previous.status !== "published" && parsed.data.status === "published" && !previous.firstPublishedAt && !previous.legacyImported;
-      tx.set(ref, { ...parsed.data, updatedAt: FieldValue.serverTimestamp(), ...(firstPublication ? { firstPublishedAt: FieldValue.serverTimestamp() } : {}) }, { merge: true });
+      previousOffer = adminOfferSchema.parse({ ...previous, id, displayOrder: previous.displayOrder ?? parsed.data.displayOrder });
+      const nextOffer = previousOffer.status === "published" && parsed.data.status === "draft" && !explicitUnpublish
+        ? { ...parsed.data, status: "published" }
+        : parsed.data;
+      expectedStatus = nextOffer.status as AdminOffer["status"];
+      const firstPublication = previousOffer.status !== "published" && nextOffer.status === "published" && !previous.firstPublishedAt && !previous.legacyImported;
+      tx.set(ref, { ...nextOffer, updatedAt: FieldValue.serverTimestamp(), ...(firstPublication ? { firstPublishedAt: FieldValue.serverTimestamp() } : {}) }, { merge: true });
     });
-    invalidatePublicOffers();
-    return Response.json({ offer: (await ref.get()).data() });
+    const saved = await readSavedOffer(id);
+    if (expectedStatus && saved.status !== expectedStatus) throw new Error("Saved offer publication state did not match the submitted form.");
+    invalidatePublicOffers(previousOffer, saved);
+    return Response.json({ offer: saved });
   } catch (error) { return safeAdminError(error); }
 }

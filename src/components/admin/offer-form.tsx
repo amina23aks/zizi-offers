@@ -12,7 +12,7 @@ import { authorizedFetch } from "@/lib/admin-fetch";
 type Errors = Record<string, string>;
 const availabilityOptions = { unknown: "غير محدد", available: "متاح", unavailable: "غير متاح", completed: "مكتمل" } as const;
 
-export function OfferForm({ initial, user, busy, onSave, onDirty }: { initial: AdminOffer; user: User; busy: boolean; onSave: (offer: AdminOffer) => Promise<void>; onDirty: (value: boolean) => void }) {
+export function OfferForm({ initial, user, busy, onSave, onDirty }: { initial: AdminOffer; user: User; busy: boolean; onSave: (offer: AdminOffer, options?: { unpublish?: boolean }) => Promise<void>; onDirty: (value: boolean) => void }) {
   const [offer, setOffer] = useState(initial);
   const [delivery, setDelivery] = useState<Delivery>(() => inferDelivery(initial));
   const [bank, setBank] = useState<Variant[]>(() => activeVariants(initial.variants, inferDelivery(initial)));
@@ -37,7 +37,10 @@ export function OfferForm({ initial, user, busy, onSave, onDirty }: { initial: A
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); if (disabled || saving.current) return;
     const button = (event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null;
-    const status = button?.value === "published" ? "published" : "draft";
+    const requestedDraft = button?.value === "draft";
+    const unpublish = initial.status === "published" && requestedDraft;
+    if (unpublish && !window.confirm("سيصبح العرض مسودة ولن يظهر في الموقع العام. هل تريدين إلغاء النشر؟")) return;
+    const status = button?.value === "published" || (initial.status === "published" && !unpublish) ? "published" : "draft";
     if (Object.entries(extraErrors).some(([key, error]) => Boolean(error) && (key !== "capacity" || groupActive))) { setSaveError("راجعي المدة أو عدد المشاركين قبل الحفظ."); return; }
     const parsed = adminOfferSchema.safeParse({ ...value, status });
     if (!parsed.success) {
@@ -47,7 +50,7 @@ export function OfferForm({ initial, user, busy, onSave, onDirty }: { initial: A
       requestAnimationFrame(() => formRef.current?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus()); return;
     }
     saving.current = true; setErrors({}); setSaveError("");
-    try { await onSave(parsed.data); } catch (caught) { setSaveError(caught instanceof Error ? caught.message : "فشل الحفظ. بقيت التعديلات في النموذج."); }
+    try { await onSave(parsed.data, { unpublish }); } catch (caught) { setSaveError(caught instanceof Error ? caught.message : "فشل الحفظ. بقيت التعديلات في النموذج."); }
     finally { saving.current = false; }
   }
 
@@ -80,7 +83,7 @@ export function OfferForm({ initial, user, busy, onSave, onDirty }: { initial: A
       </fieldset>
       <div className="admin-save-actions"><p>حالة النشر الحالية: <strong>{initial.status === "published" ? "منشور" : "مسودة"}</strong></p><small>حالة النشر مستقلة عن توفر العرض.</small>
         {saveError && <p className="admin-error" role="alert">{saveError}</p>}
-        <div><button type="submit" value="draft" className="admin-secondary" disabled={disabled}>حفظ مسودة</button><button type="submit" value="published" className="admin-primary" disabled={disabled}>{busy ? "جارٍ الحفظ…" : initial.status === "published" ? "حفظ التغييرات" : "نشر العرض"}</button></div>
+        <div><button type="submit" value="draft" className="admin-secondary" disabled={disabled}>{initial.status === "published" ? "إلغاء النشر وحفظ مسودة" : "حفظ مسودة"}</button><button type="submit" value="published" className="admin-primary" disabled={disabled}>{busy ? "جارٍ الحفظ…" : initial.status === "published" ? "حفظ التغييرات" : "نشر العرض"}</button></div>
       </div>
     </form>
     <aside className="admin-card-preview" aria-label="معاينة البطاقة"><h3>معاينة البطاقة</h3><OfferCard offer={editorPreview(value)} image={offer.image.kind === "cloudinary" ? { src: offer.image.secureUrl, width: offer.image.width, height: offer.image.height, alt: offer.image.alt || offer.title } : offer.image.kind === "local" && getAsset(offer.image.assetId) ? { src: getAsset(offer.image.assetId)!.publicPath, width: getAsset(offer.image.assetId)!.width, height: getAsset(offer.image.assetId)!.height, alt: offer.image.alt || offer.title } : undefined} /></aside>
@@ -154,7 +157,7 @@ function ImageUpload({ image, title, user, disabled, onChange, onBusy, onPending
       if (controller.current.signal.aborted) return;
       const result = adminOfferSchema.shape.image.parse(body.image);
       onChange({ ...result, alt: latest.current.alt || title }); setFile(null); clearPreview(); setUploaded(true); onBusy(false);
-    } catch (caught) { if (!controller.current?.signal.aborted) setError(caught instanceof Error ? caught.message : "فشل رفع الصورة."); }
+    } catch (caught) { if (!controller.current?.signal.aborted) { setError(caught instanceof Error ? caught.message : "فشل رفع الصورة."); onBusy(false); } }
     finally { lock.current = false; setBusy(false); }
   }
   return <div className="admin-image-upload" onDragOver={(e) => e.preventDefault()} onDrop={(e) => { e.preventDefault(); const next = e.dataTransfer.files[0]; if (next) void upload(next); }}>

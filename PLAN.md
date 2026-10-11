@@ -183,3 +183,26 @@ Customer accounts, calendar, payments, private feedback, start dates, compass PD
 - Documented supporting-content editors, metadata preservation and empty-catalog handling needed before activation. No live writes, uploads, source switch, push or deployment occurred.
 - Lint, typecheck, build, 39 local tests and production HTTP content checks passed. Rules suite did not execute: emulator artifact download was rejected with network HTTP 403. Saved reusable cloud setup/start instructions and configuration requirements for review; live setup and publication remain pending.
 - See docs/catalog-migration-review.md and docs/catalog-migration-inventory.json for the concrete review and later commands.
+
+## 10 October Firestore Preview activation
+
+- On `codex/catalog-migration-schema-safety`, live Firestore comparison found all 48 reviewed legacy IDs already present in `zizi-offers`; no creates were needed. Thirty-four records differ from the old local migration source because current dashboard/Cloudinary edits are now the source of truth and were not overwritten.
+- Saved ignored private backups under `.verification/` before live writes. Published only the reviewed legacy IDs: 46 newly published, 2 already published, 0 failures. Unavailable offers stayed unavailable; publication status only controls public visibility.
+- Wrote the `catalogState/legacy-v1` activation marker using the current inventory hash, then configured Vercel `PUBLIC_OFFERS_SOURCE=firestore` only for Preview deployments of branch `codex/catalog-migration-schema-safety`. Production configuration remains unchanged.
+- Public Firestore-mode verification on the local production server rendered 48 homepage offer cards across tests, coaching, courses, programs, sessions and compass; coaching individual/group filters each rendered 5 matching cards; published unavailable offers remained visible. No live promotional badges are currently set, but the shared card component now renders saved badges as the approved top-right gradient pill.
+- Checks passed: lint, typecheck, production build, and focused public/admin/editor/migration tests. Firestore rules emulator could not start on this machine because Java is not installed.
+
+## 10 October dashboard-to-public update flow fix
+
+- Diagnosed the active checkout as `codex/catalog-migration-schema-safety` with local Firebase client/Admin project IDs both set to `zizi-offers`; local `.env.local` does not set `PUBLIC_OFFERS_SOURCE`, so local public pages use the local catalogue unless started with `PUBLIC_OFFERS_SOURCE=firestore`. Vercel CLI project inspection was unavailable because the CLI required interactive login; production settings were not changed.
+- Updates now preserve a published offer's public status unless the dashboard explicitly unpublishes it. The server also enforces that protection, preserving unrelated document fields through merged writes and keeping first-publication timestamps stable.
+- Successful saves now invalidate homepage, current category, prior category and known detail paths for the affected offer. Failed image uploads clear the pending upload state and keep the save blocked with a real error until retried or removed.
+- Live Firestore-mode verification used a controlled temporary edit of `offers/emotional-communication` in project `zizi-offers`: title marker, price/status change and a temporary Cloudinary image reference appeared on `/`, `/coaching` and `/offers/emotional-communication` over normal HTTP refreshes, then the original Firestore document and temporary Cloudinary asset were restored. A temporary draft remained hidden from homepage/category, and the excluded additional tests section stayed hidden.
+
+## 11 October admin save/auth and badge correction
+
+- Admin now renders only a neutral authorization check until Firebase Auth and the server `/api/admin/session` endpoint both confirm an admin token. Signed-out users go to login, signed-in non-admin users see access denied, and admin list/selection state is cleared on sign-out or auth failure.
+- Offer create/update endpoints validate a Firestore readback before returning success, preserve published status unless unpublish is explicit, and invalidate home, category, offer-ID and slug paths after writes. Firestore-mode homepage now uses saved compass offers instead of hiding newly published compass records.
+- The shared offer card keeps approved image-card badge placement while image-less cards anchor the badge to the physical top-right outer card edge without adding a blank media placeholder.
+- Added `firestore.indexes.json` with no composite indexes because the reviewed public query only filters by `status == "published"`; `firebase.json` now points at the reviewed index manifest.
+- Verification passed for lint, typecheck, production build, non-emulator Vitest coverage, and a browser check that signed-out `/admin` does not mount the dashboard. Firestore rules tests remain blocked locally because Java is not installed and no emulator is listening on `127.0.0.1:8080`.

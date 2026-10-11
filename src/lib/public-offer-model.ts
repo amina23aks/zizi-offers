@@ -7,8 +7,11 @@ export function publishedTime(value: unknown): number {
   if (value && typeof value === "object" && "seconds" in value && typeof value.seconds === "number") return value.seconds * 1000;
   return 0;
 }
-export function sortPublished(records: (AdminOffer & { firstPublishedAt?: unknown })[]) {
-  return records.slice().sort((a, b) => publishedTime(b.firstPublishedAt) - publishedTime(a.firstPublishedAt) || a.displayOrder - b.displayOrder || a.id.localeCompare(b.id));
+export function sortPublished(records: (AdminOffer & { firstPublishedAt?: unknown; legacyImported?: boolean })[]) {
+  return records.slice().sort((a, b) => {
+    if (a.legacyImported && b.legacyImported) return a.displayOrder - b.displayOrder || a.id.localeCompare(b.id);
+    return publishedTime(b.firstPublishedAt) - publishedTime(a.firstPublishedAt) || a.displayOrder - b.displayOrder || a.id.localeCompare(b.id);
+  });
 }
 export function publicOffer(record: AdminOffer): DisplayOffer {
   const local = record.image.kind === "local" ? getAsset(record.image.assetId) : null;

@@ -6,6 +6,12 @@ import { getFirebaseAdmin } from "@/lib/firebase/admin";
 
 export const runtime = "nodejs";
 
+async function readSavedOffer(id: string) {
+  const snapshot = await getFirebaseAdmin().db.collection("offers").doc(id).get();
+  if (!snapshot.exists) throw new Error("Saved offer was not found after write.");
+  return adminOfferSchema.parse({ ...snapshot.data(), id, displayOrder: snapshot.data()?.displayOrder ?? 0 });
+}
+
 export async function GET(request: Request) {
   try {
     await requireAdmin(request);
@@ -25,7 +31,9 @@ export async function POST(request: Request) {
     const ref = getFirebaseAdmin().db.collection("offers").doc(parsed.data.id);
     if ((await ref.get()).exists) return Response.json({ error: "معرّف العرض مستخدم بالفعل." }, { status: 409 });
     await ref.create({ ...parsed.data, createdAt: FieldValue.serverTimestamp(), updatedAt: FieldValue.serverTimestamp(), ...(parsed.data.status === "published" ? { firstPublishedAt: FieldValue.serverTimestamp() } : {}) });
-    invalidatePublicOffers();
-    return Response.json({ offer: (await ref.get()).data() }, { status: 201 });
+    const saved = await readSavedOffer(parsed.data.id);
+    if (saved.status !== parsed.data.status) throw new Error("Saved offer publication state did not match the submitted form.");
+    invalidatePublicOffers(saved);
+    return Response.json({ offer: saved }, { status: 201 });
   } catch (error) { return safeAdminError(error); }
 }
