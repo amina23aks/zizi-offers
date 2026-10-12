@@ -246,6 +246,33 @@
   margin-inline-start: 0;
 }
 
+.home-test-topics {
+  display: grid;
+  gap: .35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--muted);
+  font-size: .92rem;
+  line-height: 1.65;
+}
+
+.home-test-topics li {
+  position: relative;
+  padding-inline-start: .85rem;
+}
+
+.home-test-topics li::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: .72em;
+  width: .32rem;
+  height: .32rem;
+  border-radius: 999px;
+  background: var(--accent, var(--brand-blue));
+}
+
 .home-section-compass .home-carousel-row {
   grid-auto-columns: max-content;
   align-items: start;
