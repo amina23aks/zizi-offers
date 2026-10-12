@@ -56,6 +56,7 @@ export function OfferCardCollection({
             offer={offer}
             formatFilter={formatFilter ?? undefined}
             href={offer.id === "emotional-communication" ? "/offers/emotional-communication" : undefined}
+            actionLabel="التفاصيل"
             onImageOpen={imageIndex === undefined ? undefined : (opener) => {
               openerRef.current = opener;
               setViewerIndex(imageIndex);
