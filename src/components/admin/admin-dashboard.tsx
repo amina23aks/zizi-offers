@@ -8,6 +8,7 @@ import { adminOfferSchema, type AdminOffer } from "@/lib/admin-offer";
 import { blankOffer, categories } from "@/lib/offer-editor";
 import { getFirebaseAuth } from "@/lib/firebase/client";
 import { authorizedFetch } from "@/lib/admin-fetch";
+import { AdminConfirmDialog } from "./admin-confirm-dialog";
 import { OfferForm } from "./offer-form";
 
 type AuthState = "checking" | "authorized" | "signed-out" | "denied" | "error";
@@ -26,6 +27,8 @@ export function AdminDashboard() {
   const [diagnostics, setDiagnostics] = useState<Diagnostic[]>([]);
   const saveLock = useRef(false);
   const dirty = useRef(false);
+  const pendingLeave = useRef<(() => void | Promise<void>) | null>(null);
+  const [leaveDialogOpen, setLeaveDialogOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("");
@@ -93,15 +96,26 @@ export function AdminDashboard() {
     const editorHistoryState = window.history.state;
     const beforeUnload = (event: BeforeUnloadEvent) => { if (dirty.current || saveLock.current) event.preventDefault(); };
     const popState = (event: PopStateEvent) => {
-      if (saveLock.current || (dirty.current && !window.confirm("لديكِ تعديلات غير محفوظة. هل تريدين المغادرة؟"))) {
+      if (saveLock.current || dirty.current) {
         window.history.pushState(editorHistoryState, "", editorHref);
         event.stopImmediatePropagation();
+        if (!saveLock.current) {
+          pendingLeave.current = () => window.history.back();
+          setLeaveDialogOpen(true);
+        }
       }
     };
     const navigate = (event: MouseEvent) => {
       const link = (event.target as Element).closest("a[href]");
       if (link && new URL(link.getAttribute("href")!, window.location.href).pathname === window.location.pathname && new URL(link.getAttribute("href")!, window.location.href).search === window.location.search) return;
-      if (link && dirty.current && !window.confirm("لديكِ تعديلات غير محفوظة. هل تريدين المغادرة؟")) event.preventDefault();
+      if (link && dirty.current) {
+        event.preventDefault();
+        const href = link.getAttribute("href");
+        if (href) {
+          pendingLeave.current = () => { window.location.href = href; };
+          setLeaveDialogOpen(true);
+        }
+      }
     };
     window.addEventListener("beforeunload", beforeUnload);
     window.addEventListener("popstate", popState, true);
@@ -111,10 +125,23 @@ export function AdminDashboard() {
 
   const visible = useMemo(() => offers.filter((offer) => (!filter || offer.category === filter) && (!search || offer.title.toLocaleLowerCase("ar").includes(search.toLocaleLowerCase("ar")))), [offers, filter, search]);
   const published = offers.filter((offer) => offer.status === "published").length;
-  const canLeave = () => !saveLock.current && (!dirty.current || window.confirm("لديكِ تعديلات غير محفوظة. هل تريدين المتابعة؟"));
+  const requestLeave = (action: () => void | Promise<void>) => {
+    if (saveLock.current) return;
+    if (!dirty.current) { void action(); return; }
+    pendingLeave.current = action;
+    setLeaveDialogOpen(true);
+  };
+  const confirmLeave = () => {
+    dirty.current = false;
+    setLeaveDialogOpen(false);
+    const action = pendingLeave.current;
+    pendingLeave.current = null;
+    if (action) void action();
+  };
   function choose(offer: AdminOffer) {
-    if (!canLeave()) return;
-    dirty.current = false; setSelected(structuredClone(offer)); setEditorVersion((v) => v + 1); setMessage("");
+    requestLeave(() => {
+      dirty.current = false; setSelected(structuredClone(offer)); setEditorVersion((v) => v + 1); setMessage("");
+    });
   }
 
   async function save(offer: AdminOffer, options: { unpublish?: boolean } = {}) {
@@ -147,13 +174,13 @@ export function AdminDashboard() {
   }
 
   return <div className="admin-dashboard">
-    <header className="admin-topbar"><div><p className="admin-kicker">لوحة إدارة عروض زيزي</p><h1>العروض</h1></div><nav aria-label="تنقل الإدارة"><a href="#offers-list">العروض</a><Link href="/">عرض الموقع</Link><button className="admin-secondary" disabled={saving} onClick={async () => { if (!canLeave()) return; clearAdminData(); await signOut(getFirebaseAuth()); router.replace("/admin/login"); }}>تسجيل الخروج</button></nav></header>
+    <header className="admin-topbar"><div><p className="admin-kicker">لوحة إدارة عروض زيزي</p><h1>العروض</h1></div><nav aria-label="تنقل الإدارة"><a href="#offers-list">العروض</a><Link href="/">عرض الموقع</Link><button className="admin-secondary" disabled={saving} onClick={() => requestLeave(async () => { clearAdminData(); await signOut(getFirebaseAuth()); router.replace("/admin/login"); })}>تسجيل الخروج</button></nav></header>
     {listError && <div role="alert" className="admin-error"><p>{listError}</p>{user && <button type="button" className="admin-secondary" onClick={() => void load(user)}>إعادة المحاولة</button>}</div>}
     {diagnostics.length > 0 && <div role="status" className="admin-warning"><p>تمت قراءة العروض مع ملاحظات توافق تحتاج مراجعة:</p><ul>{diagnostics.map((item) => <li key={`${item.id}-${item.fieldPath}`}>{item.id}: {item.fieldPath} — المتوقع {item.expected}، المحفوظ {item.actual}. {item.message}</li>)}</ul></div>}
     {message && <p role="status" className="admin-success">{message}</p>}
     <section className="admin-stats" aria-label="ملخص المحتوى">{[[offers.length, "إجمالي العروض"], [published, "منشور"], [offers.length - published, "مسودة"]].map(([count, label]) => <article key={label}><strong>{loading || listError ? "—" : count}</strong><span>{label}</span></article>)}</section>
     <div className="admin-columns">
-      <section className="admin-panel" id="offers-list"><div className="admin-panel-heading"><h2>قائمة العروض</h2><button className="admin-primary compact" disabled={!user || loading || Boolean(listError) || saving} onClick={() => choose(blankOffer(Math.min(100000, Math.max(-1, ...offers.map((o) => o.displayOrder)) + 1)))}>إضافة عرض</button></div>
+      <section className="admin-panel" id="offers-list"><div className="admin-panel-heading"><h2>قائمة العروض</h2><button className="admin-primary compact" disabled={!user || loading || Boolean(listError) || saving} onClick={() => requestLeave(() => { dirty.current = false; setSelected(blankOffer(Math.min(100000, Math.max(-1, ...offers.map((o) => o.displayOrder)) + 1))); setEditorVersion((v) => v + 1); setMessage(""); })}>إضافة عرض</button></div>
         <div className="admin-filters"><input aria-label="البحث" placeholder="ابحثي باسم العرض" value={search} onChange={(e) => setSearch(e.target.value)} /><select aria-label="تصفية حسب القسم" value={filter} onChange={(e) => setFilter(e.target.value)}><option value="">كل الأقسام</option>{Object.entries(categories).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></div>
         {loading ? <p role="status">جارٍ تحميل العروض…</p> : listError ? <p>قائمة العروض غير متاحة حاليًا.</p> : visible.length ? <ul className="admin-offer-list">{visible.map((offer) => <li key={offer.id}><button disabled={saving} aria-current={selected?.id === offer.id ? "true" : undefined} onClick={() => choose(offer)}><span><strong>{offer.title}</strong><small>{categories[offer.category]}</small></span><em data-status={offer.status}>{offer.status === "published" ? "منشور" : "مسودة"}</em></button></li>)}</ul> : <p className="admin-empty">لا توجد عروض مطابقة.</p>}
       </section>
@@ -161,5 +188,16 @@ export function AdminDashboard() {
         {selected && user && <OfferForm key={`${selected.id}-${editorVersion}`} initial={selected} user={user} busy={saving} onSave={save} onDirty={(value) => { dirty.current = value; }} />}
       </section>
     </div>
+    <AdminConfirmDialog
+      open={leaveDialogOpen}
+      busy={false}
+      title="تجاهل التعديلات؟"
+      confirmLabel="المتابعة"
+      cancelLabel="إلغاء"
+      onCancel={() => { pendingLeave.current = null; setLeaveDialogOpen(false); }}
+      onConfirm={confirmLeave}
+    >
+      <p>لديكِ تعديلات غير محفوظة. المتابعة ستترك النموذج الحالي دون حفظ.</p>
+    </AdminConfirmDialog>
   </div>;
 }
