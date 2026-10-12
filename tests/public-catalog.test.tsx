@@ -87,6 +87,18 @@ describe("one published catalogue with reviewed migration", () => {
     expect(home).toContain("جديد");
     expect(home).toContain("codes.png");
   });
+  it("does not resurrect stale local homepage test cards after a Firestore test offer is unpublished", async () => {
+    state.records.set("etho", { ...state.records.get("etho")!, status: "draft", title: "إيثو محفوظ غير منشور" });
+    const draftHome = renderToStaticMarkup(await Home());
+    expect(draftHome).not.toContain("إيثو محفوظ غير منشور");
+    expect(draftHome).not.toContain("اختبار الإيثو");
+    expect(draftHome).not.toContain("/tests#etho");
+
+    state.records.set("etho", { ...state.records.get("etho")!, status: "published", title: "إيثو محفوظ منشور" });
+    const republishedHome = renderToStaticMarkup(await Home());
+    expect(republishedHome).toContain("إيثو محفوظ منشور");
+    expect(republishedHome.match(/\/tests#etho/g)).toHaveLength(1);
+  });
   it("keeps compass pricing records out of the approved homepage and compass image galleries", async () => {
     const offer: AdminOffer = { ...blankOffer(1000), title: "عنصر بوصلة جديد", category: "compass", status: "published" };
     expect((await POST(request(offer))).status).toBe(201);
