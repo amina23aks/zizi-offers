@@ -13,7 +13,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import { OfferCardCollection } from "@/components/offer-card-collection";
 import { ZoomableImage } from "@/components/zoomable-image";
-import { compassPricing, formatAvailability, getAsset, homeSections, publicCategories, ziziAbout } from "@/data/catalog";
+import { compassPricing, formatAvailability, formatPrice, getAsset, homeSections, publicCategories, type DisplayOffer, ziziAbout } from "@/data/catalog";
 import { getPublicOffers } from "@/lib/public-offers";
 import { ziziIdentityAssetIds } from "@/data/assets";
 
@@ -33,6 +33,27 @@ const bookingContacts = [
   { country: "المغرب", href: "https://t.me/Slowallday" },
   { country: "الإمارات", href: "https://t.me/lamer_iam" },
 ] as const;
+
+const testDetailTargets: Record<string, string> = {
+  "codes-abcd": "/tests#codes",
+  etho: "/tests#etho",
+  mindsets: "/tests#mindsets",
+  "geometric-spectra": "/tests#spectra",
+  "triple-test": "/tests#behavioral-inclinations",
+};
+
+const behavioralPriceRows = [
+  { id: "drama-triangle", title: "مثلث الدراما" },
+  { id: "four-roles", title: "تشخيص الأدوار الأربعة" },
+  { id: "psychological-behavior", title: "السلوك النفسي" },
+] as const;
+
+function behavioralPrices(offer: DisplayOffer) {
+  return behavioralPriceRows.flatMap((row) => {
+    const variant = offer.variants?.find((item) => item.id === row.id || item.title === row.title);
+    return variant ? [{ title: row.title, price: formatPrice(variant.price).label }] : [];
+  });
+}
 
 export default async function Home() {
   const savedOffers = await getPublicOffers();
@@ -120,17 +141,20 @@ export default async function Home() {
             </div>
             <div className="home-carousel-row" tabIndex={0} aria-label={`عروض ${section.title}`}>
               {section.id === "tests"
-                ? section.cards.map((card) => {
+                ? section.cards.flatMap((card) => {
                     const saved = savedOfferById.get(card.offerId);
+                    if (connected && !saved) return [];
                     const title = saved?.title ?? card.title;
                     const summary = saved?.summary ?? ("summary" in card ? card.summary : null);
                     const availabilityLabel = saved?.availabilityLabel ?? ("availabilityLabel" in card ? card.availabilityLabel : null);
-                    const priceLabel = card.offerId === "triple-test"
-                      ? ("priceLabel" in card ? card.priceLabel : null)
+                    const prices = saved?.id === "triple-test" ? behavioralPrices(saved) : [];
+                    const priceLabel = prices.length
+                      ? null
                       : saved?.priceLabel ?? ("priceLabel" in card ? card.priceLabel : null);
                     const priceClarification = saved?.priceClarification ?? ("priceClarification" in card ? card.priceClarification : null);
-                    return (
-                      <Link key={card.id} href={card.href} className="home-overview-card">
+                    const href = saved ? testDetailTargets[saved.id] ?? card.href : card.href;
+                    return [(
+                      <article key={card.id} className="home-overview-card home-test-card">
                         {saved?.image ? (
                           <span className="offer-card-media-wrap home-test-media-wrap">
                             <Image
@@ -147,15 +171,30 @@ export default async function Home() {
                         ) : saved?.badge ? <em className="offer-promo-badge">{saved.badge}</em> : null}
                         <strong>{title}</strong>
                         {summary ? <span>{summary}</span> : null}
-                        <div className="mini-meta">
+                        {prices.length ? (
+                          <div className="test-price-rows" aria-label="أسعار اختبارات الميولات السلوكية">
+                            {prices.map((item) => (
+                              <span key={item.title}>
+                                <span>{item.title}</span>
+                                <b dir="ltr">{item.price}</b>
+                              </span>
+                            ))}
+                          </div>
+                        ) : null}
+                        <div className="mini-meta home-test-footer">
                           {availabilityLabel ? (
                             <em className={saved ? `status-${saved.availability}` : undefined}>{availabilityLabel}</em>
                           ) : saved ? formatAvailability(saved.availability) : null}
-                          {priceLabel ? <b dir="ltr">{priceLabel}</b> : null}
+                          <span className="home-test-footer-left">
+                            {priceLabel ? <b dir="ltr">{priceLabel}</b> : null}
+                            <Link href={href} className="secondary-action home-test-details">
+                              عرض التفاصيل
+                            </Link>
+                          </span>
                         </div>
                         {priceClarification ? <small>{String(priceClarification)}</small> : null}
-                      </Link>
-                    );
+                      </article>
+                    )];
                   })
                 : ((connected && !["fingerprints", "compass"].includes(section.id)) || "offers" in section)
                 ? (
