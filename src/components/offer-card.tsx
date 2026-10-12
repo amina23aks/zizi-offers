@@ -16,12 +16,14 @@ const variantMatchesFormat = (title: string, filter: CoachingFormatFilter) =>
 export function OfferCard({
   offer,
   href,
+  actionLabel = "التفاصيل",
   formatFilter,
   onImageOpen,
   image,
 }: {
   offer: DisplayOffer;
   href?: string;
+  actionLabel?: string;
   formatFilter?: CoachingFormatFilter;
   onImageOpen?: (opener: HTMLButtonElement) => void;
   image?: { src: string; width: number; height: number; alt: string };
@@ -142,7 +144,7 @@ export function OfferCard({
           </div>
           {href ? (
             <Link href={href} className="secondary-action">
-              التفاصيل
+              {actionLabel}
             </Link>
           ) : null}
         </div>
