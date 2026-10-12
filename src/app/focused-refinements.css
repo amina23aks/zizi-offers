@@ -235,3 +235,82 @@
     --bubble-y: 68px;
   }
 }
+
+/* Final focused media/layout corrections for the pushed preview branch. */
+.home-test-footer {
+  min-height: 0;
+  justify-content: flex-start;
+}
+
+.home-test-footer-left {
+  margin-inline-start: 0;
+}
+
+.home-section-compass .home-carousel-row {
+  grid-auto-columns: max-content;
+  align-items: start;
+}
+
+.home-section-compass .home-overview-card,
+.home-section-compass .compass-overview-card {
+  width: max-content;
+  min-width: 0;
+  max-width: min(72vw, 190px);
+  min-height: 0;
+  padding: 0;
+}
+
+.home-section-compass .home-compass-image-frame {
+  width: min(72vw, 190px);
+  max-width: 190px;
+  margin-inline: auto;
+  border: 0;
+  background: transparent;
+}
+
+.home-section-compass .compass-image-frame img {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+  object-fit: contain !important;
+}
+
+.home-section-fingerprints .home-carousel-row {
+  grid-auto-columns: max-content;
+  gap: .55rem;
+}
+
+.home-section-fingerprints .home-overview-card {
+  width: max-content;
+  min-width: 0;
+  max-width: min(72vw, 14rem);
+  min-height: 46px;
+  justify-content: center;
+  padding: .58rem .82rem;
+  gap: .25rem;
+  white-space: normal;
+}
+
+.home-section-fingerprints .home-overview-card strong {
+  white-space: normal;
+}
+
+@media (max-width: 899px) {
+  .category-bubble:nth-child(5) {
+    --bubble-y: 48px;
+  }
+
+  .category-bubble:nth-child(6) {
+    --bubble-y: 48px;
+  }
+}
+
+@media (max-width: 390px) {
+  .category-bubble:nth-child(5) {
+    --bubble-y: 44px;
+  }
+
+  .category-bubble:nth-child(6) {
+    --bubble-y: 44px;
+  }
+}

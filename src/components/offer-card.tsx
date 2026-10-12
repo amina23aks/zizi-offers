@@ -93,13 +93,13 @@ export function OfferCard({
         {offer.badge ? <span className="offer-promo-badge">{offer.badge}</span> : null}
       </div> : null}
       <div className="offer-card-body">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="eyebrow">{offer.category === "programs" ? "برمجة" : formatLabel(offer.format)}</p>
+        <div className="offer-card-title-row">
           {displayAvailability ? (
             <span className={cn("status-badge", `status-${displayAvailabilityStatus}`)}>{displayAvailability}</span>
           ) : null}
+          <h3 className="text-xl font-bold">{offer.title}</h3>
         </div>
-        <h3 className="text-xl font-bold">{offer.title}</h3>
+        <p className="eyebrow">{offer.category === "programs" ? "برمجة" : formatLabel(offer.format)}</p>
         {offer.summary ? <p className="text-sm leading-7 text-muted">{offer.summary}</p> : null}
         {offer.bullets?.length ? (
           <ul className="offer-bullets">
