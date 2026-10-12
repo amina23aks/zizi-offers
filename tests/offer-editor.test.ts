@@ -1,4 +1,8 @@
 import { describe, expect, it } from "vitest";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import type { User } from "firebase/auth";
+import { OfferForm } from "../src/components/admin/offer-form";
 import { adminOfferSchema } from "../src/lib/admin-offer";
 import { activeVariants, blankOffer, editorPreview, inferDelivery, newVariant } from "../src/lib/offer-editor";
 import { offers } from "../src/data/offers";
@@ -83,5 +87,18 @@ describe("offer editor persistence and public preview", () => {
   });
   it("accepts a photo-free session", () => {
     expect(adminOfferSchema.safeParse({ ...offer(), title: "جلسة", category: "sessions", delivery: "general", variants: [newVariant("general")] }).success).toBe(true);
+  });
+  it("hides manual image descriptions and limits the badge selector to none or new", () => {
+    const record = { ...offer(), title: "عرض", badge: "مميز", image: { kind: "local" as const, assetId: "coaching:القيم", alt: "وصف محفوظ" } };
+    const html = renderToStaticMarkup(createElement(OfferForm, { initial: record, user: {} as User, busy: false, onSave: async () => {}, onDirty: () => {} }));
+    expect(html).not.toContain("وصف الصورة");
+    expect(html).not.toContain('value="وصف محفوظ"');
+    expect(html).toContain('alt="وصف محفوظ"');
+    const badgeSelect = /شارة البطاقة[\s\S]*?<select[^>]*>([\s\S]*?)<\/select>/.exec(html)?.[1] ?? "";
+    expect(badgeSelect.match(/<option/g)).toHaveLength(2);
+    expect(badgeSelect).toContain("بدون شارة");
+    expect(badgeSelect).toContain("جديد");
+    expect(badgeSelect).not.toContain("مميز");
+    expect(html).toContain("القيمة المحفوظة حاليًا: مميز");
   });
 });
