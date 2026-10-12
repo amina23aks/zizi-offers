@@ -21,12 +21,12 @@ export default async function CompassPage() {
       </section>
 
       <section className="compass-path" aria-label="مسار بوصلة المشاعر">
-        {compassLaunchAsset ? (
-          <article className="compass-launch-card compass-card-image-only">
-            <ZoomableImage asset={compassLaunchAsset} alt="مسار الانطلاق" className="compass-image-frame" />
-          </article>
-        ) : null}
         <div className="compass-card-row">
+          {compassLaunchAsset ? (
+            <article className="compass-card compass-card-image-only">
+              <ZoomableImage asset={compassLaunchAsset} alt="مسار الانطلاق" className="compass-image-frame" />
+            </article>
+          ) : null}
           {compassCards.map((card) => (
             <article key={card.id} className="compass-card compass-card-image-only">
               <ZoomableImage asset={card.asset} alt={`بطاقة ${card.title}`} className="compass-image-frame" />

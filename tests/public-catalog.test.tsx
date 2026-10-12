@@ -2,6 +2,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { renderToStaticMarkup } from "react-dom/server";
 const state = vi.hoisted(() => ({ records: new Map<string, Record<string, unknown>>(), ready: true, allowEmpty: false, clock: 100, queries: [] as unknown[], invalidations: [] as string[] }));
+vi.mock("react", async () => {
+  const actual = await vi.importActual<typeof import("react")>("react");
+  return { ...actual, cache: <T extends (...args: never[]) => unknown>(fn: T) => fn };
+});
 vi.mock("next/server", () => ({ connection: async () => {} }));
 vi.mock("next/cache", () => ({ revalidatePath: (path: string) => state.invalidations.push(path) }));
 vi.mock("firebase-admin/firestore", () => ({ FieldValue: { serverTimestamp: () => ({ seconds: ++state.clock }) } }));
@@ -86,6 +90,37 @@ describe("one published catalogue with reviewed migration", () => {
     expect(home).toContain("وصف محفوظ من لوحة الإدارة");
     expect(home).toContain("جديد");
     expect(home).toContain("codes.png");
+  });
+  it("does not resurrect stale local homepage test cards after a Firestore test offer is unpublished", async () => {
+    state.records.set("etho", { ...state.records.get("etho")!, status: "draft", title: "إيثو محفوظ غير منشور" });
+    const draftHome = renderToStaticMarkup(await Home());
+    expect(draftHome).not.toContain("إيثو محفوظ غير منشور");
+    expect(draftHome).not.toContain("اختبار الإيثو");
+    expect(draftHome).not.toContain("/tests#etho");
+
+    state.records.set("etho", { ...state.records.get("etho")!, status: "published", title: "إيثو محفوظ منشور" });
+    const republishedHome = renderToStaticMarkup(await Home());
+    expect(republishedHome).toContain("إيثو محفوظ منشور");
+    expect(republishedHome.match(/\/tests#etho/g)).toHaveLength(1);
+  });
+  it("shows newly published homepage test records without inventing a details anchor", async () => {
+    state.records.set("custom-dashboard-test", {
+      ...blankOffer(777),
+      id: "custom-dashboard-test",
+      title: "اختبار منشور من لوحة الإدارة",
+      category: "tests",
+      delivery: "general",
+      status: "published",
+      description: "وصف محفوظ لا يأتي من البطاقات المحلية",
+      price: { status: "known", amountUsd: 18 },
+      variants: [{ ...newVariant("general"), price: { status: "known", amountUsd: 18 }, availability: "available" }],
+      availability: "available",
+    });
+    const home = renderToStaticMarkup(await Home());
+    expect(home).toContain("اختبار منشور من لوحة الإدارة");
+    expect(home).toContain("وصف محفوظ لا يأتي من البطاقات المحلية");
+    expect(home).toContain("18$");
+    expect(home).not.toContain("/tests#custom-dashboard-test");
   });
   it("keeps compass pricing records out of the approved homepage and compass image galleries", async () => {
     const offer: AdminOffer = { ...blankOffer(1000), title: "عنصر بوصلة جديد", category: "compass", status: "published" };

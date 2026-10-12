@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { SiteHeader } from "@/components/site-header";
 import "./globals.css";
+import "./focused-refinements.css";
 
 export const metadata: Metadata = {
   title: "عروض زيزي",

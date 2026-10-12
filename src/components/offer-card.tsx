@@ -16,12 +16,14 @@ const variantMatchesFormat = (title: string, filter: CoachingFormatFilter) =>
 export function OfferCard({
   offer,
   href,
+  actionLabel = "التفاصيل",
   formatFilter,
   onImageOpen,
   image,
 }: {
   offer: DisplayOffer;
   href?: string;
+  actionLabel?: string;
   formatFilter?: CoachingFormatFilter;
   onImageOpen?: (opener: HTMLButtonElement) => void;
   image?: { src: string; width: number; height: number; alt: string };
@@ -91,13 +93,13 @@ export function OfferCard({
         {offer.badge ? <span className="offer-promo-badge">{offer.badge}</span> : null}
       </div> : null}
       <div className="offer-card-body">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="eyebrow">{offer.category === "programs" ? "برمجة" : formatLabel(offer.format)}</p>
+        <div className="offer-card-title-row">
           {displayAvailability ? (
             <span className={cn("status-badge", `status-${displayAvailabilityStatus}`)}>{displayAvailability}</span>
           ) : null}
+          <h3 className="text-xl font-bold">{offer.title}</h3>
         </div>
-        <h3 className="text-xl font-bold">{offer.title}</h3>
+        <p className="eyebrow">{offer.category === "programs" ? "برمجة" : formatLabel(offer.format)}</p>
         {offer.summary ? <p className="text-sm leading-7 text-muted">{offer.summary}</p> : null}
         {offer.bullets?.length ? (
           <ul className="offer-bullets">
@@ -142,7 +144,7 @@ export function OfferCard({
           </div>
           {href ? (
             <Link href={href} className="secondary-action">
-              التفاصيل
+              {actionLabel}
             </Link>
           ) : null}
         </div>

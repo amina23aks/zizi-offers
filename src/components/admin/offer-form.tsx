@@ -8,6 +8,7 @@ import { getAsset } from "@/data/catalog";
 import { adminOfferSchema, type AdminOffer } from "@/lib/admin-offer";
 import { activeVariants, categories, deliveryLabels, editorPreview, inferDelivery, standardIds, type Delivery, type Variant } from "@/lib/offer-editor";
 import { authorizedFetch } from "@/lib/admin-fetch";
+import { AdminConfirmDialog } from "./admin-confirm-dialog";
 
 type Errors = Record<string, string>;
 const availabilityOptions = { unknown: "غير محدد", available: "متاح", unavailable: "غير متاح", completed: "مكتمل" } as const;
@@ -20,6 +21,8 @@ export function OfferForm({ initial, user, busy, onSave, onDirty }: { initial: A
   const [extraErrors, setExtraErrors] = useState<Errors>({});
   const validateExtra = (key: string, error: string) => setExtraErrors((current) => ({ ...current, [key]: error }));
   const [saveError, setSaveError] = useState("");
+  const [pendingSave, setPendingSave] = useState<AdminOffer | null>(null);
+  const [confirming, setConfirming] = useState(false);
   const [uploading, setUploading] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const saving = useRef(false);
@@ -34,12 +37,17 @@ export function OfferForm({ initial, user, busy, onSave, onDirty }: { initial: A
   const errorFor = (path: string) => errors[path] ? <small className="admin-field-error" role="alert" id={`error-${path}`}>{errors[path]}</small> : null;
   const invalid = (path: string) => ({ "aria-invalid": Boolean(errors[path]), "aria-describedby": errors[path] ? `error-${path}` : undefined });
 
+  async function runSave(next: AdminOffer, options: { unpublish?: boolean } = {}) {
+    saving.current = true; setErrors({}); setSaveError("");
+    try { await onSave(next, options); setPendingSave(null); } catch (caught) { setSaveError(caught instanceof Error ? caught.message : "فشل الحفظ. بقيت التعديلات في النموذج."); throw caught; }
+    finally { saving.current = false; }
+  }
+
   async function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault(); if (disabled || saving.current) return;
+    event.preventDefault(); if (disabled || saving.current || confirming) return;
     const button = (event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null;
     const requestedDraft = button?.value === "draft";
     const unpublish = initial.status === "published" && requestedDraft;
-    if (unpublish && !window.confirm("سيصبح العرض مسودة ولن يظهر في الموقع العام. هل تريدين إلغاء النشر؟")) return;
     const status = button?.value === "published" || (initial.status === "published" && !unpublish) ? "published" : "draft";
     if (Object.entries(extraErrors).some(([key, error]) => Boolean(error) && (key !== "capacity" || groupActive))) { setSaveError("راجعي المدة أو عدد المشاركين قبل الحفظ."); return; }
     const parsed = adminOfferSchema.safeParse({ ...value, status });
@@ -49,9 +57,15 @@ export function OfferForm({ initial, user, busy, onSave, onDirty }: { initial: A
       setErrors(next); setSaveError("راجعي الحقول المحددة قبل الحفظ.");
       requestAnimationFrame(() => formRef.current?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus()); return;
     }
-    saving.current = true; setErrors({}); setSaveError("");
-    try { await onSave(parsed.data, { unpublish }); } catch (caught) { setSaveError(caught instanceof Error ? caught.message : "فشل الحفظ. بقيت التعديلات في النموذج."); }
-    finally { saving.current = false; }
+    if (unpublish) { setPendingSave(parsed.data); return; }
+    await runSave(parsed.data);
+  }
+
+  async function confirmUnpublish() {
+    if (!pendingSave || saving.current || confirming) return;
+    setConfirming(true);
+    try { await runSave(pendingSave, { unpublish: true }); } catch {}
+    finally { setConfirming(false); }
   }
 
   return <div className="admin-editor-with-preview">
@@ -64,7 +78,7 @@ export function OfferForm({ initial, user, busy, onSave, onDirty }: { initial: A
       </fieldset>
       <fieldset disabled={busy}><legend>صورة العرض</legend>
         <ImageUpload image={offer.image} title={offer.title} user={user} disabled={busy} onChange={(image) => patch({ image })} onBusy={setUploading} onPending={markDirty} />
-        <label>وصف الصورة <small>(اختياري؛ اسم العرض هو الافتراضي)</small><input disabled={uploading} maxLength={300} value={offer.image.alt} placeholder={offer.title} onChange={(e) => patch({ image: { ...offer.image, alt: e.target.value } })} /></label>
+        <label>وصف الصورة<input disabled={uploading} maxLength={300} value={offer.image.alt} placeholder={offer.title} onChange={(e) => patch({ image: { ...offer.image, alt: e.target.value } })} /></label>
         <small>الصورة اختيارية. رفع الصورة لا يحفظ العرض.</small>{errorFor("image")}
       </fieldset>
       <fieldset disabled={disabled}><legend>طريقة التقديم والأسعار</legend>
@@ -83,10 +97,23 @@ export function OfferForm({ initial, user, busy, onSave, onDirty }: { initial: A
       </fieldset>
       <div className="admin-save-actions"><p>حالة النشر الحالية: <strong>{initial.status === "published" ? "منشور" : "مسودة"}</strong></p><small>حالة النشر مستقلة عن توفر العرض.</small>
         {saveError && <p className="admin-error" role="alert">{saveError}</p>}
-        <div><button type="submit" value="draft" className="admin-secondary" disabled={disabled}>{initial.status === "published" ? "إلغاء النشر وحفظ مسودة" : "حفظ مسودة"}</button><button type="submit" value="published" className="admin-primary" disabled={disabled}>{busy ? "جارٍ الحفظ…" : initial.status === "published" ? "حفظ التغييرات" : "نشر العرض"}</button></div>
+        <div><button type="submit" value="draft" className="admin-secondary" disabled={disabled || confirming}>{initial.status === "published" ? "إلغاء النشر وحفظ مسودة" : "حفظ مسودة"}</button><button type="submit" value="published" className="admin-primary" disabled={disabled || confirming}>{busy ? "جارٍ الحفظ…" : initial.status === "published" ? "حفظ التغييرات" : "نشر العرض"}</button></div>
       </div>
     </form>
     <aside className="admin-card-preview" aria-label="معاينة البطاقة"><h3>معاينة البطاقة</h3><OfferCard offer={editorPreview(value)} image={offer.image.kind === "cloudinary" ? { src: offer.image.secureUrl, width: offer.image.width, height: offer.image.height, alt: offer.image.alt || offer.title } : offer.image.kind === "local" && getAsset(offer.image.assetId) ? { src: getAsset(offer.image.assetId)!.publicPath, width: getAsset(offer.image.assetId)!.width, height: getAsset(offer.image.assetId)!.height, alt: offer.image.alt || offer.title } : undefined} /></aside>
+    <AdminConfirmDialog
+      open={Boolean(pendingSave)}
+      busy={confirming}
+      title="إلغاء نشر العرض؟"
+      confirmLabel="إلغاء النشر"
+      cancelLabel="إلغاء"
+      danger
+      onCancel={() => { if (!confirming) setPendingSave(null); }}
+      onConfirm={confirmUnpublish}
+    >
+      <p>سيصبح العرض مسودة ولن تظهر بطاقته في الموقع العام.</p>
+      {offer.category === "tests" ? <p>صفحة الاختبارات المتخصصة تبقى محفوظة كما هي؛ التغيير يخص بطاقة العرض في الرئيسية فقط.</p> : null}
+    </AdminConfirmDialog>
   </div>;
 }
 
@@ -172,7 +199,6 @@ function ImageUpload({ image, title, user, disabled, onChange, onBusy, onPending
 }
 
 function BadgeField({ value, onChange }: { value: string; onChange: (value: string) => void }) {
-  const [kind, setKind] = useState(value === "جديد" ? "new" : value === "مميز" ? "featured" : value ? "custom" : "none");
-  const [custom, setCustom] = useState(value && !["جديد", "مميز"].includes(value) ? value : "");
-  return <div><label>شارة البطاقة<select value={kind} onChange={(e) => { setKind(e.target.value); onChange(e.target.value === "new" ? "جديد" : e.target.value === "featured" ? "مميز" : e.target.value === "custom" ? custom : ""); }}><option value="none">بدون شارة</option><option value="new">جديد</option><option value="featured">مميز</option><option value="custom">نص مخصص</option></select></label>{kind === "custom" && <label>نص الشارة<input maxLength={20} value={custom} onChange={(e) => { setCustom(e.target.value); onChange(e.target.value); }} /></label>}</div>;
+  const unsupported = value && value !== "جديد" ? value : "";
+  return <div className="admin-badge-field"><label>شارة البطاقة<select value={value === "جديد" ? "new" : "none"} onChange={(e) => onChange(e.target.value === "new" ? "جديد" : "")}><option value="none">بدون شارة</option><option value="new">جديد</option></select></label>{unsupported ? <small>القيمة المحفوظة حاليًا: {unsupported}. ستبقى كما هي ما لم تختاري شارة جديدة أو بدون شارة.</small> : null}</div>;
 }
