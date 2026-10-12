@@ -80,6 +80,7 @@ describe("one published catalogue with reviewed migration", () => {
       status: "published",
       title: "اختبار الأكواد المنشور",
       description: "وصف محفوظ من لوحة الإدارة",
+      topics: ["محور محفوظ أول", "محور محفوظ ثان"],
       badge: "جديد",
       image: { kind: "cloudinary", secureUrl: "https://res.cloudinary.com/test/image/upload/codes.png", publicId: "test/codes", width: 640, height: 640, alt: "غلاف محفوظ" },
       price: { status: "known", amountUsd: 12 },
@@ -88,8 +89,11 @@ describe("one published catalogue with reviewed migration", () => {
     const home = renderToStaticMarkup(await Home());
     expect(home).toContain("اختبار الأكواد المنشور");
     expect(home).toContain("وصف محفوظ من لوحة الإدارة");
+    expect(home).toContain("محور محفوظ أول");
+    expect(home).toContain("محور محفوظ ثان");
     expect(home).toContain("جديد");
     expect(home).toContain("codes.png");
+    expect(home).not.toContain("اختبار الأكواد الدماغية ABCD");
   });
   it("does not resurrect stale local homepage test cards after a Firestore test offer is unpublished", async () => {
     state.records.set("etho", { ...state.records.get("etho")!, status: "draft", title: "إيثو محفوظ غير منشور" });
@@ -101,7 +105,17 @@ describe("one published catalogue with reviewed migration", () => {
     state.records.set("etho", { ...state.records.get("etho")!, status: "published", title: "إيثو محفوظ منشور" });
     const republishedHome = renderToStaticMarkup(await Home());
     expect(republishedHome).toContain("إيثو محفوظ منشور");
-    expect(republishedHome.match(/\/tests#etho/g)).toHaveLength(1);
+    expect(republishedHome).not.toContain("/tests#etho");
+  });
+  it("keeps an approved empty homepage test list empty instead of restoring local defaults", async () => {
+    for (const [id, record] of state.records) {
+      if (record.category === "tests") state.records.set(id, { ...record, status: "draft" });
+    }
+    state.allowEmpty = true;
+    const home = renderToStaticMarkup(await Home());
+    expect(home).not.toContain("اختبار الأكواد الدماغية ABCD");
+    expect(home).not.toContain("اختبار الإيثو");
+    expect(home).not.toContain("اختبار العقليات");
   });
   it("shows newly published homepage test records without inventing a details anchor", async () => {
     state.records.set("custom-dashboard-test", {
