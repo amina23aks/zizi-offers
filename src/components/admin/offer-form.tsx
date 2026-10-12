@@ -78,8 +78,7 @@ export function OfferForm({ initial, user, busy, onSave, onDirty }: { initial: A
       </fieldset>
       <fieldset disabled={busy}><legend>صورة العرض</legend>
         <ImageUpload image={offer.image} title={offer.title} user={user} disabled={busy} onChange={(image) => patch({ image })} onBusy={setUploading} onPending={markDirty} />
-        <label>وصف الصورة<input disabled={uploading} maxLength={300} value={offer.image.alt} placeholder={offer.title} onChange={(e) => patch({ image: { ...offer.image, alt: e.target.value } })} /></label>
-        <small>الصورة اختيارية. رفع الصورة لا يحفظ العرض.</small>{errorFor("image")}
+        {errorFor("image")}
       </fieldset>
       <fieldset disabled={disabled}><legend>طريقة التقديم والأسعار</legend>
         <label>طريقة التقديم<select value={delivery} onChange={(e) => { const next = e.target.value as Delivery; setBank((current) => { const additions = activeVariants(current, next).filter((v) => !current.some((old) => old.id === v.id)); return [...current, ...additions]; }); setDelivery(next); markDirty(); }}>{Object.entries(deliveryLabels).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></label>
@@ -139,7 +138,7 @@ function DurationField({ label, value, onChange, onValidity }: { label: string; 
   const [unit, setUnit] = useState(match?.[2] ?? "ساعة");
   const [note, setNote] = useState(match ? "" : value);
   return <div className="admin-duration"><label>{label} <small>(اختياري)</small><select aria-label={`${label}: طريقة الإدخال`} value={mode} onChange={(e) => { setMode(e.target.value); onValidity(e.target.value === "number" && amount && Number(amount) <= 0 ? "المدة يجب أن تكون موجبة." : ""); onChange(e.target.value === "note" ? note : amount ? `${amount} ${unit}` : ""); }}><option value="note">وصف المدة</option><option value="number">رقم ووحدة</option></select></label>
-    {mode === "note" ? <input aria-label={label} placeholder="مثل: 8 ساعات غير متواصلة" maxLength={160} value={note} onChange={(e) => { setNote(e.target.value); onChange(e.target.value); }} /> : <div className="admin-grid"><input aria-label={`${label}: العدد`} type="number" dir="ltr" min={0.01} step="any" value={amount} onChange={(e) => { setAmount(e.target.value); onValidity(e.target.value && Number(e.target.value) <= 0 ? "المدة يجب أن تكون موجبة." : ""); onChange(e.target.value ? `${e.target.value} ${unit}` : ""); }} /><select aria-label={`${label}: الوحدة`} value={unit} onChange={(e) => { setUnit(e.target.value); onChange(amount ? `${amount} ${e.target.value}` : ""); }}>{units.map((item) => <option key={item}>{item}</option>)}</select></div>}
+    {mode === "note" ? <input aria-label={label} placeholder="مثل: 8 ساعات غير متواصلة" maxLength={160} value={note} onChange={(e) => { setNote(e.target.value); onChange(e.target.value); }} /> : <div className="admin-grid"><input aria-label={`${label}: العدد`} type="number" dir="ltr" min={0.01} step="any" value={amount} onChange={(e) => { setAmount(e.target.value); onValidity(e.target.value && Number(amount) <= 0 ? "المدة يجب أن تكون موجبة." : ""); onChange(e.target.value ? `${e.target.value} ${unit}` : ""); }} /><select aria-label={`${label}: الوحدة`} value={unit} onChange={(e) => { setUnit(e.target.value); onChange(amount ? `${amount} ${e.target.value}` : ""); }}>{units.map((item) => <option key={item}>{item}</option>)}</select></div>}
     {mode === "number" && amount && Number(amount) <= 0 && <small className="admin-field-error">المدة يجب أن تكون موجبة.</small>}
   </div>;
 }
@@ -200,5 +199,5 @@ function ImageUpload({ image, title, user, disabled, onChange, onBusy, onPending
 
 function BadgeField({ value, onChange }: { value: string; onChange: (value: string) => void }) {
   const unsupported = value && value !== "جديد" ? value : "";
-  return <div className="admin-badge-field"><label>شارة البطاقة<select value={value === "جديد" ? "new" : "none"} onChange={(e) => onChange(e.target.value === "new" ? "جديد" : "")}><option value="none">بدون شارة</option><option value="new">جديد</option></select></label>{unsupported ? <small>القيمة المحفوظة حاليًا: {unsupported}. ستبقى كما هي ما لم تختاري شارة جديدة أو بدون شارة.</small> : null}</div>;
+  return <div className="admin-badge-field"><label>شارة البطاقة<select value={unsupported ? "__legacy__" : value === "جديد" ? "new" : "none"} onChange={(e) => onChange(e.target.value === "new" ? "جديد" : "")}><option value="none">بدون شارة</option><option value="new">جديد</option></select></label>{unsupported ? <small>القيمة المحفوظة حاليًا: {unsupported}. ستبقى كما هي ما لم تختاري شارة جديدة أو بدون شارة.</small> : null}</div>;
 }
