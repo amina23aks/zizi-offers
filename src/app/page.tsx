@@ -13,7 +13,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import { OfferCardCollection } from "@/components/offer-card-collection";
 import { ZoomableImage } from "@/components/zoomable-image";
-import { compassPricing, formatAvailability, formatPrice, getAsset, homeSections, publicCategories, type DisplayOffer, ziziAbout } from "@/data/catalog";
+import { compassPricing, getAsset, homeSections, publicCategories, type DisplayOffer, ziziAbout } from "@/data/catalog";
 import { getPublicOffers } from "@/lib/public-offers";
 import { ziziIdentityAssetIds } from "@/data/assets";
 
@@ -33,32 +33,6 @@ const bookingContacts = [
   { country: "المغرب", href: "https://t.me/Slowallday" },
   { country: "الإمارات", href: "https://t.me/lamer_iam" },
 ] as const;
-
-const testDetailTargets: Record<string, string> = {
-  "codes-abcd": "/tests#codes",
-  etho: "/tests#etho",
-  mindsets: "/tests#mindsets",
-  "geometric-spectra": "/tests#spectra",
-  "triple-test": "/tests#behavioral-inclinations",
-};
-
-const behavioralPriceRows = [
-  { id: "drama-triangle", title: "مثلث الدراما" },
-  { id: "four-roles", title: "تشخيص الأدوار الأربعة" },
-  { id: "psychological-behavior", title: "السلوك النفسي" },
-] as const;
-
-function behavioralPrices(offer: DisplayOffer) {
-  return behavioralPriceRows.flatMap((row) => {
-    const variant = offer.variants?.find((item) => item.id === row.id || item.title === row.title);
-    return variant ? [{ title: row.title, price: formatPrice(variant.price).label }] : [];
-  });
-}
-
-function homeTestPriceRows(offer: DisplayOffer) {
-  if (offer.id === "triple-test") return behavioralPrices(offer);
-  return [];
-}
 
 export default async function Home() {
   const savedOffers = await getPublicOffers();
@@ -152,12 +126,9 @@ export default async function Home() {
                     const title = saved?.title ?? card.title;
                     const summary = saved?.summary ?? ("summary" in card ? card.summary : null);
                     const availabilityLabel = saved?.availabilityLabel ?? ("availabilityLabel" in card ? card.availabilityLabel : null);
-                    const prices = saved ? homeTestPriceRows(saved) : [];
-                    const priceLabel = prices.length
-                      ? null
-                      : saved?.priceLabel ?? ("priceLabel" in card ? card.priceLabel : null);
+                    const priceLabel = saved?.priceLabel ?? ("priceLabel" in card ? card.priceLabel : null);
                     const priceClarification = saved?.priceClarification ?? ("priceClarification" in card ? card.priceClarification : null);
-                    const href = saved ? testDetailTargets[saved.id] : "href" in card ? card.href : undefined;
+                    const href = saved ? undefined : "href" in card ? card.href : undefined;
                     const key = saved?.id ?? card.id;
                     return [(
                       <article key={key} className="home-overview-card home-test-card">
@@ -178,19 +149,14 @@ export default async function Home() {
                         <div className="home-test-title-row">
                           {availabilityLabel ? (
                             <em className={saved ? `status-${saved.availability}` : undefined}>{availabilityLabel}</em>
-                          ) : saved ? formatAvailability(saved.availability) : null}
+                          ) : null}
                           <strong>{title}</strong>
                         </div>
                         {summary ? <span>{summary}</span> : null}
-                        {prices.length ? (
-                          <div className="test-price-rows" aria-label="أسعار اختبارات الميولات السلوكية">
-                            {prices.map((item) => (
-                              <span key={item.title}>
-                                <span>{item.title}</span>
-                                <b dir="ltr">{item.price}</b>
-                              </span>
-                            ))}
-                          </div>
+                        {saved?.bullets?.length ? (
+                          <ul className="home-test-topics">
+                            {saved.bullets.map((topic) => <li key={topic}>{topic}</li>)}
+                          </ul>
                         ) : null}
                         <div className="mini-meta home-test-footer">
                           <span className="home-test-footer-left">
