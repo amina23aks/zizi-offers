@@ -27,6 +27,7 @@ import { POST } from "../src/app/api/admin/offers/route";
 import { PUT } from "../src/app/api/admin/offers/[id]/route";
 import Home from "../src/app/page";
 import CompassPage from "../src/app/compass/page";
+import TestsPage from "../src/app/tests/page";
 import { CategoryPage } from "../src/components/category-page";
 import { OfferCard } from "../src/components/offer-card";
 
@@ -135,6 +136,19 @@ describe("one published catalogue with reviewed migration", () => {
     expect(home).toContain("وصف محفوظ لا يأتي من البطاقات المحلية");
     expect(home).toContain("18$");
     expect(home).not.toContain("/tests#custom-dashboard-test");
+  });
+  it("keeps the specialized tests page scoped to its approved interactive records", async () => {
+    state.records.set("custom-dashboard-test", {
+      ...blankOffer(777),
+      id: "custom-dashboard-test",
+      title: "اختبار منشور من لوحة الإدارة",
+      category: "tests",
+      delivery: "general",
+      status: "published",
+      variants: [{ ...newVariant("general"), price: { status: "known", amountUsd: 18 }, availability: "available" }],
+    });
+    const testsPage = renderToStaticMarkup(await TestsPage());
+    expect(testsPage).not.toContain("اختبار منشور من لوحة الإدارة");
   });
   it("keeps compass pricing records out of the approved homepage and compass image galleries", async () => {
     const offer: AdminOffer = { ...blankOffer(1000), title: "عنصر بوصلة جديد", category: "compass", status: "published" };
