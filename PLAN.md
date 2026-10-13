@@ -206,3 +206,10 @@ Customer accounts, calendar, payments, private feedback, start dates, compass PD
 - The shared offer card keeps approved image-card badge placement while image-less cards anchor the badge to the physical top-right outer card edge without adding a blank media placeholder.
 - Added `firestore.indexes.json` with no composite indexes because the reviewed public query only filters by `status == "published"`; `firebase.json` now points at the reviewed index manifest.
 - Verification passed for lint, typecheck, production build, non-emulator Vitest coverage, and a browser check that signed-out `/admin` does not mount the dashboard. Firestore rules tests remain blocked locally because Java is not installed and no emulator is listening on `127.0.0.1:8080`.
+
+## 13 October focused dashboard options
+
+- Added authorized saved-offer deletion with confirmation, independent overall availability, on-demand pricing, structured optional package presentation, verified homepage-test anchors, shared RTL native selects, and light payment tiles in dark mode.
+- Catalogue deletion/unpublication no longer removes specialized test sections. Shared images, compass galleries, fingerprint names, hero and original test poster remain intact.
+- Verified lint/types/build, 66 application fixture tests, 13 real emulator rules tests and Chromium fixture workflows at 390/1440 px. See docs/dashboard-focused-options.md for evidence and live-verification limits.
+- Prepared a narrow triple-test package command with private field backup, concurrent-edit guard and preservation/readback checks. Live record identification/application remains blocked by absent server credentials. No migration, bulk publication or production deployment ran.

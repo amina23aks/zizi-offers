@@ -6,6 +6,7 @@ import { Clock, MagnifyingGlassPlus, User, UsersThree } from "@phosphor-icons/re
 import type { CSSProperties } from "react";
 import { formatAvailability, formatLabel, formatPrice, getAsset, type DisplayOffer } from "@/data/catalog";
 import { matchesVariant } from "@/lib/public-offer-model";
+import { PackageItems, PackageFooter } from "./package-pricing";
 import { cn } from "@/lib/utils";
 
 export type CoachingFormatFilter = "group" | "individual";
@@ -39,10 +40,8 @@ export function OfferCard({
     label: offer.priceLabel,
     clarification: offer.priceClarification,
   };
-  const displayAvailability = matchingVariant?.availability
-    ? formatAvailability(matchingVariant.availability)
-    : offer.availabilityLabel;
-  const displayAvailabilityStatus = matchingVariant?.availability ?? offer.availability;
+  const displayAvailability = offer.availabilityLabel;
+  const displayAvailabilityStatus = offer.availability;
   const meta = [
     offer.programDuration ? { icon: "clock", label: `مدة البرنامج: ${offer.programDuration}` } : null,
     offer.sessionDuration ? { icon: "clock", label: `مدة الجلسة: ${offer.sessionDuration}` } : null,
@@ -135,10 +134,11 @@ export function OfferCard({
             ))}
           </div>
         ) : null}
+        <PackageItems presentation={offer.packagePresentation} />
         <div className="offer-card-footer">
           <div className="offer-price-block">
-            <p className="price-badge" dir="ltr">{displayPrice.label}</p>
-            {displayPrice.clarification ? (
+            {offer.packagePresentation?.enabled ? <PackageFooter presentation={offer.packagePresentation} /> : <p className="price-badge" dir={displayPrice.label === "حسب الطلب" ? "rtl" : "ltr"}>{displayPrice.label}</p>}
+            {!offer.packagePresentation?.enabled && displayPrice.clarification ? (
               <p className="text-sm text-muted">{displayPrice.clarification}</p>
             ) : null}
           </div>

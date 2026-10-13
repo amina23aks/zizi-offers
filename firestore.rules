@@ -7,8 +7,8 @@ service cloud.firestore {
     function validVariantPrice(price) {
       return price is map
         && price.keys().hasOnly(['amountUsd', 'status', 'displayWhenUnknown', 'clarification'])
-        && price.status in ['known', 'unknown', 'free']
-        && ((price.status == 'unknown' && price.amountUsd == null)
+        && price.status in ['known', 'unknown', 'free', 'on-demand']
+        && ((price.status in ['unknown', 'on-demand'] && price.amountUsd == null)
           || (price.status == 'free' && price.amountUsd == 0)
           || (price.status == 'known' && price.amountUsd is number && price.amountUsd >= 0))
         && (!('displayWhenUnknown' in price) || (price.status == 'unknown' && price.displayWhenUnknown == '00'))
@@ -17,8 +17,8 @@ service cloud.firestore {
     function validOfferPrice(price) {
       return price is map
         && price.keys().hasOnly(['amountUsd', 'status', 'displayWhenUnknown', 'clarification'])
-        && price.status in ['known', 'unknown', 'free', 'variant']
-        && ((price.status == 'unknown' && price.amountUsd == null)
+        && price.status in ['known', 'unknown', 'free', 'on-demand', 'variant']
+        && ((price.status in ['unknown', 'on-demand'] && price.amountUsd == null)
           || (price.status == 'variant' && price.amountUsd == null)
           || (price.status == 'free' && price.amountUsd == 0)
           || (price.status == 'known' && price.amountUsd is number && price.amountUsd >= 0))

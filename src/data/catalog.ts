@@ -30,7 +30,7 @@ export const formatAvailability = (availability: Availability) => {
 export const formatPrice = (price: OfferPrice) => {
   const value = renderPriceValue(price);
   return {
-    label: price.status === "free" ? "مجاني" : value === null ? "حسب الخيار" : `${value}$`,
+    label: price.status === "on-demand" ? "حسب الطلب" : price.status === "free" ? "مجاني" : value === null ? "حسب الخيار" : `${value}$`,
     clarification: price.status === "unknown" ? price.clarification ?? "السعر غير محدد" : null,
   };
 };

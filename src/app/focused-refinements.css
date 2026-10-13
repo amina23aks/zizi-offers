@@ -1,31 +1,28 @@
 /* Focused dashboard and public card refinements. */
-.admin-edit-form select,
-.admin-filters select {
+.admin-edit-form .admin-select,
+.admin-filters .admin-select {
   direction: rtl;
   min-height: 46px;
   appearance: none;
   background:
-    linear-gradient(45deg, transparent 50%, var(--muted) 50%) calc(100% - 1.05rem) 50% / 6px 6px no-repeat,
-    linear-gradient(135deg, var(--muted) 50%, transparent 50%) calc(100% - .75rem) 50% / 6px 6px no-repeat,
+    linear-gradient(45deg, transparent 50%, var(--muted) 50%) .75rem 50% / 6px 6px no-repeat,
+    linear-gradient(135deg, var(--muted) 50%, transparent 50%) 1.05rem 50% / 6px 6px no-repeat,
     var(--surface);
-  padding-inline: 1rem 2.2rem;
+  padding-left: 2.7rem;
+  padding-right: 1rem;
+  text-align: right;
+  width: 100%;
+  min-width: 0;
+  text-overflow: ellipsis;
 }
 
-.admin-edit-form select:focus-visible,
-.admin-filters select:focus-visible,
+.admin-edit-form .admin-select:focus-visible,
+.admin-filters .admin-select:focus-visible,
 .admin-primary:focus-visible,
 .admin-secondary:focus-visible,
 .admin-danger:focus-visible {
   outline: 3px solid color-mix(in srgb, var(--brand-blue) 42%, transparent);
   outline-offset: 2px;
-}
-
-.dark .admin-edit-form select,
-.dark .admin-filters select {
-  background:
-    linear-gradient(45deg, transparent 50%, var(--secondary) 50%) calc(100% - 1.05rem) 50% / 6px 6px no-repeat,
-    linear-gradient(135deg, var(--secondary) 50%, transparent 50%) calc(100% - .75rem) 50% / 6px 6px no-repeat,
-    var(--surface);
 }
 
 .admin-badge-field {
@@ -341,3 +338,26 @@
     --bubble-y: 44px;
   }
 }
+
+/* Dashboard selectors use AdminSelect, retaining the native accessible popup. */
+.admin-select { max-width: 100%; }
+.admin-package-fields { display: grid; gap: .8rem; min-width: 0; }
+.admin-edit-form .admin-checkbox { display: flex; align-items: center; gap: .6rem; }
+.admin-edit-form .admin-checkbox input { width: 1.2rem; min-height: 1.2rem; height: 1.2rem; flex: 0 0 auto; }
+.admin-delete-offer { margin-block: .6rem 1rem; }
+.admin-dialog { max-height: calc(100dvh - 2rem); overflow-y: auto; }
+.offer-package-items { display: grid; gap: .5rem; margin: 0; padding: 0; list-style: none; min-width: 0; }
+.offer-package-items li { display: flex; align-items: center; justify-content: space-between; gap: .6rem; padding: .55rem .7rem; border: 1px solid var(--border); border-radius: 14px; background: color-mix(in srgb, var(--brand-blue) 6%, var(--surface)); }
+.offer-package-items strong { min-width: 0; overflow-wrap: anywhere; text-align: right; }
+.offer-package-items li > span { display: grid; gap: .2rem; flex: 0 0 auto; max-width: 45%; }
+.offer-package-items small { font-size: .75rem; overflow-wrap: anywhere; }
+.offer-package-total { display: inline-flex; flex-wrap: wrap; align-items: center; gap: .4rem; direction: rtl; font-weight: 900; }
+.offer-package-total small { flex-basis: 100%; font-weight: 500; }
+.home-test-card { display: flex; flex-direction: column; }
+.home-test-footer { direction: ltr; margin-top: auto; width: 100%; }
+.home-test-footer-left { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-start; gap: .7rem; direction: ltr; width: 100%; }
+.home-test-footer-left > * { direction: rtl; }
+.home-test-details { flex: 0 0 auto; }
+/* Offset anchor targets for both the site header and the wrapping test navbar. */
+.tests-page > .page-section { scroll-margin-top: calc(var(--header-height) + 5.5rem); }
+@media (max-width: 480px) { .tests-page > .page-section { scroll-margin-top: calc(var(--header-height) + 8rem); } }

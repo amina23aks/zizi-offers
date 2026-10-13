@@ -8,6 +8,7 @@ import { adminOfferSchema, type AdminOffer } from "@/lib/admin-offer";
 import { blankOffer, categories } from "@/lib/offer-editor";
 import { getFirebaseAuth } from "@/lib/firebase/client";
 import { authorizedFetch } from "@/lib/admin-fetch";
+import { AdminSelect } from "./admin-select";
 import { AdminConfirmDialog } from "./admin-confirm-dialog";
 import { OfferForm } from "./offer-form";
 
@@ -24,6 +25,8 @@ export function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [listError, setListError] = useState("");
   const [saving, setSaving] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<AdminOffer | null>(null);
+  const [deleteError, setDeleteError] = useState("");
   const [diagnostics, setDiagnostics] = useState<Diagnostic[]>([]);
   const saveLock = useRef(false);
   const dirty = useRef(false);
@@ -40,6 +43,7 @@ export function AdminDashboard() {
     setSearch("");
     setFilter("");
     setDiagnostics([]);
+    setDeleteTarget(null);
     dirty.current = false;
   }, []);
 
@@ -160,6 +164,22 @@ export function AdminDashboard() {
     } finally { saveLock.current = false; setSaving(false); }
   }
 
+  async function deleteOffer() {
+    if (!user || !deleteTarget || saveLock.current) return;
+    const id = deleteTarget.id;
+    saveLock.current = true; setSaving(true); setDeleteError(""); setMessage("");
+    try {
+      const response = await authorizedFetch(user, `/api/admin/offers/${encodeURIComponent(id)}`, { method: "DELETE" });
+      const body = await response.json();
+      if (!response.ok || body.deletedId !== id) throw new Error(body.error || "تعذر تأكيد حذف العرض. أعيدي تحميل القائمة قبل المحاولة.");
+      setOffers((current) => current.filter((offer) => offer.id !== id));
+      setDiagnostics((current) => current.filter((entry) => entry.id !== id));
+      dirty.current = false; setSelected(null); setDeleteTarget(null);
+      setMessage("تم حذف العرض وبطاقته العامة. الصور والمحتوى المتخصص محفوظة.");
+    } catch (caught) { setDeleteError(caught instanceof Error ? caught.message : "تعذر حذف العرض. حاولي مجددًا."); }
+    finally { saveLock.current = false; setSaving(false); }
+  }
+
   if (authState === "checking") {
     return <section className="admin-panel" aria-busy="true"><p role="status">جارٍ التحقق من صلاحية الإدارة…</p></section>;
   }
@@ -181,13 +201,21 @@ export function AdminDashboard() {
     <section className="admin-stats" aria-label="ملخص المحتوى">{[[offers.length, "إجمالي العروض"], [published, "منشور"], [offers.length - published, "مسودة"]].map(([count, label]) => <article key={label}><strong>{loading || listError ? "—" : count}</strong><span>{label}</span></article>)}</section>
     <div className="admin-columns">
       <section className="admin-panel" id="offers-list"><div className="admin-panel-heading"><h2>قائمة العروض</h2><button className="admin-primary compact" disabled={!user || loading || Boolean(listError) || saving} onClick={() => requestLeave(() => { dirty.current = false; setSelected(blankOffer(Math.min(100000, Math.max(-1, ...offers.map((o) => o.displayOrder)) + 1))); setEditorVersion((v) => v + 1); setMessage(""); })}>إضافة عرض</button></div>
-        <div className="admin-filters"><input aria-label="البحث" placeholder="ابحثي باسم العرض" value={search} onChange={(e) => setSearch(e.target.value)} /><select aria-label="تصفية حسب القسم" value={filter} onChange={(e) => setFilter(e.target.value)}><option value="">كل الأقسام</option>{Object.entries(categories).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></div>
+        <div className="admin-filters"><input aria-label="البحث" placeholder="ابحثي باسم العرض" value={search} onChange={(e) => setSearch(e.target.value)} /><AdminSelect aria-label="تصفية حسب القسم" value={filter} onChange={(e) => setFilter(e.target.value)}><option value="">كل الأقسام</option>{Object.entries(categories).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</AdminSelect></div>
         {loading ? <p role="status">جارٍ تحميل العروض…</p> : listError ? <p>قائمة العروض غير متاحة حاليًا.</p> : visible.length ? <ul className="admin-offer-list">{visible.map((offer) => <li key={offer.id}><button disabled={saving} aria-current={selected?.id === offer.id ? "true" : undefined} onClick={() => choose(offer)}><span><strong>{offer.title}</strong><small>{categories[offer.category]}</small></span><em data-status={offer.status}>{offer.status === "published" ? "منشور" : "مسودة"}</em></button></li>)}</ul> : <p className="admin-empty">لا توجد عروض مطابقة.</p>}
       </section>
       <section className="admin-panel admin-editor"><h2>{selected ? (offers.some((offer) => offer.id === selected.id) ? "تعديل العرض" : "عرض جديد") : "اختاري عرضًا للتعديل"}</h2>
+        {selected && offers.some((offer) => offer.id === selected.id) && <button type="button" className="admin-danger admin-delete-offer" disabled={saving} onClick={() => { setDeleteError(""); setDeleteTarget(selected); }}>حذف العرض</button>}
         {selected && user && <OfferForm key={`${selected.id}-${editorVersion}`} initial={selected} user={user} busy={saving} onSave={save} onDirty={(value) => { dirty.current = value; }} />}
       </section>
     </div>
+    <AdminConfirmDialog open={Boolean(deleteTarget)} busy={saving} title="حذف العرض؟" confirmLabel="حذف العرض نهائيًا" cancelLabel="إلغاء" danger
+      onCancel={() => { if (!saveLock.current) { setDeleteTarget(null); setDeleteError(""); } }} onConfirm={deleteOffer}>
+      <p>سيُحذف سجل «{deleteTarget?.title}» وبطاقته من القوائم العامة. لا يمكن التراجع عن الحذف.</p>
+      <p>لن تُحذف الصور المشتركة أو محتوى صفحة الاختبارات أو معارض البوصلة أو أسماء البصمات.</p>
+      <p>أي تعديلات غير محفوظة في النموذج لن تُحفظ.</p>
+      {deleteError && <p role="alert" className="admin-error">{deleteError}</p>}
+    </AdminConfirmDialog>
     <AdminConfirmDialog
       open={leaveDialogOpen}
       busy={false}

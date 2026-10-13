@@ -14,7 +14,7 @@ export type Availability =
   | "completed"
   | "unknown";
 
-export type PriceStatus = "known" | "unknown" | "variant" | "free";
+export type PriceStatus = "known" | "unknown" | "variant" | "free" | "on-demand";
 
 export type OfferFormat =
   | "test"
@@ -57,6 +57,12 @@ export type Offer = {
   priceBasis?: string;
   assetId?: ImageAssetId | null;
   variants?: readonly OfferVariant[];
+  packagePresentation?: {
+    enabled: boolean;
+    label: string;
+    items: readonly { id: string; title: string; price: OfferPrice }[];
+    fullPrice: OfferPrice | null;
+  };
   source: string;
   internalNotes?: string;
   availableThroughoutYear?: boolean;

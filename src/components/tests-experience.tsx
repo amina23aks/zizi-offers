@@ -37,6 +37,7 @@ const tripleOffer = getOffer("triple-test");
 const tripleVariants = tripleOffer && "variants" in tripleOffer ? tripleOffer.variants : [];
 
 export function TestsExperience({ savedOffers }: { savedOffers?: readonly DisplayOffer[] }) {
+  const savedTriple = savedOffers?.find((offer) => offer.id === "triple-test");
   const meta = (id: string, fallback?: TestMetaProps) => {
     const saved = savedOffers?.find((offer) => offer.id === id);
     if (!saved) return <TestMeta {...(fallback ?? { price: "12$" })} />;
@@ -49,7 +50,6 @@ export function TestsExperience({ savedOffers }: { savedOffers?: readonly Displa
       />
     );
   };
-  const present = (id: string) => !savedOffers || savedOffers.some((o) => o.id === id);
   const orderedCodes = useMemo(
     () => codeLayout.map((code) => codeCards.find((card) => card.code === code)!),
     [],
@@ -65,7 +65,7 @@ export function TestsExperience({ savedOffers }: { savedOffers?: readonly Displa
         ))}
       </nav>
 
-      {present("codes-abcd") && <>
+      <>
       <section id="codes" className="page-section scroll-mt-28">
         <SectionHeading
           title="الأكواد"
@@ -78,9 +78,9 @@ export function TestsExperience({ savedOffers }: { savedOffers?: readonly Displa
           ))}
         </div>
       </section>
-      </>}
+      </>
 
-      {present("etho") && <>
+      <>
       <section id="etho" className="page-section scroll-mt-28">
         <SectionHeading
           title="الإيثو"
@@ -89,9 +89,9 @@ export function TestsExperience({ savedOffers }: { savedOffers?: readonly Displa
         {meta("etho")}
         <CardFanCarousel items={ethoAnimals} />
       </section>
-      </>}
+      </>
 
-      {present("mindsets") && <>
+      <>
       <section id="mindsets" className="page-section scroll-mt-28">
         <SectionHeading
           title="العقليات"
@@ -100,9 +100,9 @@ export function TestsExperience({ savedOffers }: { savedOffers?: readonly Displa
         {meta("mindsets")}
         <MindsetSlider />
       </section>
-      </>}
+      </>
 
-      {present("geometric-spectra") && <>
+      <>
       <section id="spectra" className="page-section scroll-mt-28">
         <SectionHeading title="الأطياف" text="استكشفي تناسق استجاباتك خلال الأشهر الأخيرة وفق نموذج الطيف لدى زيزي." />
         {meta("geometric-spectra")}
@@ -123,21 +123,21 @@ export function TestsExperience({ savedOffers }: { savedOffers?: readonly Displa
           }))}
         />
       </section>
-      </>}
+      </>
 
-      {present("triple-test") && <>
+      <>
       <section id="behavioral-inclinations" className="page-section scroll-mt-28">
         <span id="triple" className="anchor-compat" aria-hidden="true" />
         <SectionHeading title="الاختبارات النفسية للميولات السلوكية" />
         <div className="triple-panel">
-          {savedOffers ? (
+          {savedTriple ? (
             <div className="triple-meta test-meta-row">
-              {savedOffers.find((offer) => offer.id === "triple-test")?.availabilityLabel ? (
+              {savedTriple.availabilityLabel ? (
                 <span className="status-badge status-available">
-                  {savedOffers.find((offer) => offer.id === "triple-test")?.availabilityLabel}
+                  {savedTriple.availabilityLabel}
                 </span>
               ) : null}
-              {(savedOffers.find((offer) => offer.id === "triple-test")?.variants ?? tripleVariants).map((variant) => (
+              {(savedTriple.variants ?? tripleVariants).map((variant) => (
                 <span key={variant.id} className="price-badge" dir="ltr">
                   {formatPrice(variant.price).label}
                 </span>
@@ -160,7 +160,7 @@ export function TestsExperience({ savedOffers }: { savedOffers?: readonly Displa
           />
         </div>
       </section>
-      </>}
+      </>
 
     </div>
   );

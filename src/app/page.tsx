@@ -11,6 +11,7 @@ import {
   Sparkle,
   TelegramLogo,
 } from "@phosphor-icons/react/dist/ssr";
+import { HomeTestCard } from "@/components/home-test-card";
 import { OfferCardCollection } from "@/components/offer-card-collection";
 import { ZoomableImage } from "@/components/zoomable-image";
 import { compassPricing, getAsset, homeSections, publicCategories, type DisplayOffer, ziziAbout } from "@/data/catalog";
@@ -123,54 +124,13 @@ export default async function Home() {
               {section.id === "tests"
                 ? (connected ? savedTestOffers : section.cards.map((card) => savedOfferById.get(card.offerId) ?? card)).flatMap((card) => {
                     const saved = "category" in card && card.category === "tests" ? card as DisplayOffer : null;
-                    const title = saved?.title ?? card.title;
-                    const summary = saved?.summary ?? ("summary" in card ? card.summary : null);
-                    const availabilityLabel = saved?.availabilityLabel ?? ("availabilityLabel" in card ? card.availabilityLabel : null);
-                    const priceLabel = saved?.priceLabel ?? ("priceLabel" in card ? card.priceLabel : null);
-                    const priceClarification = saved?.priceClarification ?? ("priceClarification" in card ? card.priceClarification : null);
-                    const href = saved ? undefined : "href" in card ? card.href : undefined;
-                    const key = saved?.id ?? card.id;
-                    return [(
-                      <article key={key} className="home-overview-card home-test-card">
-                        {saved?.image ? (
-                          <span className="offer-card-media-wrap home-test-media-wrap">
-                            <Image
-                              src={saved.image.src}
-                              alt={saved.image.alt}
-                              width={saved.image.width}
-                              height={saved.image.height}
-                              unoptimized={saved.image.src.startsWith("https://")}
-                              className="home-overview-image asset-image-contain"
-                              sizes="180px"
-                            />
-                            {saved.badge ? <em className="offer-promo-badge">{saved.badge}</em> : null}
-                          </span>
-                        ) : saved?.badge ? <em className="offer-promo-badge">{saved.badge}</em> : null}
-                        <div className="home-test-title-row">
-                          {availabilityLabel ? (
-                            <em className={saved ? `status-${saved.availability}` : undefined}>{availabilityLabel}</em>
-                          ) : null}
-                          <strong>{title}</strong>
-                        </div>
-                        {summary ? <span>{summary}</span> : null}
-                        {saved?.bullets?.length ? (
-                          <ul className="home-test-topics">
-                            {saved.bullets.map((topic) => <li key={topic}>{topic}</li>)}
-                          </ul>
-                        ) : null}
-                        <div className="mini-meta home-test-footer">
-                          <span className="home-test-footer-left">
-                            {priceLabel ? <b dir="ltr">{priceLabel}</b> : null}
-                            {href ? (
-                              <Link href={href} className="secondary-action home-test-details">
-                                عرض التفاصيل
-                              </Link>
-                            ) : null}
-                          </span>
-                        </div>
-                        {priceClarification ? <small>{String(priceClarification)}</small> : null}
-                      </article>
-                    )];
+                    if (saved) return [<HomeTestCard key={saved.id} offer={saved} />];
+                    if (!("offerId" in card)) return [];
+                    return [<HomeTestCard key={card.id} offer={{ id: card.offerId, title: card.title,
+                      summary: "summary" in card ? card.summary : undefined,
+                      availabilityLabel: "availabilityLabel" in card ? card.availabilityLabel : null,
+                      availability: "available", priceLabel: "priceLabel" in card ? card.priceLabel : undefined,
+                      priceClarification: "priceClarification" in card && typeof card.priceClarification === "string" ? card.priceClarification : null }} />];
                   })
                 : ((connected && !["fingerprints", "compass"].includes(section.id)) || "offers" in section)
                 ? (
