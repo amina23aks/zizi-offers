@@ -12,10 +12,10 @@ vi.mock("firebase-admin/firestore", () => ({ FieldValue: { serverTimestamp: () =
 vi.mock("../src/lib/firebase/admin", async () => {
   const { legacyInventoryHash } = await import("../src/lib/legacy-import");
   const collection = (name: string) => ({
-    doc: (id: string) => ({ get: async () => name === "catalogState" ? { exists: state.ready, data: () => state.ready ? { inventoryHash: legacyInventoryHash(), ...(state.allowEmpty ? { allowEmptyPublishedCatalog: true } : {}) } : undefined } : { exists: state.records.has(id), data: () => state.records.get(id) }, create: async (data: Record<string, unknown>) => state.records.set(id, data), set: async (data: Record<string, unknown>) => state.records.set(id, { ...state.records.get(id), ...data }), update: async (data: Record<string, unknown>) => state.records.set(id, { ...state.records.get(id), ...data }) }),
-    where: (field: string, op: string, value: string) => { state.queries.push([field, op, value]); return { get: async () => { const docs = [...state.records.entries()].filter(([, d]) => d.status === value).map(([id, data]) => ({ id, data: () => data })); return { docs, empty: docs.length === 0 }; } }; },
+    doc: (id: string) => ({ delete: async () => state.records.delete(id), get: async () => name === "catalogState" ? { exists: state.ready, data: () => state.ready ? { inventoryHash: legacyInventoryHash(), ...(state.allowEmpty ? { allowEmptyPublishedCatalog: true } : {}) } : undefined } : { exists: state.records.has(id), data: () => state.records.get(id) }, create: async (data: Record<string, unknown>) => state.records.set(id, data), set: async (data: Record<string, unknown>) => name === "catalogState" ? (state.allowEmpty = data.allowEmptyPublishedCatalog === true) : state.records.set(id, { ...state.records.get(id), ...data }), update: async (data: Record<string, unknown>) => state.records.set(id, { ...state.records.get(id), ...data }) }),
+    where: (field: string, op: string, value: string) => { state.queries.push([field, op, value]); return { limit: () => ({ get: async () => ({ docs: [...state.records.values()].filter((data) => data.status === value).slice(0, 2) }) }), get: async () => { const docs = [...state.records.entries()].filter(([, d]) => d.status === value).map(([id, data]) => ({ id, data: () => data })); return { docs, empty: docs.length === 0 }; } }; },
   });
-  return { getFirebaseAdmin: () => ({ auth: { verifyIdToken: async (token: string) => ({ admin: token === "admin" }) }, db: { collection, runTransaction: async (fn: (tx: unknown) => Promise<unknown>) => fn({ get: (ref: { get: () => unknown }) => ref.get(), set: (ref: { set: (data: unknown) => unknown }, data: unknown) => ref.set(data), update: (ref: { update: (data: unknown) => unknown }, data: unknown) => ref.update(data) }) } }) };
+  return { getFirebaseAdmin: () => ({ auth: { verifyIdToken: async (token: string) => ({ admin: token === "admin" }) }, db: { collection, runTransaction: async (fn: (tx: unknown) => Promise<unknown>) => fn({ get: (ref: { get: () => unknown }) => ref.get(), set: (ref: { set: (data: unknown) => unknown }, data: unknown) => ref.set(data), update: (ref: { update: (data: unknown) => unknown }, data: unknown) => ref.update(data), delete: (ref: { delete: () => unknown }) => ref.delete() }) } }) };
 });
 import { getPublicOffers } from "../src/lib/public-offers";
 import { legacyInventory, importPlan } from "../src/lib/legacy-import";
@@ -24,7 +24,7 @@ import { blankOffer, newVariant } from "../src/lib/offer-editor";
 import { invalidatePublicOffers, publicOfferPaths } from "../src/lib/invalidate-public-offers";
 import { matchesDelivery, publicOffer } from "../src/lib/public-offer-model";
 import { POST } from "../src/app/api/admin/offers/route";
-import { PUT } from "../src/app/api/admin/offers/[id]/route";
+import { PUT, DELETE } from "../src/app/api/admin/offers/[id]/route";
 import Home from "../src/app/page";
 import CompassPage from "../src/app/compass/page";
 import { CategoryPage } from "../src/components/category-page";
@@ -105,7 +105,7 @@ describe("one published catalogue with reviewed migration", () => {
     state.records.set("etho", { ...state.records.get("etho")!, status: "published", title: "إيثو محفوظ منشور" });
     const republishedHome = renderToStaticMarkup(await Home());
     expect(republishedHome).toContain("إيثو محفوظ منشور");
-    expect(republishedHome).not.toContain("/tests#etho");
+    expect(republishedHome).toContain("/tests#etho");
   });
   it("keeps an approved empty homepage test list empty instead of restoring local defaults", async () => {
     for (const [id, record] of state.records) {
@@ -191,4 +191,44 @@ describe("one published catalogue with reviewed migration", () => {
     expect(html).toContain("offer-promo-badge");
     expect(html).not.toContain("offer-card-media image-view-trigger");
   });
+});
+
+it("deletion removes the homepage test card without resurrecting local defaults or removing specialized sections", async () => {
+  const { TestsExperience } = await import("../src/components/tests-experience");
+  expect((await DELETE(new Request("http://localhost/api/admin/offers/etho", { method: "DELETE", headers: { Authorization: "Bearer admin" } }), { params: Promise.resolve({ id: "etho" }) })).status).toBe(200);
+  expect((await getPublicOffers()).some((offer) => offer.id === "etho")).toBe(false);
+  const home = renderToStaticMarkup(await Home());
+  expect(home).not.toContain("/tests#etho"); expect(home).not.toContain("اختبار الإيثو");
+  const specialized = renderToStaticMarkup(<TestsExperience savedOffers={await getPublicOffers()} />);
+  for (const id of ["codes", "etho", "mindsets", "spectra", "behavioral-inclinations"]) expect(specialized).toContain(`id="${id}"`);
+  expect(specialized).toContain("triple-panel");
+  state.records.delete("triple-test");
+  const afterTripleDelete = renderToStaticMarkup(<TestsExperience savedOffers={await getPublicOffers()} />);
+  expect(afterTripleDelete).toContain('id="behavioral-inclinations"'); expect(afterTripleDelete).toContain("30$"); expect(afterTripleDelete).toContain("60$");
+  expect(afterTripleDelete).toContain("triple-image-frame");
+});
+it("renders explicit package items and 90-dollar total only on editable homepage cards", async () => {
+  const original = state.records.get("triple-test")!;
+  state.records.set("triple-test", { ...original, packagePresentation: { enabled: true, label: "الباقة الكاملة", items: [
+    { id: "drama", title: "مثلث الدراما", price: { status: "known", amountUsd: 30 } },
+    { id: "roles", title: "تشخيص الأدوار الأربعة", price: { status: "known", amountUsd: 30 } },
+    { id: "behavior", title: "السلوك النفسي", price: { status: "known", amountUsd: 60 } },
+  ], fullPrice: { status: "known", amountUsd: 90 } } });
+  const home = renderToStaticMarkup(await Home());
+  expect(home).toContain("offer-package-items"); expect(home).toContain("90$"); expect(home).not.toContain("120$");
+  expect(home).toContain('/tests#behavioral-inclinations');
+  const { TestsExperience } = await import("../src/components/tests-experience");
+  const specialized = renderToStaticMarkup(<TestsExperience savedOffers={await getPublicOffers()} />);
+  expect(specialized).not.toContain("offer-package-items"); expect(specialized).not.toContain("90$");
+  expect(state.records.get("triple-test")!.variants).toEqual(original.variants);
+});
+
+it("deleting the last published record intentionally empties the catalogue while retaining activation checks", async () => {
+  state.records.clear();
+  const record = { ...blankOffer(0), id: "controlled-last-offer", title: "آخر عرض تجريبي", status: "published" };
+  state.records.set(record.id, record);
+  expect((await DELETE(new Request("http://localhost/api/admin/offers/controlled-last-offer", { method: "DELETE", headers: { Authorization: "Bearer admin" } }), { params: Promise.resolve({ id: record.id }) })).status).toBe(200);
+  expect(state.allowEmpty).toBe(true); await expect(getPublicOffers()).resolves.toEqual([]);
+  const home = renderToStaticMarkup(await Home()); expect(home).not.toContain("آخر عرض تجريبي"); expect(home).not.toContain("اختبار الإيثو");
+  state.ready = false; await expect(getPublicOffers()).rejects.toThrow("legacy import");
 });

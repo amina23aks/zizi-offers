@@ -4,13 +4,14 @@ vi.mock("../src/lib/invalidate-public-offers", () => ({ invalidatePublicOffers: 
 const store = vi.hoisted(() => new Map<string, Record<string, unknown>>());
 vi.mock("../src/lib/firebase/admin", () => ({ getFirebaseAdmin: () => ({
   auth: { verifyIdToken: async (token: string) => { if (token === "expired") throw new Error("expired"); return { uid: token, admin: token === "admin" }; } },
-  db: { runTransaction: async (fn: (tx: unknown) => Promise<unknown>) => fn({ get: (ref: { get: () => unknown }) => ref.get(), set: (ref: { set: (data: unknown) => unknown }, data: unknown) => ref.set(data), update: (ref: { update: (data: unknown) => unknown }, data: unknown) => ref.update(data) }), collection: () => ({
+  db: { runTransaction: async (fn: (tx: unknown) => Promise<unknown>) => fn({ get: (ref: { get: () => unknown }) => ref.get(), set: (ref: { set: (data: unknown) => unknown }, data: unknown) => ref.set(data), update: (ref: { update: (data: unknown) => unknown }, data: unknown) => ref.update(data), delete: (ref: { delete: () => unknown }) => ref.delete() }), collection: () => ({
+    where: () => ({ limit: () => ({ get: async () => ({ docs: [...store.values()].filter((data) => data.status === "published").slice(0, 2) }) }) }),
     get: async () => ({ docs: [...store.entries()].map(([id, data]) => ({ id, data: () => data })) }),
-    doc: (id: string) => ({ get: async () => ({ exists: store.has(id), data: () => store.get(id) }), create: async (data: Record<string, unknown>) => { store.set(id, data); }, set: async (data: Record<string, unknown>) => { store.set(id, { ...store.get(id), ...data }); }, update: async (data: Record<string, unknown>) => { store.set(id, { ...store.get(id), ...data }); } }),
+    doc: (id: string) => ({ delete: async () => { store.delete(id); }, get: async () => ({ exists: store.has(id), data: () => store.get(id) }), create: async (data: Record<string, unknown>) => { store.set(id, data); }, set: async (data: Record<string, unknown>) => { store.set(id, { ...store.get(id), ...data }); }, update: async (data: Record<string, unknown>) => { store.set(id, { ...store.get(id), ...data }); } }),
   }) },
 }) }));
 import { GET, POST } from "../src/app/api/admin/offers/route";
-import { PUT } from "../src/app/api/admin/offers/[id]/route";
+import { PUT, DELETE } from "../src/app/api/admin/offers/[id]/route";
 import { POST as upload } from "../src/app/api/admin/upload/route";
 import { GET as session } from "../src/app/api/admin/session/route";
 import { blankOffer, newVariant } from "../src/lib/offer-editor";
@@ -20,7 +21,7 @@ beforeEach(() => store.clear());
 describe("admin offer API", () => {
   it.each([undefined, "member", "expired"])("blocks unauthorized %s list, save, update and upload", async (token) => {
     const data = { ...blankOffer(0), title: "عرض" };
-    for (const result of [await GET(request(token)), await POST(request(token, data)), await PUT(request(token, data), { params: Promise.resolve({ id: data.id }) }), await upload(request(token, data)), await session(request(token))]) {
+    for (const result of [await DELETE(request(token), { params: Promise.resolve({ id: data.id }) }), await GET(request(token)), await POST(request(token, data)), await PUT(request(token, data), { params: Promise.resolve({ id: data.id }) }), await upload(request(token, data)), await session(request(token))]) {
       expect([401, 403]).toContain(result.status);
     }
     expect(store.size).toBe(0);
@@ -99,4 +100,45 @@ describe("admin offer API", () => {
     expect((await PUT(request("admin", { ...data, id: "different" }), { params: Promise.resolve({ id: data.id }) })).status).toBe(400);
     expect(store.size).toBe(1);
   });
+});
+
+it("deletes only the requested saved record, invalidates listings, and reports repeat/missing deletes", async () => {
+  const image = { kind: "cloudinary" as const, secureUrl: "https://res.cloudinary.com/test/shared.png", publicId: "test/shared", width: 200, height: 200, alt: "shared" };
+  const target = { ...blankOffer(1), id: "controlled-delete", title: "حذف تجريبي", status: "published", image };
+  const other = { ...target, id: "controlled-retain", title: "محفوظ" };
+  store.set(target.id, target); store.set(other.id, other);
+  const context = { params: Promise.resolve({ id: target.id }) };
+  const response = await DELETE(request("admin"), context);
+  expect(response.status).toBe(200); expect(await response.json()).toEqual({ deletedId: target.id });
+  expect(store.has(target.id)).toBe(false); expect(store.get(other.id)).toEqual(other);
+  const { invalidatePublicOffers } = await import("../src/lib/invalidate-public-offers");
+  expect(invalidatePublicOffers).toHaveBeenCalledWith(expect.objectContaining({ id: target.id }));
+  expect((await DELETE(request("admin"), context)).status).toBe(404);
+});
+it("persists on-demand, overall availability and optional explicit packages without touching variants or publication", async () => {
+  const data = { ...blankOffer(1), id: "controlled-package", title: "باقة تجريبية", status: "published" as const, delivery: "general" as const,
+    availability: "unavailable" as const,
+    price: { status: "on-demand" as const, amountUsd: null },
+    variants: [{ ...newVariant("general"), price: { status: "on-demand" as const, amountUsd: null }, availability: "available" as const }],
+    packagePresentation: { enabled: true, label: "الباقة الكاملة", items: [
+      { id: "drama", title: "مثلث الدراما", price: { status: "known" as const, amountUsd: 30 } },
+      { id: "roles", title: "تشخيص الأدوار الأربعة", price: { status: "known" as const, amountUsd: 30 } },
+      { id: "behavior", title: "السلوك النفسي", price: { status: "known" as const, amountUsd: 60 } },
+    ], fullPrice: { status: "known" as const, amountUsd: 90 } } };
+  expect((await POST(request("admin", data))).status).toBe(201);
+  const reloaded = (await (await GET(request("admin"))).json()).offers[0];
+  expect(reloaded).toMatchObject(data);
+  expect((await PUT(request("admin", { ...reloaded, availability: "unknown", packagePresentation: { ...data.packagePresentation, enabled: false, fullPrice: null } }), { params: Promise.resolve({ id: data.id }) })).status).toBe(200);
+  const updated = (await (await GET(request("admin"))).json()).offers[0];
+  expect(updated.variants).toEqual(data.variants); expect(updated.status).toBe("published");
+  expect(updated.packagePresentation.items).toEqual(data.packagePresentation.items);
+  expect(updated.packagePresentation.fullPrice).toBeNull();
+  expect((await POST(request("admin", { ...data, id: "bad-demand", variants: [{ ...data.variants[0], price: { status: "on-demand", amountUsd: 0 } }] }))).status).toBe(400);
+});
+
+it.each([undefined, "member", "expired"])("retains an existing record when delete authorization is rejected: %s", async (token) => {
+  const data = { ...blankOffer(0), id: "controlled-protected", title: "محمي" };
+  store.set(data.id, data);
+  const response = await DELETE(request(token), { params: Promise.resolve({ id: data.id }) });
+  expect(response.status).toBe(token === "member" ? 403 : 401); expect(store.get(data.id)).toEqual(data);
 });

@@ -60,3 +60,17 @@ describe("publication metadata and promotional badges", () => {
     await assertFails(setDoc(ref, withoutDate));
   });
 });
+
+it("accepts null on-demand prices only for admins and rejects zero", async () => {
+  const data = { ...valid("draft"), id: "on-demand-offer", price: { status: "on-demand", amountUsd: null }, variants: [{ ...valid("draft").variants[0], price: { status: "on-demand", amountUsd: null } }] };
+  await assertSucceeds(setDoc(doc(env.authenticatedContext("admin", { admin: true }).firestore(), "offers/on-demand-offer"), data));
+  await assertFails(setDoc(doc(env.authenticatedContext("member").firestore(), "offers/on-demand-offer"), data));
+  await assertFails(setDoc(doc(env.authenticatedContext("admin", { admin: true }).firestore(), "offers/on-demand-offer"), { ...data, price: { status: "on-demand", amountUsd: 0 } }));
+});
+it("denies member deletes and allows admin deletes without affecting another offer", async () => {
+  await env.withSecurityRulesDisabled(async (context) => setDoc(doc(context.firestore(), "offers/controlled-delete"), { ...valid("draft"), id: "controlled-delete" }));
+  const { deleteDoc } = await import("firebase/firestore");
+  await assertFails(deleteDoc(doc(env.authenticatedContext("member").firestore(), "offers/controlled-delete")));
+  await assertSucceeds(deleteDoc(doc(env.authenticatedContext("admin", { admin: true }).firestore(), "offers/controlled-delete")));
+  await assertSucceeds(getDoc(doc(env.unauthenticatedContext().firestore(), "offers/published-offer")));
+});

@@ -3917,7 +3917,7 @@ body {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, #9ad4f6 58%, var(--border));
+  border: 1px solid #b7def7;
   border-radius: 18px;
   background:
     radial-gradient(circle at 18% 20%, rgb(255 255 255 / 0.7), transparent 3.8rem),
@@ -3944,15 +3944,6 @@ body {
 .dark .booking-contact-button {
   background: color-mix(in srgb, #9ad4f6 22%, var(--surface));
   color: #d9f0ff;
-}
-
-.dark .payment-method-tile {
-  border-color: color-mix(in srgb, #9ad4f6 34%, var(--border));
-  background:
-    radial-gradient(circle at 18% 20%, rgb(255 255 255 / 0.16), transparent 3.8rem),
-    linear-gradient(135deg, #173f5d 0%, #0f2e46 52%, #123f3b 100%);
-  color: #e6f7ff;
-  box-shadow: 0 16px 34px rgb(0 0 0 / 0.28);
 }
 
 @media (max-width: 390px) {
@@ -4299,17 +4290,6 @@ body {
 @media (max-width: 850px) { .admin-columns { grid-template-columns: minmax(0, 1fr); } }
 
 /* Focused 11 October refinements. */
-.admin-edit-form select,
-.admin-filters select {
-  direction: rtl;
-  min-height: 46px;
-  appearance: none;
-  background:
-    linear-gradient(45deg, transparent 50%, var(--muted) 50%) calc(100% - 1.05rem) 50% / 6px 6px no-repeat,
-    linear-gradient(135deg, var(--muted) 50%, transparent 50%) calc(100% - .75rem) 50% / 6px 6px no-repeat,
-    var(--surface);
-  padding-inline: 1rem 2.2rem;
-}
 
 .admin-edit-form select:focus-visible,
 .admin-filters select:focus-visible,
@@ -4318,14 +4298,6 @@ body {
 .admin-danger:focus-visible {
   outline: 3px solid color-mix(in srgb, var(--brand-blue) 42%, transparent);
   outline-offset: 2px;
-}
-
-.dark .admin-edit-form select,
-.dark .admin-filters select {
-  background:
-    linear-gradient(45deg, transparent 50%, var(--secondary) 50%) calc(100% - 1.05rem) 50% / 6px 6px no-repeat,
-    linear-gradient(135deg, var(--secondary) 50%, transparent 50%) calc(100% - .75rem) 50% / 6px 6px no-repeat,
-    var(--surface);
 }
 
 .admin-badge-field {

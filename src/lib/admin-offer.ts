@@ -3,18 +3,18 @@ import { z } from "zod";
 const availability = z.enum(["available", "unavailable", "completed", "unknown"]);
 const priceFields = z.object({
   amountUsd: z.number().min(0).nullable(),
-  status: z.enum(["known", "unknown", "free"]),
+  status: z.enum(["known", "unknown", "free", "on-demand"]),
   displayWhenUnknown: z.literal("00").optional(),
   clarification: z.string().trim().max(160).optional(),
 });
 const price = priceFields.superRefine((value, ctx) => {
-  if (value.status === "unknown" && value.amountUsd !== null) ctx.addIssue({ code: "custom", message: "السعر المجهول يجب أن يكون null" });
+  if ((value.status === "unknown" || value.status === "on-demand") && value.amountUsd !== null) ctx.addIssue({ code: "custom", message: "السعر غير المحدد أو حسب الطلب يجب أن يكون null" });
   if (value.status === "free" && value.amountUsd !== 0) ctx.addIssue({ code: "custom", message: "السعر المجاني يجب أن يكون 0" });
   if (value.status === "known" && value.amountUsd === null) ctx.addIssue({ code: "custom", message: "السعر المدفوع مطلوب" });
   if (value.status !== "unknown" && (value.displayWhenUnknown || value.clarification)) ctx.addIssue({ code: "custom", message: "توضيح السعر المجهول يستخدم فقط مع السعر غير المحدد" });
 });
-const offerPrice = priceFields.extend({ status: z.enum(["known", "unknown", "free", "variant"]) }).superRefine((value, ctx) => {
-  if (value.status === "unknown" && value.amountUsd !== null) ctx.addIssue({ code: "custom", message: "السعر المجهول يجب أن يكون null" });
+const offerPrice = priceFields.extend({ status: z.enum(["known", "unknown", "free", "on-demand", "variant"]) }).superRefine((value, ctx) => {
+  if ((value.status === "unknown" || value.status === "on-demand") && value.amountUsd !== null) ctx.addIssue({ code: "custom", message: "السعر غير المحدد أو حسب الطلب يجب أن يكون null" });
   if (value.status === "free" && value.amountUsd !== 0) ctx.addIssue({ code: "custom", message: "السعر المجاني يجب أن يكون 0" });
   if (value.status === "known" && value.amountUsd === null) ctx.addIssue({ code: "custom", message: "السعر المدفوع مطلوب" });
   if (value.status === "variant" && value.amountUsd !== null) ctx.addIssue({ code: "custom", message: "السعر المركب يجب أن يكون null" });
@@ -38,6 +38,15 @@ export const adminOfferSchema = z.object({
   catalogDetails: z.object({ format: z.enum(["test", "course", "coaching", "program", "session", "consultation", "package"]).optional(), durationKind: z.enum(["program", "training"]).optional(), priceBasis: z.string().max(160).optional(), availableThroughoutYear: z.boolean().optional() }).optional(),
   price: offerPrice.optional(),
   availability: availability.optional(),
+  packagePresentation: z.object({
+    enabled: z.boolean(),
+    label: z.string().trim().min(1).max(160).default("الباقة الكاملة"),
+    items: z.array(z.object({ id: z.string().min(1).max(80), title: z.string().trim().min(1).max(160), price })).max(30),
+    fullPrice: price.nullable().default(null),
+  }).superRefine((value, ctx) => {
+    if (value.enabled && !value.items.length) ctx.addIssue({ code: "custom", path: ["items"], message: "أضيفي عنصرًا واحدًا على الأقل للباقة." });
+    if (new Set(value.items.map((item) => item.id)).size !== value.items.length) ctx.addIssue({ code: "custom", path: ["items"], message: "عناصر الباقة مكررة." });
+  }).optional(),
   delivery: z.enum(["individual", "group", "both", "general"]).optional(),
   variants: z.array(z.object({ id: z.string().min(1).max(80), title: z.string().trim().min(1, "اسم الخيار مطلوب.").max(160), price, availability, note: z.string().max(300).optional() })).min(1, "أضيفي خيار سعر واحدًا على الأقل.").max(30),
   duration: z.string().max(160).refine(validDuration, "المدة يجب أن تكون موجبة.").default(""),
@@ -85,7 +94,7 @@ function normalizeLegacyOffer(input: Record<string, unknown>) {
   for (const key of ["description", "duration", "sessionDuration", "capacity"] as const) {
     if (data[key] === undefined || data[key] === null) data[key] = "";
   }
-  for (const key of ["slug", "source", "badge", "catalogDetails", "price", "availability", "delivery", "legacyImported"] as const) {
+  for (const key of ["slug", "source", "badge", "catalogDetails", "price", "availability", "delivery", "legacyImported", "packagePresentation"] as const) {
     if (data[key] === null || data[key] === "") delete data[key];
   }
   if (!Array.isArray(data.variants) || data.variants.length === 0) {
@@ -116,14 +125,14 @@ function normalizePrice(value: unknown, path: (string | number)[], diagnostics: 
     diagnostics.push({
       id,
       fieldPath: [...path, "status"].join("."),
-      expected: 'price status "known" | "unknown" | "free"',
+      expected: 'price status "known" | "unknown" | "free" | "on-demand"',
       actual: 'string "published"',
       message: "تمت قراءة السعر كسعر محدد لأن المبلغ محفوظ، لكن السجل يحتاج إصلاحًا ضيقًا ليعود حقله إلى known.",
     });
   }
   if (priceValue.status === undefined && offerPrice && typeof offerPrice === "object" && !Array.isArray(offerPrice)) {
     const fallback = offerPrice as Record<string, unknown>;
-    if (["known", "unknown", "free"].includes(String(fallback.status))) priceValue.status = fallback.status;
+    if (["known", "unknown", "free", "on-demand"].includes(String(fallback.status))) priceValue.status = fallback.status;
   }
   if (priceValue.status === "unknown") {
     if (priceValue.amountUsd === undefined) priceValue.amountUsd = null;
@@ -146,7 +155,7 @@ function diagnostic(id: string, issue: z.core.$ZodIssue, candidate: Record<strin
 
 function expectedFor(path: PropertyKey[]) {
   const joined = path.join(".");
-  if (joined.endsWith("price.status")) return 'price status "known" | "unknown" | "free"';
+  if (joined.endsWith("price.status")) return 'price status "known" | "unknown" | "free" | "on-demand"';
   if (joined === "status") return 'publication status "draft" | "published"';
   if (joined.endsWith("availability")) return 'availability "available" | "unavailable" | "completed" | "unknown"';
   if (joined === "image") return "image object with kind none, local, or cloudinary";

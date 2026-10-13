@@ -43,7 +43,7 @@ describe("offer editor persistence and public preview", () => {
   it("renders general price and availability without a format badge", () => {
     const record = { ...offer(), delivery: "general" as const, variants: [{ ...newVariant("general"), availability: "available" as const }] };
     const preview = editorPreview(record);
-    expect(preview.variants).toEqual([]); expect(preview.availabilityLabel).toBe("متاح"); expect(preview.priceClarification).toBe("السعر غير محدد");
+    expect(preview.variants).toEqual([]); expect(preview.availabilityLabel).toBeNull(); expect(preview.priceClarification).toBe("السعر غير محدد");
   });
   it("preserves offer-level availability, combined price metadata, slug, source and custom unknown wording", () => {
     const record = {
@@ -101,4 +101,22 @@ describe("offer editor persistence and public preview", () => {
     expect(badgeSelect).not.toContain("مميز");
     expect(html).toContain("القيمة المحفوظة حاليًا: مميز");
   });
+});
+
+it("keeps explicit overall availability independent of delivery and variant availability", () => {
+  const record = { ...offer(), title: "عرض", delivery: "both" as const, availability: "unavailable" as const, variants: [
+    { ...newVariant("individual"), availability: "available" as const }, { ...newVariant("group"), availability: "unknown" as const },
+  ] };
+  const parsed = adminOfferSchema.parse(record);
+  expect(editorPreview(parsed).availabilityLabel).toBe("غير متاح");
+  expect(editorPreview(parsed).variants).toEqual(record.variants);
+  expect(editorPreview({ ...parsed, availability: "unknown" }).availabilityLabel).toBeNull();
+});
+it("renders on-demand distinctly and rejects numeric on-demand prices", () => {
+  const record = { ...offer(), title: "حسب الطلب", delivery: "general" as const, availability: "available" as const,
+    variants: [{ ...newVariant("general"), price: { status: "on-demand" as const, amountUsd: null } }] };
+  expect(editorPreview(adminOfferSchema.parse(record)).priceLabel).toBe("حسب الطلب");
+  expect(editorPreview(record).priceClarification).toBeNull();
+  expect(editorPreview(record).availabilityLabel).toBe("متاح");
+  expect(adminOfferSchema.safeParse({ ...record, variants: [{ ...record.variants[0], price: { status: "on-demand", amountUsd: 0 } }] }).success).toBe(false);
 });
