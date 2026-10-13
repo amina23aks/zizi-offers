@@ -106,7 +106,7 @@ describe("one published catalogue with reviewed migration", () => {
     state.records.set("etho", { ...state.records.get("etho")!, status: "published", title: "إيثو محفوظ منشور" });
     const republishedHome = renderToStaticMarkup(await Home());
     expect(republishedHome).toContain("إيثو محفوظ منشور");
-    expect(republishedHome).not.toContain("/tests#etho");
+    expect(republishedHome).toContain("/tests#etho");
   });
   it("keeps an approved empty homepage test list empty instead of restoring local defaults", async () => {
     for (const [id, record] of state.records) {
@@ -149,6 +149,32 @@ describe("one published catalogue with reviewed migration", () => {
     });
     const testsPage = renderToStaticMarkup(await TestsPage());
     expect(testsPage).not.toContain("اختبار منشور من لوحة الإدارة");
+  });
+  it("renders the behavioral package homepage card from structured Firestore fields", async () => {
+    state.records.set("triple-test", {
+      ...state.records.get("triple-test")!,
+      status: "published",
+      title: "الاختبارات النفسية للميولات السلوكية",
+      description: "وصف محفوظ",
+      catalogDetails: { format: "package" },
+      price: { status: "known", amountUsd: 90 },
+      variants: [
+        { id: "drama-triangle", title: "مثلث الدراما", price: { status: "known", amountUsd: 30 }, availability: "unknown" },
+        { id: "four-roles", title: "تشخيص الأدوار الأربعة", price: { status: "known", amountUsd: 30 }, availability: "unknown" },
+        { id: "psychological-behavior", title: "السلوك النفسي", price: { status: "known", amountUsd: 60 }, availability: "unknown" },
+      ],
+    });
+    const home = renderToStaticMarkup(await Home());
+    expect(home).toContain("وصف محفوظ");
+    expect(home).toContain("package-item-list");
+    expect(home).toContain("مثلث الدراما");
+    expect(home).toContain("تشخيص الأدوار الأربعة");
+    expect(home).toContain("السلوك النفسي");
+    expect(home).toContain("90$");
+    expect(home).toContain("/tests#behavioral-inclinations");
+    const packageCard = home.slice(home.indexOf("الاختبارات النفسية للميولات السلوكية"), home.indexOf("أنواع الذكاءات"));
+    expect(packageCard).not.toContain("00$");
+    expect(packageCard).not.toContain("السعر غير محدد");
   });
   it("keeps compass pricing records out of the approved homepage and compass image galleries", async () => {
     const offer: AdminOffer = { ...blankOffer(1000), title: "عنصر بوصلة جديد", category: "compass", status: "published" };

@@ -11,6 +11,7 @@ import {
   Sparkle,
   TelegramLogo,
 } from "@phosphor-icons/react/dist/ssr";
+import { OfferCard } from "@/components/offer-card";
 import { OfferCardCollection } from "@/components/offer-card-collection";
 import { ZoomableImage } from "@/components/zoomable-image";
 import { compassPricing, getAsset, homeSections, publicCategories, type DisplayOffer, ziziAbout } from "@/data/catalog";
@@ -39,6 +40,11 @@ export default async function Home() {
   const connected = process.env.PUBLIC_OFFERS_SOURCE === "firestore";
   const savedOfferById = new Map(savedOffers.map((offer) => [offer.id, offer]));
   const savedTestOffers = savedOffers.filter((offer) => offer.category === "tests");
+  const testCardHrefByOfferId = new Map<string, string>(
+    homeSections
+      .find((section) => section.id === "tests")
+      ?.cards.map((card) => [card.offerId, card.href] as const) ?? [],
+  );
   const identityAsset = getAsset(ziziIdentityAssetIds.avatar ?? ziziIdentityAssetIds.groupLogo);
 
   return (
@@ -121,43 +127,35 @@ export default async function Home() {
             </div>
             <div className="home-carousel-row" tabIndex={0} aria-label={`عروض ${section.title}`}>
               {section.id === "tests"
-                ? (connected ? savedTestOffers : section.cards.map((card) => savedOfferById.get(card.offerId) ?? card)).flatMap((card) => {
+                ? (connected ? savedTestOffers : section.cards.map((card) => savedOfferById.get(card.offerId) ?? card)).map((card) => {
                     const saved = "category" in card && card.category === "tests" ? card as DisplayOffer : null;
-                    const title = saved?.title ?? card.title;
-                    const summary = saved?.summary ?? ("summary" in card ? card.summary : null);
-                    const availabilityLabel = saved?.availabilityLabel ?? ("availabilityLabel" in card ? card.availabilityLabel : null);
-                    const priceLabel = saved?.priceLabel ?? ("priceLabel" in card ? card.priceLabel : null);
-                    const priceClarification = saved?.priceClarification ?? ("priceClarification" in card ? card.priceClarification : null);
-                    const href = saved ? undefined : "href" in card ? card.href : undefined;
-                    const key = saved?.id ?? card.id;
-                    return [(
+                    if (saved) {
+                      return (
+                        <div className="home-carousel-item" key={saved.id}>
+                          <OfferCard
+                            offer={saved}
+                            href={testCardHrefByOfferId.get(saved.id)}
+                            actionLabel="عرض التفاصيل"
+                          />
+                        </div>
+                      );
+                    }
+                    const title = card.title;
+                    const summary = "summary" in card ? card.summary : null;
+                    const availabilityLabel = "availabilityLabel" in card ? card.availabilityLabel : null;
+                    const priceLabel = "priceLabel" in card ? card.priceLabel : null;
+                    const priceClarification = "priceClarification" in card ? card.priceClarification : null;
+                    const href = "href" in card ? card.href : undefined;
+                    const key = card.id;
+                    return (
                       <article key={key} className="home-overview-card home-test-card">
-                        {saved?.image ? (
-                          <span className="offer-card-media-wrap home-test-media-wrap">
-                            <Image
-                              src={saved.image.src}
-                              alt={saved.image.alt}
-                              width={saved.image.width}
-                              height={saved.image.height}
-                              unoptimized={saved.image.src.startsWith("https://")}
-                              className="home-overview-image asset-image-contain"
-                              sizes="180px"
-                            />
-                            {saved.badge ? <em className="offer-promo-badge">{saved.badge}</em> : null}
-                          </span>
-                        ) : saved?.badge ? <em className="offer-promo-badge">{saved.badge}</em> : null}
                         <div className="home-test-title-row">
                           {availabilityLabel ? (
-                            <em className={saved ? `status-${saved.availability}` : undefined}>{availabilityLabel}</em>
+                            <em>{availabilityLabel}</em>
                           ) : null}
                           <strong>{title}</strong>
                         </div>
                         {summary ? <span>{summary}</span> : null}
-                        {saved?.bullets?.length ? (
-                          <ul className="home-test-topics">
-                            {saved.bullets.map((topic) => <li key={topic}>{topic}</li>)}
-                          </ul>
-                        ) : null}
                         <div className="mini-meta home-test-footer">
                           <span className="home-test-footer-left">
                             {priceLabel ? <b dir="ltr">{priceLabel}</b> : null}
@@ -170,7 +168,7 @@ export default async function Home() {
                         </div>
                         {priceClarification ? <small>{String(priceClarification)}</small> : null}
                       </article>
-                    )];
+                    );
                   })
                 : ((connected && !["fingerprints", "compass"].includes(section.id)) || "offers" in section)
                 ? (

@@ -39,6 +39,7 @@ export function OfferCard({
     label: offer.priceLabel,
     clarification: offer.priceClarification,
   };
+  const isPackage = offer.format === "package";
   const displayAvailability = matchingVariant?.availability
     ? formatAvailability(matchingVariant.availability)
     : offer.availabilityLabel;
@@ -119,14 +120,14 @@ export function OfferCard({
           </div>
         ) : null}
         {visibleVariants?.length ? (
-          <div className="offer-variants" aria-label="خيارات السعر">
+          <div className={cn("offer-variants", isPackage ? "package-item-list" : undefined)} aria-label={isPackage ? "عناصر الباقة" : "خيارات السعر"}>
             {visibleVariants.map((variant) => (
               <span key={variant.id} className="offer-variant-pill">
-                {matchesVariant(variant.id, "group") ? <UsersThree size={15} weight="bold" /> : matchesVariant(variant.id, "individual") ? <User size={15} weight="bold" /> : null}
+                {!isPackage && matchesVariant(variant.id, "group") ? <UsersThree size={15} weight="bold" /> : !isPackage && matchesVariant(variant.id, "individual") ? <User size={15} weight="bold" /> : null}
                 <strong>{variant.title}</strong>
                 <b dir="ltr">{formatPrice(variant.price).label}</b>
                 {formatPrice(variant.price).clarification ? <small>{formatPrice(variant.price).clarification}</small> : null}
-                {variant.availability && variant.availability !== "unknown" ? (
+                {!isPackage && variant.availability && variant.availability !== "unknown" ? (
                   <em className={cn("variant-status", `status-${variant.availability}`)}>
                     {formatAvailability(variant.availability)}
                   </em>
