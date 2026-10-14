@@ -357,7 +357,7 @@ export const homeSections = [
   {
     id: "tests",
     title: "الاختبارات",
-    intro: "اختبارات زيزي للاستكشاف الذاتي دون أسئلة أو نتائج آلية في هذه المرحلة.",
+    intro: "",
     href: "/tests",
     accent: "tests",
     cards: [

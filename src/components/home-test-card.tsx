@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { MagnifyingGlassPlus } from "@phosphor-icons/react";
-import { useRef, useState, type PointerEvent } from "react";
+import { useRef, useState, type MouseEvent, type PointerEvent } from "react";
 import { ImageViewerOverlay, type ViewerImageItem } from "@/components/image-viewer-overlay";
 import { formatPrice, type DisplayOffer } from "@/data/catalog";
 import { testDetailsHref } from "@/lib/test-details";
@@ -49,8 +49,8 @@ export function HomeTestCard({ offer }: { offer: Partial<DisplayOffer> & { id: s
     }
   };
 
-  const openViewer = () => {
-    if (suppressOpen.current) {
+  const openViewer = (event: MouseEvent<HTMLButtonElement>) => {
+    if (event.detail !== 0 && suppressOpen.current) {
       suppressOpen.current = false;
       return;
     }
@@ -65,6 +65,9 @@ export function HomeTestCard({ offer }: { offer: Partial<DisplayOffer> & { id: s
         className="home-test-image-trigger image-view-trigger"
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
+        onPointerUp={() => { pointerStart.current = null; }}
+        onPointerCancel={() => { pointerStart.current = null; suppressOpen.current = true; }}
+        onDragStart={(event) => event.preventDefault()}
         onClick={openViewer}
         aria-label="تكبير الصورة"
       >

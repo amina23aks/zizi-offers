@@ -211,24 +211,24 @@
 
 @media (max-width: 899px) {
   .category-bubble:nth-child(5) {
-    --bubble-x: -104px;
+    --bubble-x: -94px;
     --bubble-y: 72px;
   }
 
   .category-bubble:nth-child(6) {
-    --bubble-x: 104px;
+    --bubble-x: 94px;
     --bubble-y: 72px;
   }
 }
 
 @media (max-width: 390px) {
   .category-bubble:nth-child(5) {
-    --bubble-x: -98px;
+    --bubble-x: -88px;
     --bubble-y: 68px;
   }
 
   .category-bubble:nth-child(6) {
-    --bubble-x: 98px;
+    --bubble-x: 88px;
     --bubble-y: 68px;
   }
 }
@@ -321,21 +321,21 @@
 
 @media (max-width: 899px) {
   .category-bubble:nth-child(5) {
-    --bubble-y: 48px;
+    --bubble-y: 58px;
   }
 
   .category-bubble:nth-child(6) {
-    --bubble-y: 48px;
+    --bubble-y: 58px;
   }
 }
 
 @media (max-width: 390px) {
   .category-bubble:nth-child(5) {
-    --bubble-y: 44px;
+    --bubble-y: 54px;
   }
 
   .category-bubble:nth-child(6) {
-    --bubble-y: 44px;
+    --bubble-y: 54px;
   }
 }
 
