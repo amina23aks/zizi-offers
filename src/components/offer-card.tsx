@@ -41,6 +41,7 @@ export function OfferCard({
     clarification: offer.priceClarification,
   };
   const isPackage = offer.format === "package";
+  const usePackagePresentation = Boolean(offer.packagePresentation?.enabled && !isPackage);
   const displayAvailability = matchingVariant?.availability
     ? formatAvailability(matchingVariant.availability)
     : offer.availabilityLabel;
@@ -137,11 +138,11 @@ export function OfferCard({
             ))}
           </div>
         ) : null}
-        <PackageItems presentation={offer.packagePresentation} />
+        {usePackagePresentation ? <PackageItems presentation={offer.packagePresentation} /> : null}
         <div className="offer-card-footer">
           <div className="offer-price-block">
-            {offer.packagePresentation?.enabled ? <PackageFooter presentation={offer.packagePresentation} /> : <p className="price-badge" dir={displayPrice.label === "حسب الطلب" ? "rtl" : "ltr"}>{displayPrice.label}</p>}
-            {!offer.packagePresentation?.enabled && displayPrice.clarification ? (
+            {usePackagePresentation ? <PackageFooter presentation={offer.packagePresentation} /> : <p className="price-badge" dir={displayPrice.label === "حسب الطلب" ? "rtl" : "ltr"}>{displayPrice.label}</p>}
+            {!usePackagePresentation && displayPrice.clarification ? (
               <p className="text-sm text-muted">{displayPrice.clarification}</p>
             ) : null}
           </div>
