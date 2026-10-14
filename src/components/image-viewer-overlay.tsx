@@ -162,6 +162,10 @@ export function ImageViewerOverlay({
     }
   };
 
+  const stopControlPointer = (event: PointerEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+  };
+
   return (
     <div
       className="image-viewer"
@@ -175,21 +179,21 @@ export function ImageViewerOverlay({
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerUp}
     >
-      <button ref={activeCloseRef} type="button" className="image-viewer-close" onClick={onClose} aria-label="إغلاق">
+      <button ref={activeCloseRef} type="button" className="image-viewer-close" onPointerDown={stopControlPointer} onClick={onClose} aria-label="إغلاق">
         <X size={22} weight="bold" />
       </button>
       <div className="image-viewer-tools" aria-label="تكبير الصورة">
-        <button type="button" onClick={() => zoomBy(0.35)} aria-label="تكبير">
+        <button type="button" onPointerDown={stopControlPointer} onClick={() => zoomBy(0.35)} aria-label="تكبير">
           <MagnifyingGlassPlus size={20} weight="bold" />
         </button>
-        <button type="button" onClick={() => zoomBy(-0.35)} aria-label="تصغير">
+        <button type="button" onPointerDown={stopControlPointer} onClick={() => zoomBy(-0.35)} aria-label="تصغير">
           <MagnifyingGlassMinus size={20} weight="bold" />
         </button>
-        <button type="button" onClick={resetZoom} aria-label="ملاءمة الشاشة">
+        <button type="button" onPointerDown={stopControlPointer} onClick={resetZoom} aria-label="ملاءمة الشاشة">
           <ArrowsIn size={20} weight="bold" />
         </button>
       </div>
-      <button type="button" className="image-viewer-nav image-viewer-prev" onClick={() => moveBy(-1)} aria-label="الصورة السابقة">
+      <button type="button" className="image-viewer-nav image-viewer-prev" onPointerDown={stopControlPointer} onClick={() => moveBy(-1)} aria-label="الصورة السابقة">
         <CaretRight size={28} weight="bold" />
       </button>
       <figure className="image-viewer-figure">
@@ -213,7 +217,7 @@ export function ImageViewerOverlay({
           <span>{index + 1} / {items.length}</span>
         </figcaption>
       </figure>
-      <button type="button" className="image-viewer-nav image-viewer-next" onClick={() => moveBy(1)} aria-label="الصورة التالية">
+      <button type="button" className="image-viewer-nav image-viewer-next" onPointerDown={stopControlPointer} onClick={() => moveBy(1)} aria-label="الصورة التالية">
         <CaretLeft size={28} weight="bold" />
       </button>
     </div>

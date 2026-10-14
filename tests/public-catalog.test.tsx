@@ -94,6 +94,8 @@ describe("one published catalogue with reviewed migration", () => {
     expect(home).toContain("محور محفوظ ثان");
     expect(home).toContain("جديد");
     expect(home).toContain("codes.png");
+    expect(home).toContain("home-test-image-trigger image-view-trigger");
+    expect(home).toContain("aria-label=\"تكبير الصورة\"");
     expect(home).not.toContain("اختبار الأكواد الدماغية ABCD");
   });
   it("does not resurrect stale local homepage test cards after a Firestore test offer is unpublished", async () => {

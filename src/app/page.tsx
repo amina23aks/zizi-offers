@@ -12,8 +12,8 @@ import {
   TelegramLogo,
 } from "@phosphor-icons/react/dist/ssr";
 import { HomeTestCard } from "@/components/home-test-card";
-import { OfferCard } from "@/components/offer-card";
 import { OfferCardCollection } from "@/components/offer-card-collection";
+import { TelegramContactLink } from "@/components/telegram-contact-link";
 import { ZoomableImage } from "@/components/zoomable-image";
 import { compassPricing, getAsset, homeSections, publicCategories, type DisplayOffer, ziziAbout } from "@/data/catalog";
 import { getPublicOffers } from "@/lib/public-offers";
@@ -41,11 +41,6 @@ export default async function Home() {
   const connected = process.env.PUBLIC_OFFERS_SOURCE === "firestore";
   const savedOfferById = new Map(savedOffers.map((offer) => [offer.id, offer]));
   const savedTestOffers = savedOffers.filter((offer) => offer.category === "tests");
-  const testCardHrefByOfferId = new Map<string, string>(
-    homeSections
-      .find((section) => section.id === "tests")
-      ?.cards.map((card) => [card.offerId, card.href] as const) ?? [],
-  );
   const identityAsset = getAsset(ziziIdentityAssetIds.avatar ?? ziziIdentityAssetIds.groupLogo);
 
   return (
@@ -133,11 +128,7 @@ export default async function Home() {
                     if (saved) {
                       return (
                         <div className="home-carousel-item" key={saved.id}>
-                          <OfferCard
-                            offer={saved}
-                            href={testCardHrefByOfferId.get(saved.id)}
-                            actionLabel="عرض التفاصيل"
-                          />
+                          <HomeTestCard offer={saved} />
                         </div>
                       );
                     }
@@ -205,17 +196,15 @@ export default async function Home() {
         </div>
         <div className="booking-contact-grid" aria-label="مساعدات زيزي حسب البلد">
           {bookingContacts.map((contact) => (
-            <a
+            <TelegramContactLink
               key={contact.country}
               href={contact.href}
               className="booking-contact-button"
-              target="_blank"
-              rel="noreferrer"
-              aria-label={`التواصل مع مساعدة زيزي في ${contact.country}`}
+              ariaLabel={`التواصل مع مساعدة زيزي في ${contact.country}`}
             >
               <TelegramLogo size={19} weight="fill" aria-hidden="true" />
               <span>{contact.country}</span>
-            </a>
+            </TelegramContactLink>
           ))}
         </div>
         <div className="payment-methods" aria-label="طرق الدفع المتاحة">
