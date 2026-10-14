@@ -8,7 +8,6 @@ import { getAsset } from "@/data/catalog";
 import { adminOfferSchema, type AdminOffer } from "@/lib/admin-offer";
 import { activeVariants, categories, deliveryLabels, editorPreview, inferDelivery, standardIds, type Delivery, type Variant } from "@/lib/offer-editor";
 import { authorizedFetch } from "@/lib/admin-fetch";
-import { HomeTestCard } from "@/components/home-test-card";
 import { AdminSelect } from "./admin-select";
 import { AdminConfirmDialog } from "./admin-confirm-dialog";
 
@@ -28,14 +27,34 @@ export function OfferForm({ initial, user, busy, onSave, onDirty }: { initial: A
   const [uploading, setUploading] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const saving = useRef(false);
-  const active = activeVariants(bank, delivery);
+  const packageMode = offer.catalogDetails?.format === "package";
+  const packageItems = bank.filter((v) => !standardIds.includes(v.id));
+  const deliverySlots = activeVariants(bank, delivery).filter((v) => standardIds.includes(v.id));
+  const active = packageMode ? [...(delivery === "general" ? [] : deliverySlots), ...packageItems] : activeVariants(bank, delivery);
+  const pricingVariants = packageMode ? deliverySlots.filter((v) => v.id !== "general") : active;
   const groupActive = delivery === "group" || delivery === "both" || active.some((v) => v.id.startsWith("group-"));
-  const value: AdminOffer = { ...offer, delivery, price: active.length === 1 ? active[0].price : { status: "variant", amountUsd: null }, variants: active, topics: offer.topics.filter((t) => t.trim()), capacity: groupActive ? offer.capacity : "", image: { ...offer.image, alt: offer.image.alt || offer.title } };
+  const value: AdminOffer = { ...offer, delivery, price: packageMode ? offer.price ?? { status: "known", amountUsd: null } : active.length === 1 ? active[0].price : { status: "variant", amountUsd: null }, variants: active, topics: offer.topics.filter((t) => t.trim()), capacity: groupActive ? offer.capacity : "", image: { ...offer.image, alt: offer.image.alt || offer.title } };
   const removed = initial.variants.filter((v) => standardIds.includes(v.id) && !active.some((a) => a.id === v.id));
   const disabled = busy || uploading;
   const markDirty = () => onDirty(true);
   const patch = (partial: Partial<AdminOffer>) => { setOffer((current) => ({ ...current, ...partial })); markDirty(); };
   const updateVariant = (variant: Variant) => { setBank((current) => [...current.filter((v) => v.id !== variant.id), variant]); markDirty(); };
+  const addPackageItem = () => {
+    const id = `package-${crypto.randomUUID()}`;
+    setBank((current) => [...current, { id, title: "", price: { status: "known", amountUsd: null }, availability: "unknown" }]);
+    markDirty();
+  };
+  const removePackageItem = (id: string) => {
+    setBank((current) => current.filter((v) => v.id !== id));
+    markDirty();
+  };
+  const setPackageMode = (enabled: boolean) => {
+    patch({
+      catalogDetails: { ...offer.catalogDetails, format: enabled ? "package" : undefined },
+      price: enabled ? offer.price ?? { status: "known", amountUsd: null } : offer.price,
+    });
+  };
+  const setBundlePrice = (amountUsd: number | null) => patch({ price: { status: "known", amountUsd } });
   const errorFor = (path: string) => errors[path] ? <small className="admin-field-error" role="alert" id={`error-${path}`}>{errors[path]}</small> : null;
   const invalid = (path: string) => ({ "aria-invalid": Boolean(errors[path]), "aria-describedby": errors[path] ? `error-${path}` : undefined });
 
@@ -88,16 +107,28 @@ export function OfferForm({ initial, user, busy, onSave, onDirty }: { initial: A
           {offer.availability === "completed" && <option value="completed">مكتمل (محفوظ)</option>}
         </AdminSelect></label>
         <small>التوفر العام مستقل عن النشر وتوفر الخيارات الفردية والجماعية.</small>
+        <label className="admin-checkbox-row"><input type="checkbox" checked={packageMode} onChange={(e) => setPackageMode(e.target.checked)} />عرض البطاقة كباقة</label>
         <label>طريقة التقديم<AdminSelect value={delivery} onChange={(e) => { const next = e.target.value as Delivery; setBank((current) => { const additions = activeVariants(current, next).filter((v) => !current.some((old) => old.id === v.id)); return [...current, ...additions]; }); setDelivery(next); markDirty(); }}>{Object.entries(deliveryLabels).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</AdminSelect></label>
         {removed.length > 0 && <p className="admin-warning" role="status">عند الحفظ ستُزال الخيارات: {removed.map((v) => v.title).join("، ")}. يمكنكِ العودة لطريقة التقديم السابقة لاستعادة قيمها قبل الحفظ.</p>}
-        {active.map((variant, index) => <PricingFields key={variant.id} variant={variant} custom={!standardIds.includes(variant.id)} onChange={updateVariant} errors={errors} path={`variants.${index}`} />)}
-        {active.some((v) => !standardIds.includes(v.id)) && <small>الباقات والمدد الموجودة محفوظة. يمكنكِ تعديل اسم كل باقة وسعرها وتوفرها دون تغيير معرّفها.</small>}
+        {pricingVariants.map((variant) => {
+          const index = active.findIndex((item) => item.id === variant.id);
+          return <PricingFields key={variant.id} variant={variant} custom={!standardIds.includes(variant.id)} onChange={updateVariant} errors={errors} path={`variants.${index}`} />;
+        })}
+        {!packageMode && active.some((v) => !standardIds.includes(v.id)) && <small>الباقات والمدد الموجودة محفوظة. يمكنكِ تعديل اسم كل باقة وسعرها وتوفرها دون تغيير معرّفها.</small>}
+        {packageMode ? (
+          <PackageFields
+            items={packageItems}
+            bundleAmount={offer.price?.status === "known" ? offer.price.amountUsd : null}
+            errors={errors}
+            indexFor={(id) => active.findIndex((item) => item.id === id)}
+            onAdd={addPackageItem}
+            onRemove={removePackageItem}
+            onBundlePrice={setBundlePrice}
+            onChange={updateVariant}
+          />
+        ) : null}
         {errorFor("variants")}
         {groupActive && <CapacityField onValidity={(error) => validateExtra("capacity", error)} value={offer.capacity} onChange={(capacity) => patch({ capacity })} />}
-      </fieldset>
-      <fieldset disabled={disabled}><legend>عرض الباقة <small>(اختياري)</small></legend>
-        <PackageFields value={offer.packagePresentation} onChange={(packagePresentation) => patch({ packagePresentation })} />
-        {Object.entries(errors).filter(([path]) => path.startsWith("packagePresentation")).map(([path, error]) => <small key={path} className="admin-field-error" role="alert">{error}</small>)}
       </fieldset>
       <fieldset disabled={disabled}><legend>معلومات إضافية</legend>
         <DurationField onValidity={(error) => validateExtra("duration", error)} label="مدة العرض / البرمجة" value={offer.duration} onChange={(duration) => patch({ duration })} />
@@ -110,7 +141,7 @@ export function OfferForm({ initial, user, busy, onSave, onDirty }: { initial: A
         <div><button type="submit" value="draft" className="admin-secondary" disabled={disabled || confirming}>{initial.status === "published" ? "إلغاء النشر وحفظ مسودة" : "حفظ مسودة"}</button><button type="submit" value="published" className="admin-primary" disabled={disabled || confirming}>{busy ? "جارٍ الحفظ…" : initial.status === "published" ? "حفظ التغييرات" : "نشر العرض"}</button></div>
       </div>
     </form>
-    <aside className="admin-card-preview" aria-label="معاينة البطاقة"><h3>معاينة البطاقة</h3>{offer.category === "tests" ? <HomeTestCard offer={{ ...editorPreview(value), image: previewImage(value) }} /> : <OfferCard offer={editorPreview(value)} image={offer.image.kind === "cloudinary" ? { src: offer.image.secureUrl, width: offer.image.width, height: offer.image.height, alt: offer.image.alt || offer.title } : offer.image.kind === "local" && getAsset(offer.image.assetId) ? { src: getAsset(offer.image.assetId)!.publicPath, width: getAsset(offer.image.assetId)!.width, height: getAsset(offer.image.assetId)!.height, alt: offer.image.alt || offer.title } : undefined} />} </aside>
+    <aside className="admin-card-preview" aria-label="معاينة البطاقة"><h3>معاينة البطاقة</h3><OfferCard offer={editorPreview(value)} image={previewImage(value)} /></aside>
     <AdminConfirmDialog
       open={Boolean(pendingSave)}
       busy={confirming}
@@ -147,36 +178,42 @@ function previewImage(offer: AdminOffer) {
   return asset ? { src: asset.publicPath, width: asset.width, height: asset.height, alt: offer.image.alt || offer.title } : undefined;
 }
 
-function PackageFields({ value, onChange }: { value: AdminOffer["packagePresentation"]; onChange: (value: NonNullable<AdminOffer["packagePresentation"]>) => void }) {
-  const presentation = value ?? { enabled: false, label: "الباقة الكاملة", items: [], fullPrice: null };
-  const patch = (next: Partial<typeof presentation>) => onChange({ ...presentation, ...next });
-  return <div className="admin-package-fields">
-    <label className="admin-checkbox"><input type="checkbox" checked={presentation.enabled} onChange={(e) => patch({ enabled: e.target.checked })} />إظهار عناصر الباقة</label>
-    {presentation.enabled && <>
-      <p>عناصر الباقة مستقلة عن طريقة التقديم والخيارات المحفوظة. السعر الكامل اختياري ولا يُحسب تلقائيًا.</p>
-      {presentation.items.map((item, index) => <div className="admin-pricing-group" key={item.id}>
-        <label>اسم العنصر {index + 1}<input maxLength={160} value={item.title} onChange={(e) => patch({ items: presentation.items.map((entry) => entry.id === item.id ? { ...entry, title: e.target.value } : entry) })} /></label>
-        <PackagePrice label={`سعر العنصر ${index + 1}`} value={item.price} onChange={(price) => patch({ items: presentation.items.map((entry) => entry.id === item.id ? { ...entry, price } : entry) })} />
-        <button type="button" className="admin-secondary" onClick={() => patch({ items: presentation.items.filter((entry) => entry.id !== item.id) })}>إزالة العنصر</button>
-      </div>)}
-      <button type="button" className="admin-secondary" disabled={presentation.items.length >= 30} onClick={() => patch({ items: [...presentation.items, { id: crypto.randomUUID(), title: "", price: { status: "unknown", amountUsd: null } }] })}>إضافة عنصر</button>
-      <label className="admin-checkbox"><input type="checkbox" checked={presentation.fullPrice !== null} onChange={(e) => patch({ fullPrice: e.target.checked ? { status: "known", amountUsd: null } : null })} />تحديد سعر الباقة الكاملة</label>
-      <label>عنوان الباقة الكاملة<input maxLength={160} value={presentation.label} onChange={(e) => patch({ label: e.target.value })} /></label>
-      {presentation.fullPrice && <PackagePrice label="سعر الباقة الكاملة" value={presentation.fullPrice} onChange={(fullPrice) => patch({ fullPrice })} />}
-    </>}
-  </div>;
-}
-
-function PackagePrice({ label, value, onChange }: { label: string; value: Variant["price"]; onChange: (value: Variant["price"]) => void }) {
-  const cachedAmount = useRef(value.status === "known" ? value.amountUsd : null);
-  return <div className="admin-grid">
-    <label>{label}: نوع السعر<AdminSelect value={value.status} onChange={(e) => {
-      const status = e.target.value as Variant["price"]["status"];
-      if (value.status === "known") cachedAmount.current = value.amountUsd;
-      onChange({ status, amountUsd: status === "free" ? 0 : status === "known" ? cachedAmount.current : null });
-    }}><option value="known">محدد</option><option value="free">مجاني</option><option value="unknown">غير محدد</option><option value="on-demand">حسب الطلب</option></AdminSelect></label>
-    {value.status === "known" && <label>{label}: المبلغ بالدولار<input type="number" dir="ltr" min={0} step="any" value={value.amountUsd ?? ""} onChange={(e) => onChange({ status: "known", amountUsd: e.target.value === "" ? null : Number(e.target.value) })} /></label>}
-  </div>;
+function PackageFields({
+  items,
+  bundleAmount,
+  errors,
+  indexFor,
+  onAdd,
+  onRemove,
+  onBundlePrice,
+  onChange,
+}: {
+  items: Variant[];
+  bundleAmount: number | null;
+  errors: Errors;
+  indexFor: (id: string) => number;
+  onAdd: () => void;
+  onRemove: (id: string) => void;
+  onBundlePrice: (amount: number | null) => void;
+  onChange: (variant: Variant) => void;
+}) {
+  return <section className="admin-package-editor" aria-labelledby="package-items-title">
+    <div className="admin-package-heading">
+      <h3 id="package-items-title">عناصر الباقة</h3>
+      <button type="button" className="admin-secondary" onClick={onAdd}>إضافة عنصر</button>
+    </div>
+    {items.length ? items.map((item) => {
+      const path = `variants.${indexFor(item.id)}`;
+      const issue = Object.entries(errors).find(([key]) => key.startsWith(path));
+      return <div className="admin-package-row" key={item.id}>
+        <label>اسم العنصر<input required maxLength={160} value={item.title} aria-invalid={Boolean(issue)} onChange={(e) => onChange({ ...item, title: e.target.value })} /></label>
+        <label>السعر بالدولار<input required type="number" dir="ltr" min={0} step="any" value={item.price.status === "known" ? item.price.amountUsd ?? "" : ""} aria-invalid={Boolean(issue)} onChange={(e) => onChange({ ...item, price: { status: "known", amountUsd: e.target.value === "" ? null : Number(e.target.value) } })} /></label>
+        <button type="button" className="admin-secondary" aria-label={`إزالة ${item.title || "عنصر الباقة"}`} onClick={() => onRemove(item.id)}>إزالة</button>
+        {issue ? <small className="admin-field-error" role="alert">{issue[1]}</small> : null}
+      </div>;
+    }) : <p className="admin-empty">أضيفي عناصر الباقة بأسمائها وأسعارها المنفصلة.</p>}
+    <label>سعر الباقة الكاملة<input required type="number" dir="ltr" min={0} step="any" value={bundleAmount ?? ""} onChange={(e) => onBundlePrice(e.target.value === "" ? null : Number(e.target.value))} /></label>
+  </section>;
 }
 
 function DurationField({ label, value, onChange, onValidity }: { label: string; value: string; onChange: (value: string) => void; onValidity: (error: string) => void }) {

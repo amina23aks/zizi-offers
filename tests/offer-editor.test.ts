@@ -63,6 +63,27 @@ describe("offer editor persistence and public preview", () => {
     expect(preview.availabilityLabel).toBe("متاح");
     expect(preview.price.status).toBe("variant");
   });
+  it("shows package items and bundle price as a dedicated editor section", () => {
+    const record = {
+      ...offer(),
+      title: "باقة",
+      delivery: "general" as const,
+      catalogDetails: { format: "package" as const },
+      price: { status: "known" as const, amountUsd: 90 },
+      variants: [
+        { id: "drama-triangle", title: "مثلث الدراما", price: { status: "known" as const, amountUsd: 30 }, availability: "unknown" as const },
+        { id: "four-roles", title: "تشخيص الأدوار الأربعة", price: { status: "known" as const, amountUsd: 30 }, availability: "unknown" as const },
+      ],
+    };
+    const html = renderToStaticMarkup(createElement(OfferForm, { initial: record, user: {} as User, busy: false, onSave: async () => {}, onDirty: () => {} }));
+    expect(html).toContain("عناصر الباقة");
+    expect(html).toContain("اسم العنصر");
+    expect(html).toContain("السعر بالدولار");
+    expect(html).toContain("إضافة عنصر");
+    expect(html).toContain("سعر الباقة الكاملة");
+    expect(html).toContain('value="90"');
+    expect(editorPreview(adminOfferSchema.parse(record)).priceLabel).toBe("90$");
+  });
   it("distinguishes free, unknown and valid specified prices", () => {
     for (const price of [{ status: "free" as const, amountUsd: 0 }, { status: "unknown" as const, amountUsd: null }, { status: "known" as const, amountUsd: 12.5 }]) {
       expect(adminOfferSchema.safeParse({ ...offer(), title: "عرض", variants: [{ ...newVariant("individual"), price }] }).success).toBe(true);

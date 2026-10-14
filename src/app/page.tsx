@@ -12,6 +12,7 @@ import {
   TelegramLogo,
 } from "@phosphor-icons/react/dist/ssr";
 import { HomeTestCard } from "@/components/home-test-card";
+import { OfferCard } from "@/components/offer-card";
 import { OfferCardCollection } from "@/components/offer-card-collection";
 import { ZoomableImage } from "@/components/zoomable-image";
 import { compassPricing, getAsset, homeSections, publicCategories, type DisplayOffer, ziziAbout } from "@/data/catalog";
@@ -40,6 +41,11 @@ export default async function Home() {
   const connected = process.env.PUBLIC_OFFERS_SOURCE === "firestore";
   const savedOfferById = new Map(savedOffers.map((offer) => [offer.id, offer]));
   const savedTestOffers = savedOffers.filter((offer) => offer.category === "tests");
+  const testCardHrefByOfferId = new Map<string, string>(
+    homeSections
+      .find((section) => section.id === "tests")
+      ?.cards.map((card) => [card.offerId, card.href] as const) ?? [],
+  );
   const identityAsset = getAsset(ziziIdentityAssetIds.avatar ?? ziziIdentityAssetIds.groupLogo);
 
   return (
@@ -122,15 +128,29 @@ export default async function Home() {
             </div>
             <div className="home-carousel-row" tabIndex={0} aria-label={`عروض ${section.title}`}>
               {section.id === "tests"
-                ? (connected ? savedTestOffers : section.cards.map((card) => savedOfferById.get(card.offerId) ?? card)).flatMap((card) => {
+                ? (connected ? savedTestOffers : section.cards.map((card) => savedOfferById.get(card.offerId) ?? card)).map((card) => {
                     const saved = "category" in card && card.category === "tests" ? card as DisplayOffer : null;
-                    if (saved) return [<HomeTestCard key={saved.id} offer={saved} />];
-                    if (!("offerId" in card)) return [];
-                    return [<HomeTestCard key={card.id} offer={{ id: card.offerId, title: card.title,
+                    if (saved) {
+                      return (
+                        <div className="home-carousel-item" key={saved.id}>
+                          <OfferCard
+                            offer={saved}
+                            href={testCardHrefByOfferId.get(saved.id)}
+                            actionLabel="عرض التفاصيل"
+                          />
+                        </div>
+                      );
+                    }
+                    if (!("offerId" in card)) return null;
+                    return <HomeTestCard key={card.id} offer={{
+                      id: card.offerId,
+                      title: card.title,
                       summary: "summary" in card ? card.summary : undefined,
                       availabilityLabel: "availabilityLabel" in card ? card.availabilityLabel : null,
-                      availability: "available", priceLabel: "priceLabel" in card ? card.priceLabel : undefined,
-                      priceClarification: "priceClarification" in card && typeof card.priceClarification === "string" ? card.priceClarification : null }} />];
+                      availability: "available",
+                      priceLabel: "priceLabel" in card ? card.priceLabel : undefined,
+                      priceClarification: "priceClarification" in card && typeof card.priceClarification === "string" ? card.priceClarification : null,
+                    }} />;
                   })
                 : ((connected && !["fingerprints", "compass"].includes(section.id)) || "offers" in section)
                 ? (
